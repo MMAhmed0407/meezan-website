@@ -1,0 +1,142 @@
+﻿
+> meezan-website@0.1.0 build
+> next build
+
+node.exe : ΓÜá 
+Warning: Next.js 
+inferred your 
+workspace root, but 
+it may not be 
+correct.
+At line:1 char:1
++ & "C:\Program File
+s\nodejs/node.exe" 
+"C:\Program Files\no
+dejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: (ΓÜá    
+ Warning: Ne...n    
+ot be correct.:    
+String) [], Rem    
+oteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+ We detected 
+multiple lockfiles 
+and selected the 
+directory of C:\User
+s\saifa\package-lock
+.json as the root 
+directory.
+ To silence this 
+warning, set 
+`turbopack.root` in 
+your Next.js 
+config, or consider 
+removing one of the 
+lockfiles if it's 
+not needed.
+   See https://nextj
+s.org/docs/app/api-r
+eference/config/next
+-config-js/turbopack
+#root-directory for 
+more information.
+ Detected 
+additional 
+lockfiles: 
+   * C:\Users\saifa\
+OneDrive\Desktop\mee
+zan-website\package-
+lock.json
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 9.6s
+  Running TypeScript ...
+Failed to compile.
+
+./src/components/hom
+e/TeachersTrainingSe
+ction.tsx:68:36
+Type error: Type '{ 
+children: 
+Element[]; type: 
+string; 
+collapsible: true; 
+className: string; 
+}' is not 
+assignable to type '
+IntrinsicAttributes 
+& 
+AccordionRootProps'.
+  Property 'type' 
+does not exist on 
+type 'IntrinsicAttri
+butes & 
+AccordionRootProps'.
+
+[0m [90m 66 
+|[39m              
+           className
+[33m=[39m[32m"w-f
+ull lg:w-1/2"[39m
+ [90m 67 |[39m    
+                 
+[33m>[39m
+[31m[1m>[22m[39m
+[90m 68 |[39m     
+                    
+[33m<[39m[33mAcco
+rdion[39m type[33m
+=[39m[32m"single"
+[39m collapsible cla
+ssName[33m=[39m[3
+2m"w-full"[39m[33m
+>[39m
+ [90m    |[39m    
+                    
+            
+[31m[1m^[22m[39m
+ [90m 69 |[39m    
+                    
+     {programmes[33
+m.[39mmap((prog[33
+m,[39m i) 
+[33m=>[39m (
+ [90m 70 |[39m    
+                    
+         [33m<[39m
+[33mAccordionItem[
+39m 
+key[33m=[39m{i} va
+lue[33m=[39m{[32m
+`item-${i}`[39m} cl
+assName[33m=[39m[
+32m"border-b-border 
+pb-2 mb-2"[39m[33m
+>[39m
+ [90m 71 |[39m    
+                    
+             [33m<
+[39m[33mAccordionTr
+igger[39m className
+[33m=[39m[32m"tex
+t-left text-lg 
+font-semibold hover:
+text-brand-red 
+md:text-xl py-4 tran
+sition-colors"[39m
+[33m>[39m[0m
+Next.js build 
+worker exited with 
+code: 1 and signal: 
+null
