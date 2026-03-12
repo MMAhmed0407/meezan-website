@@ -10,7 +10,7 @@
 - **Project purpose**: High-converting, premium multi-page website
 - **Built by**: A2S Labs (Saif & Azeem)
 - **Tech stack summary**: Next.js 14, React 19, Tailwind CSS 4, Framer Motion, Shadcn UI
-- **Live URL**: https://www.meezanedu.com
+- **Live URL**: https://meezan-website.vercel.app
 - **Last updated date**: March 9, 2026
 
 ---
