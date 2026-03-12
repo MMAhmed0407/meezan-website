@@ -12,6 +12,7 @@ function ContactSectionInner() {
 
     useEffect(() => {
         // useSearchParams only works for ?params before the hash.
+        // nothing
         // For /#enquiry-form?course=... we need to parse the hash.
         const hash = window.location.hash;
         let course = searchParams.get("course");
