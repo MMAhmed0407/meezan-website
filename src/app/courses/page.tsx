@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Clock, GraduationCap, MapPin } from "lucide-react";
+import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
 
 // Mock Data
 const courseCategories = [
@@ -129,8 +130,13 @@ export default function CoursesPage() {
     const categories = ["All", "Health", "Psychology", "Management", "IT", "Coaching"];
 
     return (
-        <div className="w-full">
-            {/* Hero Section */}
+        <main className="min-h-screen bg-background pb-20">
+            <BreadcrumbSchema crumbs={[
+                { name: 'Home', url: '/' },
+                { name: 'Courses', url: '/courses' }
+            ]} />
+            
+            {/* HERO SECTION */}
             <section className="bg-brand-deeper-teal pt-32 pb-24 text-center px-4 relative overflow-hidden">
                 {/* Abstract shapes */}
                 <div className="absolute top-0 right-0 w-96 h-96 bg-brand-teal/10 rounded-full blur-[100px] pointer-events-none" />
@@ -243,6 +249,6 @@ export default function CoursesPage() {
                     </Link>
                 </motion.div>
             </section>
-        </div>
+        </main>
     );
 }

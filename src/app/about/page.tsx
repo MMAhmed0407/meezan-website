@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { GraduationCap, ClipboardList, Target, Eye, HeartHandshake, BadgeCheck } from "lucide-react";
+import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
 
 export default function AboutPage() {
     const team = [
@@ -14,6 +15,10 @@ export default function AboutPage() {
 
     return (
         <div className="w-full overflow-hidden">
+            <BreadcrumbSchema crumbs={[
+                { name: 'Home', url: '/' },
+                { name: 'About Us', url: '/about' }
+            ]} />
 
             {/* HERO SECTION */}
             <section className="relative min-h-[70vh] flex flex-col lg:flex-row w-full bg-brand-deeper-teal">

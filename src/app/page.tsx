@@ -10,10 +10,12 @@ import ITCoursesSection from "@/components/home/ITCoursesSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import LeadCaptureSection from "@/components/home/LeadCaptureSection";
 import ContactSection from "@/components/home/ContactSection";
+import { FAQSchema } from "@/components/global/SchemaOrg";
 
 export default function Home() {
   return (
     <>
+      <FAQSchema />
       <HeroSection />
       <StatsSection />
       <CategoriesSection />

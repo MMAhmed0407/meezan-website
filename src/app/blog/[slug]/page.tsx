@@ -1,23 +1,51 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
+import { Metadata } from "next";
+import { blogPosts } from "@/data/blogPosts";
+import { notFound } from "next/navigation";
+import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
 
-// In a real app, this would fetch from an API or MDX
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-    // Mock title formatting from slug
-    const title = params.slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+    const post = blogPosts.find(p => p.slug === params.slug);
+
+    if (!post) {
+        return {
+            title: "Post Not Found",
+        };
+    }
+
     return {
-        title: `${title} | Meezan Educational Institute`,
-        description: `Read our comprehensive guide on ${title} at Meezan Educational Institute's Blog.`
+        title: post.title,
+        description: post.excerpt,
+        alternates: { canonical: `https://meezanedu.com/blog/${params.slug}` },
+        openGraph: {
+            title: post.title,
+            description: post.excerpt,
+            url: `https://meezanedu.com/blog/${params.slug}`,
+            type: 'article',
+            publishedTime: post.publishedAt,
+            images: [{ url: post.image || '/og-image.jpg', width: 1200, height: 630 }],
+        },
     };
 }
 
 export default function BlogPost({ params }: { params: { slug: string } }) {
-    // Generate generic content based on slug
-    const title = params.slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const post = blogPosts.find(p => p.slug === params.slug);
+
+    if (!post) {
+        notFound();
+    }
+
+    const title = post.title;
 
     return (
         <article className="w-full bg-white pb-24">
+            <BreadcrumbSchema crumbs={[
+                { name: 'Home', url: '/' },
+                { name: 'Blog', url: '/blog' },
+                { name: title, url: `/blog/${params.slug}` }
+            ]} />
 
             {/* HERO IMAGE */}
             <div className="relative w-full h-[400px] lg:h-[500px] overflow-hidden">

@@ -7,6 +7,7 @@ import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
 import FloatingElements from "@/components/global/FloatingElements";
 import { Analytics } from "@vercel/analytics/react";
+import { LocalBusinessSchema } from "@/components/global/SchemaOrg";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -27,22 +28,6 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  name: "Meezan Educational Institute",
-  url: "https://www.meezanedu.com",
-  telephone: ["+919010186447", "+917730019572", "+914045131341"],
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "201, Second Floor, Dorato Avenue",
-    addressLocality: "Hyderabad",
-    addressCountry: "India",
-  },
-  openingHours: "Mo-Sa 09:00-20:00",
-  sameAs: ["https://www.facebook.com/share/166FToduKR/"],
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -51,10 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <LocalBusinessSchema />
       </head>
       <body className={`${poppins.variable} font-sans antialiased text-foreground bg-background selection:bg-brand-teal/20 selection:text-brand-deeper-teal overflow-x-hidden flex flex-col min-h-screen`}>
         <AnnouncementBar />
