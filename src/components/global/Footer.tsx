@@ -4,9 +4,9 @@ import { Facebook, Instagram, Linkedin, Twitter, Zap } from "lucide-react";
 
 export default function Footer() {
     return (
-        <footer className="bg-brand-dark-teal text-white pt-16 pb-6 mt-auto">
+        <footer className="bg-brand-dark-teal text-white pt-10 pb-6 mt-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                     {/* Col 1 */}
                     <div>
                         <div className="flex items-center gap-1 mb-6">

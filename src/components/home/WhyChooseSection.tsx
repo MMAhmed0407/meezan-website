@@ -28,14 +28,14 @@ const features = [
 
 export default function WhyChooseSection() {
     return (
-        <section className="py-8 md:py-12 lg:py-16 bg-brand-light overflow-hidden" aria-labelledby="why-choose-heading">
+        <section className="py-6 md:py-8 lg:py-10 bg-brand-light overflow-hidden" aria-labelledby="why-choose-heading">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="text-center max-w-3xl mx-auto mb-10 md:mb-12"
+                    className="text-center max-w-3xl mx-auto mb-6 md:mb-8"
                 >
                     <h2 id="why-choose-heading" className="mb-4">Why Students Choose Meezan</h2>
                     <p className="text-lg text-foreground/70">

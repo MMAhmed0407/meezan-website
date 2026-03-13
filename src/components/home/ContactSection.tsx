@@ -98,10 +98,10 @@ function ContactSectionInner() {
     };
 
     return (
-        <section className="py-12 md:py-16 bg-white" id="contact" aria-labelledby="contact-heading">
+        <section className="py-8 md:py-10 bg-white" id="contact" aria-labelledby="contact-heading">
             <div id="enquiry-form" className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
 
-                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+                <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
 
                     {/* Left Column (Info & Map) */}
                     <motion.div
@@ -111,9 +111,9 @@ function ContactSectionInner() {
                         transition={{ duration: 0.5 }}
                     >
                         <h2 id="contact-heading" className="mb-4 text-2xl md:text-3xl lg:text-4xl text-brand-deeper-teal">Get In Touch</h2>
-                        <p className="text-foreground/70 text-base md:text-lg mb-8">We're here to answer your questions and help you build your future. Reach out to us today.</p>
+                        <p className="text-foreground/70 text-base md:text-lg mb-6">We're here to answer your questions and help you build your future. Reach out to us today.</p>
 
-                        <address className="not-italic space-y-6 mb-8">
+                        <address className="not-italic space-y-4 mb-6">
                             <div className="flex gap-4">
                                 <div className="bg-brand-light p-3 rounded-full text-brand-teal h-fit shrink-0">
                                     <MapPin size={24} />
@@ -165,7 +165,7 @@ function ContactSectionInner() {
                         transition={{ duration: 0.5 }}
                     >
                         <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-black/5 relative overflow-hidden">
-                            <h3 className="text-xl md:text-2xl mb-6 text-brand-deeper-teal">Send Us a Message</h3>
+                            <h3 className="text-xl md:text-2xl mb-4 text-brand-deeper-teal">Send Us a Message</h3>
 
                             {isSubmitted ? (
                                 <motion.div

@@ -98,7 +98,7 @@ export default function CoursesPage() {
                 { name: 'Home', url: '/' },
                 { name: 'Courses', url: '/courses' }
             ]} />
-            
+
             {/* HERO SECTION */}
             <section className="bg-brand-deeper-teal pt-32 pb-24 text-center px-4 relative overflow-hidden">
                 {/* Abstract shapes */}
@@ -112,7 +112,7 @@ export default function CoursesPage() {
                     className="relative z-10 max-w-3xl mx-auto"
                 >
                     <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6">Courses at Meezan Educational Institute Hyderabad</h1>
-                    <p className="text-lg text-white/80 max-w-xl mx-auto mb-12">From healthcare to psychology — find the course that launches your career and transforms your life.</p>
+                    <p className="text-lg text-white/80 max-w-xl mx-auto mb-8">From healthcare to psychology — find the course that launches your career and transforms your life.</p>
 
                     <div className="flex flex-nowrap overflow-x-auto pb-4 justify-start md:justify-center gap-2 md:gap-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
                         {categories.map((cat) => (
@@ -130,14 +130,14 @@ export default function CoursesPage() {
 
             {/* Courses Loop */}
             {courseCategories.map((category, index) => (
-                <section key={category.id} id={category.id} className={`py-12 md:py-16 lg:py-20 ${category.bg} scroll-mt-20`} aria-labelledby={`${category.id}-heading`}>
+                <section key={category.id} id={category.id} className={`py-8 md:py-12 lg:py-16 ${category.bg} scroll-mt-20`} aria-labelledby={`${category.id}-heading`}>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="mb-12 md:mb-16 text-center max-w-2xl mx-auto"
+                            className="mb-8 md:mb-12 text-center max-w-2xl mx-auto"
                         >
                             <h2 id={`${category.id}-heading`} className="mb-4 text-3xl md:text-4xl">{category.title}</h2>
                             <p className="text-lg text-foreground/70">{category.description}</p>
@@ -197,7 +197,7 @@ export default function CoursesPage() {
             ))}
 
             {/* Teacher's Training Linked Card */}
-            <section className="py-12 md:py-16 lg:py-20 bg-white scroll-mt-20">
+            <section className="py-8 md:py-12 lg:py-16 bg-white scroll-mt-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -228,7 +228,7 @@ export default function CoursesPage() {
             </section>
 
             {/* CTA Strip */}
-            <section className="bg-brand-teal py-16 text-center text-white px-4">
+            <section className="bg-brand-teal py-12 text-center text-white px-4">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}

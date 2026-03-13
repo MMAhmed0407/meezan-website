@@ -53,8 +53,8 @@ export default function TestimonialsSection() {
     const duplicatedTestimonials = [...testimonials, ...testimonials];
 
     return (
-        <section className="py-12 md:py-16 bg-brand-light overflow-hidden" aria-labelledby="testimonials-heading">
-            <div className="max-w-7xl mx-auto px-4 mb-10 md:mb-12 text-center">
+        <section className="py-8 md:py-10 bg-brand-light overflow-hidden" aria-labelledby="testimonials-heading">
+            <div className="max-w-7xl mx-auto px-4 mb-6 md:mb-8 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

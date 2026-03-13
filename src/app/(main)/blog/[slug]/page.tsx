@@ -65,7 +65,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                         <span className="inline-block bg-brand-accent text-brand-deeper-teal font-bold text-xs px-3 py-1.5 rounded-md uppercase tracking-widest mb-6">
                             Insights
                         </span>
-                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.15] mb-8">
+                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.15] mb-6">
                             {title}
                         </h1>
 
@@ -82,13 +82,13 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
             </div>
 
             {/* ARTICLE BODY */}
-            <div className="max-w-3xl mx-auto px-4 py-12 lg:py-16 prose prose-lg prose-slate prose-headings:text-brand-deeper-teal prose-a:text-brand-teal prose-img:rounded-2xl">
+            <div className="max-w-3xl mx-auto px-4 py-8 lg:py-10 prose prose-lg prose-slate prose-headings:text-brand-deeper-teal prose-a:text-brand-teal prose-img:rounded-2xl">
 
-                <Link href="/blog" className="inline-flex items-center gap-2 text-brand-teal font-semibold hover:text-brand-dark-teal transition-colors mb-10 no-underline text-sm" aria-label="Back to all blog articles">
+                <Link href="/blog" className="inline-flex items-center gap-2 text-brand-teal font-semibold hover:text-brand-dark-teal transition-colors mb-8 no-underline text-sm" aria-label="Back to all blog articles">
                     <ArrowLeft size={16} /> Back to all articles
                 </Link>
 
-                <p className="lead text-xl text-foreground/80 leading-relaxed mb-8">
+                <p className="lead text-xl text-foreground/80 leading-relaxed mb-6">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </p>
 
@@ -97,7 +97,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
                 </p>
 
-                <p className="mb-10 leading-relaxed">
+                <p className="mb-8 leading-relaxed">
                     Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
                 </p>
 
@@ -106,13 +106,13 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                 </blockquote>
 
                 <h3 className="text-2xl font-bold mt-12 mb-6 text-brand-deeper-teal">Three Actionable Takeaways</h3>
-                <ul className="space-y-4 mb-10 pl-6 list-disc marker:text-brand-teal">
+                <ul className="space-y-4 mb-8 pl-6 list-disc marker:text-brand-teal">
                     <li className="pl-2">Focus on incremental, continuous daily progress rather than massive overnight leaps.</li>
                     <li className="pl-2">Surround yourself with mentors and peers who constructively challenge your assumptions.</li>
                     <li className="pl-2">Never stop investing in your own education, be it structural academic or practical skills.</li>
                 </ul>
 
-                <p className="mb-12 leading-relaxed">
+                <p className="mb-8 leading-relaxed">
                     At Meezan Educational Institute, we weave these core principles directly into our curriculum across all courses, whether you are studying Paramedical Sciences, Professional Training, or Teacher&apos;s Training programmes.
                 </p>
 
@@ -128,10 +128,10 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
             </div>
 
             {/* CTA STRIP */}
-            <section className="bg-brand-deeper-teal border-t border-[#1a1a2e] py-16 text-center text-white px-4">
+            <section className="bg-brand-deeper-teal border-t border-[#1a1a2e] py-12 text-center text-white px-4">
                 <div className="max-w-2xl mx-auto">
                     <h3 className="text-3xl font-bold mb-6">Enjoyed this article?</h3>
-                    <p className="text-lg text-white/70 mb-8">Take the next step in your career journey. Explore our comprehensive, job-focused courses today.</p>
+                    <p className="text-lg text-white/70 mb-6">Take the next step in your career journey. Explore our comprehensive, job-focused courses today.</p>
                     <Link
                         href="/courses"
                         className="inline-block bg-brand-teal text-white px-8 py-4 rounded-full font-bold hover:bg-brand-dark-teal transition-all shadow-lg hover:-translate-y-1"

@@ -80,9 +80,9 @@ export default function TeachersTrainingPageContent() {
             </section>
 
             {/* Programmes Section */}
-            <section className="py-12 md:py-16">
+            <section className="py-8 md:py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col lg:flex-row gap-12 items-start">
+                    <div className="flex flex-col lg:flex-row gap-8 items-start">
                         {/* Image */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
@@ -141,7 +141,7 @@ export default function TeachersTrainingPageContent() {
             </section>
 
             {/* Speak to a Counsellor CTA */}
-            <section className="bg-brand-deeper-teal py-16 md:py-20 px-4">
+            <section className="bg-brand-deeper-teal py-12 md:py-16 px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -150,7 +150,7 @@ export default function TeachersTrainingPageContent() {
                     className="max-w-2xl mx-auto text-center"
                 >
                     <h2 className="text-3xl md:text-4xl text-white mb-4">Speak to a Counsellor</h2>
-                    <p className="text-lg text-white/80 mb-10">
+                    <p className="text-lg text-white/80 mb-8">
                         Not sure which programme is right for you? Our team is here to help.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">

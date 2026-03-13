@@ -100,7 +100,7 @@ export default function AboutPage() {
 
             {/* MISSION & VISION */}
             <section className="py-20 bg-brand-light" aria-label="Mission and Vision">
-                <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8">
+                <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-6">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -136,7 +136,7 @@ export default function AboutPage() {
             <section className="py-20 bg-white" aria-labelledby="about-pillars-heading">
                 <div className="max-w-7xl mx-auto px-4">
                     <h2 id="about-pillars-heading" className="text-center mb-16 text-3xl">Our Core Pillars</h2>
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
                             { icon: GraduationCap, title: "Expert Faculty" },
                             { icon: ClipboardList, title: "Practical Training" },
@@ -162,7 +162,7 @@ export default function AboutPage() {
             </section>
 
             {/* CLINIC SECTION */}
-            <section className="py-12 md:py-16 bg-gradient-to-b from-brand-light to-white" aria-labelledby="about-clinic-heading">
+            <section className="py-8 md:py-10 bg-gradient-to-b from-brand-light to-white" aria-labelledby="about-clinic-heading">
                 <div className="max-w-5xl mx-auto px-4 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -196,7 +196,7 @@ export default function AboutPage() {
             </section>
 
             {/* TEAM SECTION */}
-            <section className="py-12 md:py-16 bg-white border-t border-border" aria-labelledby="about-team-heading">
+            <section className="py-8 md:py-10 bg-white border-t border-border" aria-labelledby="about-team-heading">
                 <div className="max-w-7xl mx-auto px-4">
                     <h2 id="about-team-heading" className="text-center mb-16 text-3xl md:text-4xl">Our Leadership</h2>
                     <div className="grid md:grid-cols-3 gap-8">
@@ -233,7 +233,7 @@ export default function AboutPage() {
 
 
             {/* CTA */}
-            <section className="py-12 md:py-16 bg-brand-deeper-teal text-center px-4">
+            <section className="py-8 md:py-10 bg-brand-deeper-teal text-center px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

@@ -6,12 +6,12 @@ import { Phone, CheckCircle } from "lucide-react";
 
 export default function ClinicSection() {
     return (
-        <section className="relative py-8 md:py-12 lg:py-16 bg-gradient-to-br from-brand-deeper-teal to-[#1a1a2e] overflow-hidden" aria-labelledby="clinic-heading">
+        <section className="relative py-6 md:py-8 lg:py-10 bg-gradient-to-br from-brand-deeper-teal to-[#1a1a2e] overflow-hidden" aria-labelledby="clinic-heading">
             {/* Background Decor */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-teal/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-accent/10 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/4 pointer-events-none" />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
 
                 {/* Left Content */}
                 <motion.div
@@ -23,15 +23,15 @@ export default function ClinicSection() {
                 >
                     <div className="w-16 h-1 bg-brand-accent mb-8 rounded-full" />
                     <h2 id="clinic-heading" className="text-white mb-3 text-4xl lg:text-5xl">Shoukath Ali Charitable Clinic</h2>
-                    <p className="text-brand-accent text-lg font-medium mb-6 md:mb-8 tracking-wide uppercase text-sm">
+                    <p className="text-brand-accent text-lg font-medium mb-4 md:mb-6 tracking-wide uppercase text-sm">
                         A Humanitarian Initiative of Meezan Paramedic Institute
                     </p>
 
-                    <blockquote className="text-xl lg:text-2xl font-light italic leading-relaxed mb-8 md:mb-10 border-l-4 border-brand-teal pl-6 py-2">
+                    <blockquote className="text-xl lg:text-2xl font-light italic leading-relaxed mb-6 md:mb-8 border-l-4 border-brand-teal pl-6 py-2">
                         "Your health is our priority. We provide comprehensive psychological assessments and nursing care precisely when and where you need it."
                     </blockquote>
 
-                    <div className="flex flex-wrap gap-4 mb-8">
+                    <div className="flex flex-wrap gap-4 mb-6">
                         {["Compassionate Care", "Community First", "Accessible Healthcare"].map((pill) => (
                             <span key={pill} className="bg-white/10 border border-white/20 px-5 py-2 rounded-full text-sm font-medium backdrop-blur-sm flex items-center gap-2">
                                 <CheckCircle size={14} className="text-brand-accent" />

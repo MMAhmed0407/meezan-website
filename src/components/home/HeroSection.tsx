@@ -20,9 +20,9 @@ export default function HeroSection() {
     };
 
     return (
-        <section className="relative min-h-[80vh] flex flex-col lg:flex-row w-full overflow-hidden bg-brand-deeper-teal">
+        <section className="relative min-h-[70vh] flex flex-col lg:flex-row w-full overflow-hidden bg-brand-deeper-teal">
             {/* Left Content */}
-            <div className="w-full lg:w-[55%] relative flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-8 lg:py-0 z-10">
+            <div className="w-full lg:w-[55%] relative flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-6 lg:py-0 z-10">
                 {/* Subtle diagonal pattern overlay - using CSS gradient */}
                 <div className="absolute inset-0 opacity-10 pointer-events-none"
                     style={{ backgroundImage: 'repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%)', backgroundSize: '10px 10px' }}
@@ -45,11 +45,11 @@ export default function HeroSection() {
                         Healthcare & Coaching Training Institute in Hyderabad
                     </motion.h1>
 
-                    <motion.p variants={itemVariants} className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed mb-8 max-w-xl">
+                    <motion.p variants={itemVariants} className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed mb-6 max-w-xl">
                         Encourage to Educate to Empower — From paramedical sciences to personality development and teacher&apos;s training, building careers and transforming lives.
                     </motion.p>
 
-                    <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 mb-8">
+                    <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 mb-6">
                         <Link
                             href="/courses"
                             className="bg-brand-teal text-white px-8 py-4 rounded-full font-semibold text-center hover:bg-brand-dark-teal transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-1 w-full sm:w-auto"

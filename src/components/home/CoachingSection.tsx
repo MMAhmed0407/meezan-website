@@ -28,7 +28,7 @@ export default function CoachingSection() {
     };
 
     return (
-        <section className="py-8 md:py-12 lg:py-16 bg-brand-light relative overflow-hidden" aria-labelledby="coaching-heading">
+        <section className="py-6 md:py-8 lg:py-10 bg-brand-light relative overflow-hidden" aria-labelledby="coaching-heading">
             {/* Abstract Background Shapes */}
             <div className="absolute top-20 left-10 w-64 h-64 bg-brand-teal/5 rounded-full blur-[80px]" />
             <div className="absolute bottom-10 right-10 w-96 h-96 bg-brand-deeper-teal/5 rounded-full blur-[100px]" />
@@ -39,7 +39,7 @@ export default function CoachingSection() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="text-center max-w-2xl mx-auto mb-10 md:mb-12"
+                    className="text-center max-w-2xl mx-auto mb-6 md:mb-8"
                 >
                     <h2 id="coaching-heading" className="mb-4">Discover Coaching at Meezan</h2>
                     <p className="text-lg text-foreground/70">
