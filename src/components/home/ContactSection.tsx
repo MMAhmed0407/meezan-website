@@ -1,12 +1,14 @@
 "use client";
 
+import { submitContactForm } from "@/app/actions/contact";
 import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Clock, MessageSquare, CheckCircle2 } from "lucide-react";
+import { MapPin, Phone, Clock, MessageSquare, CheckCircle2, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
 function ContactSectionInner() {
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState("");
     const searchParams = useSearchParams();
 
@@ -77,8 +79,20 @@ function ContactSectionInner() {
         }
     }, [searchParams]);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setIsSubmitting(true);
+        const formData = new FormData(e.currentTarget);
+        const result = await submitContactForm(formData, 'contact_section');
+
+        setIsSubmitting(false);
+        if (!result.success) {
+            console.error('Error submitting form:', result.error);
+            alert('Failed to send message. Please check your connection or try again.');
+            return;
+        }
+
         setIsSubmitted(true);
         setTimeout(() => setIsSubmitted(false), 5000);
     };
@@ -169,17 +183,17 @@ function ContactSectionInner() {
                                 <form onSubmit={handleSubmit} className="space-y-5">
                                     <div>
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Full Name</label>
-                                        <input type="text" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="John Doe" />
+                                        <input type="text" name="full_name" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="John Doe" />
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                         <div>
                                             <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Email Address</label>
-                                            <input type="email" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="john@example.com" />
+                                            <input type="email" name="email" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="john@example.com" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Phone Number</label>
-                                            <input type="tel" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="+91 0000 00000" />
+                                            <input type="tel" name="phone" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="+91 0000 00000" />
                                         </div>
                                     </div>
 
@@ -187,6 +201,7 @@ function ContactSectionInner() {
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Course of Interest</label>
                                         <div className="relative">
                                             <select
+                                                name="course"
                                                 required
                                                 value={selectedCourse}
                                                 onChange={(e) => setSelectedCourse(e.target.value)}
@@ -207,11 +222,11 @@ function ContactSectionInner() {
 
                                     <div>
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Your Message</label>
-                                        <textarea required rows={4} className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 resize-none" placeholder="How can we help you?"></textarea>
+                                        <textarea required name="message" rows={4} className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 resize-none" placeholder="How can we help you?"></textarea>
                                     </div>
 
-                                    <button type="submit" className="w-full bg-brand-teal text-white py-4 rounded-xl font-semibold text-lg hover:bg-brand-dark-teal hover:shadow-lg transition-all hover:-translate-y-0.5 mt-2">
-                                        Send Message
+                                    <button type="submit" disabled={isSubmitting} className="w-full bg-brand-teal text-white py-4 rounded-xl font-semibold text-lg hover:bg-brand-dark-teal hover:shadow-lg transition-all hover:-translate-y-0.5 mt-2 disabled:opacity-75 disabled:hover:translate-y-0 flex items-center justify-center gap-2">
+                                        {isSubmitting ? <><Loader2 className="animate-spin" size={24} /> Sending...</> : 'Send Message'}
                                     </button>
                                 </form>
                             )}

@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 
-import AnnouncementBar from "@/components/global/AnnouncementBar";
-import Navbar from "@/components/global/Navbar";
-import Footer from "@/components/global/Footer";
-import FloatingButtons from "@/components/global/FloatingButtons";
-import FloatingContact from "@/components/global/FloatingContact";
+
 import { Analytics } from "@vercel/analytics/react";
 import { LocalBusinessSchema } from "@/components/global/SchemaOrg";
 
@@ -40,14 +36,7 @@ export default function RootLayout({
         <LocalBusinessSchema />
       </head>
       <body className={`${poppins.variable} font-sans antialiased text-foreground bg-background selection:bg-brand-teal/20 selection:text-brand-deeper-teal overflow-x-hidden flex flex-col min-h-screen`}>
-        <AnnouncementBar />
-        <Navbar />
-        <main className="flex-1 w-full">
-          {children}
-        </main>
-        <Footer />
-        <FloatingButtons />
-        <FloatingContact />
+        {children}
         <Analytics />
       </body>
     </html>
