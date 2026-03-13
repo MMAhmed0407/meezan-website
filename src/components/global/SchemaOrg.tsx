@@ -7,7 +7,7 @@ export function LocalBusinessSchema() {
     "url": "https://meezanedu.com",
     "logo": "https://meezanedu.com/images/meezan-logo.png",
     "image": "https://meezanedu.com/og-image.jpg",
-    "description": "Training and coaching institute in Hyderabad offering paramedic, healthcare, psychology, teacher training, and IT courses.",
+    "description": "Training and coaching institute in Hyderabad offering paramedic, healthcare, psychology, teacher training, and professional development courses.",
     "telephone": ["+919010186447", "+917730019572"],
     "address": {
       "@type": "PostalAddress",
@@ -31,7 +31,7 @@ export function LocalBusinessSchema() {
         { "@type": "Course", "name": "Home Healthcare Training" },
         { "@type": "Course", "name": "Psychology Courses" },
         { "@type": "Course", "name": "Teacher Training — ECCE, ASD, Life Skills" },
-        { "@type": "Course", "name": "IT Courses — Data Analyst, Power BI, Python" },
+
         { "@type": "Course", "name": "Personal Coaching & Leadership" }
       ]
     }
@@ -55,7 +55,7 @@ export function FAQSchema() {
         "name": "What courses does Meezan Educational Institute offer?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Meezan offers paramedic and health services, home healthcare, psychology, teacher training (ECCE, ASD, Life Skills, ADHD), management consulting, IT courses including Data Analyst and Power BI, and personal coaching programs including leadership and public speaking."
+          "text": "Meezan offers paramedic and health services, home healthcare, psychology, teacher training (ECCE, ASD, Life Skills, ADHD), management consulting, counselling, and personal coaching programs including leadership and public speaking."
         }
       },
       {

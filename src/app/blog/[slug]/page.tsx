@@ -65,7 +65,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                         <span className="inline-block bg-brand-accent text-brand-deeper-teal font-bold text-xs px-3 py-1.5 rounded-md uppercase tracking-widest mb-6">
                             Insights
                         </span>
-                        <h1 className="text-3xl md:text-5xl lg:text-[56px] font-bold text-white leading-[1.15] mb-8">
+                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.15] mb-8">
                             {title}
                         </h1>
 
@@ -113,7 +113,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                 </ul>
 
                 <p className="mb-12 leading-relaxed">
-                    At Meezan Educational Institute, we weave these core principles directly into our curriculum across all courses, whether you are studying Paramedical Sciences, mastering Python, or building a startup through our TurnkeyBS collaboration.
+                    At Meezan Educational Institute, we weave these core principles directly into our curriculum across all courses, whether you are studying Paramedical Sciences, Professional Training, or Teacher&apos;s Training programmes.
                 </p>
 
                 {/* TAGS */}

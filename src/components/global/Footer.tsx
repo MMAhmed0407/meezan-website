@@ -11,12 +11,11 @@ export default function Footer() {
                     <div>
                         <div className="flex items-center gap-1 mb-6">
                             <div className="bg-white rounded-lg px-3 py-2 inline-block relative shadow-sm">
-                                <div className="relative w-[180px] h-[70px]">
+                                <div className="relative w-full max-w-[180px] aspect-[18/7]">
                                     <Image
                                         src="/images/meezan-logo.png"
                                         alt="Meezan Educational Institute logo at Meezan Educational Institute Hyderabad"
-                                        width={180}
-                                        height={70}
+                                        fill
                                         className="object-contain"
                                         loading="lazy"
                                         priority={false}

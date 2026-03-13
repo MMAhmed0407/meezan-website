@@ -3,13 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Clock, GraduationCap, MapPin } from "lucide-react";
+import { Clock, GraduationCap, MapPin, ArrowRight } from "lucide-react";
 import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
 
 // Mock Data
 const courseCategories = [
     {
-        id: "health",
+        id: "paramedic",
         title: "Paramedic & Health Services",
         description: "Launch your healthcare career with intensive, practical training programs.",
         bg: "bg-white",
@@ -25,7 +25,7 @@ const courseCategories = [
         ]
     },
     {
-        id: "home-health",
+        id: "home-healthcare",
         title: "Home Healthcare Services",
         description: "Specialized training for compassionate at-home patient care.",
         bg: "bg-brand-light",
@@ -85,49 +85,12 @@ const courseCategories = [
             { title: "Academic Counselling", duration: "3 Months", mode: "Online", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80" }
         ]
     },
-    {
-        id: "teachers",
-        title: "Teacher's Training",
-        description: "Shaping the educators who shape the future.",
-        bg: "bg-white",
-        courses: [
-            { title: "Early Childhood Care & Education (ECCE)", duration: "1 Year", mode: "Hybrid", image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80" },
-            { title: "Pre-Primary Teacher Training", duration: "1 Year", mode: "Hybrid", image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80" },
-            { title: "Autism Spectrum Disorder (ASD)", duration: "6 Months", mode: "Online", image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&q=80" },
-            { title: "Life Skills Training", duration: "3 Months", mode: "Online", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80" },
-            { title: "ADHD Support Training", duration: "3 Months", mode: "Online", image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80" },
-            { title: "Faculty Development Programme (FDP)", duration: "Varies", mode: "Offline", image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80" },
-            { title: "Leadership Development Programme (LDP)", duration: "3 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80" }
-        ]
-    },
-    {
-        id: "it-long",
-        title: "Long Term IT Courses (via TurnkeyBS)",
-        description: "Job-focused tech degrees for the modern era.",
-        bg: "bg-brand-light",
-        courses: [
-            { title: "Data Analyst", duration: "6 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80" },
-            { title: "Data Science", duration: "1 Year", mode: "Hybrid", image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80" },
-            { title: "Power BI + AI", duration: "6 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80" },
-            { title: "Project Management", duration: "6 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80" }
-        ]
-    },
-    {
-        id: "it-short",
-        title: "Short Term IT Courses",
-        description: "Fast-track your skills in weeks, not months.",
-        bg: "bg-white",
-        courses: [
-            { title: "Python Basics", duration: "4 Weeks", mode: "Online", image: "https://images.unsplash.com/photo-1526379095098-d400fd0bfce8?auto=format&fit=crop&q=80" },
-            { title: "Excel + AI", duration: "4 Weeks", mode: "Online", image: "https://images.unsplash.com/photo-1543286386-2e659306cd6c?auto=format&fit=crop&q=80" },
-            { title: "Applied Statistics", duration: "6 Weeks", mode: "Online", image: "https://images.unsplash.com/photo-1553484771-371a605b060b?auto=format&fit=crop&q=80" },
-            { title: "Tableau Fundamentals", duration: "4 Weeks", mode: "Online", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80" }
-        ]
-    }
+
+
 ];
 
 export default function CoursesPage() {
-    const categories = ["All", "Health", "Psychology", "Management", "IT", "Coaching"];
+    const categories = ["All", "Health", "Psychology", "Management", "Coaching"];
 
     return (
         <main className="min-h-screen bg-background pb-20">
@@ -149,13 +112,13 @@ export default function CoursesPage() {
                     className="relative z-10 max-w-3xl mx-auto"
                 >
                     <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6">Courses at Meezan Educational Institute Hyderabad</h1>
-                    <p className="text-lg text-white/80 max-w-xl mx-auto mb-12">From healthcare to technology — find the course that launches your career and transforms your life.</p>
+                    <p className="text-lg text-white/80 max-w-xl mx-auto mb-12">From healthcare to psychology — find the course that launches your career and transforms your life.</p>
 
                     <div className="flex flex-nowrap overflow-x-auto pb-4 justify-start md:justify-center gap-2 md:gap-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
                         {categories.map((cat) => (
                             <a
                                 key={cat}
-                                href={cat === "All" ? "#health" : `#${cat.toLowerCase()}`}
+                                href={cat === "All" ? "#paramedic" : `#${cat.toLowerCase()}`}
                                 className="bg-white/10 hover:bg-brand-teal border border-white/20 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap shrink-0"
                             >
                                 {cat}
@@ -218,12 +181,13 @@ export default function CoursesPage() {
                                                 <span>{course.mode} Mode Available</span>
                                             </li>
                                         </ul>
-                                        <Link
-                                            href={`/#enquiry-form?course=${encodeURIComponent(course.title)}`}
-                                            className="w-full text-center bg-brand-light text-brand-deeper-teal px-4 py-2.5 rounded-lg border border-border/50 font-semibold hover:bg-brand-teal hover:text-white hover:border-brand-teal transition-colors mt-auto"
+                                        <button
+                                            type="button"
+                                            onClick={() => window.dispatchEvent(new CustomEvent('open-contact-widget'))}
+                                            className="w-full text-center bg-brand-light text-brand-deeper-teal px-4 py-2.5 rounded-lg border border-border/50 font-semibold hover:bg-brand-teal hover:text-white hover:border-brand-teal transition-colors mt-auto cursor-pointer"
                                         >
                                             Enquire Now
-                                        </Link>
+                                        </button>
                                     </div>
                                 </article>
                             ))}
@@ -231,6 +195,37 @@ export default function CoursesPage() {
                     </div>
                 </section>
             ))}
+
+            {/* Teacher's Training Linked Card */}
+            <section className="py-12 md:py-16 lg:py-20 bg-white scroll-mt-20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <Link
+                            href="/teachers-training"
+                            className="block bg-brand-light border border-border rounded-2xl p-8 md:p-12 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                        >
+                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                                <div>
+                                    <h2 className="text-2xl md:text-3xl mb-3 group-hover:text-brand-teal transition-colors">
+                                        Teacher&apos;s Training Programmes
+                                    </h2>
+                                    <p className="text-foreground/70 text-base md:text-lg max-w-2xl">
+                                        Explore ECCE, Pre-Primary, ASD, Life Skills, ADHD, FDP, and LDP programmes designed for modern educators.
+                                    </p>
+                                </div>
+                                <div className="inline-flex items-center gap-2 bg-brand-deeper-teal text-white px-6 py-3 rounded-full font-semibold group-hover:bg-brand-teal transition-colors shrink-0">
+                                    View Programmes <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                </div>
+                            </div>
+                        </Link>
+                    </motion.div>
+                </div>
+            </section>
 
             {/* CTA Strip */}
             <section className="bg-brand-teal py-16 text-center text-white px-4">
@@ -241,12 +236,13 @@ export default function CoursesPage() {
                     transition={{ duration: 0.5 }}
                 >
                     <h2 className="text-white text-3xl md:text-4xl mb-6">Not sure which course is right for you?</h2>
-                    <Link
-                        href="/#enquiry-form"
-                        className="inline-block bg-white text-brand-teal px-8 py-4 rounded-full font-bold hover:bg-brand-deeper-teal hover:text-white transition-all shadow-lg hover:-translate-y-1"
+                    <button
+                        type="button"
+                        onClick={() => window.dispatchEvent(new CustomEvent('open-contact-widget'))}
+                        className="inline-block bg-white text-brand-teal px-8 py-4 rounded-full font-bold hover:bg-brand-deeper-teal hover:text-white transition-all shadow-lg hover:-translate-y-1 cursor-pointer"
                     >
                         Talk to Our Counsellor
-                    </Link>
+                    </button>
                 </motion.div>
             </section>
         </main>

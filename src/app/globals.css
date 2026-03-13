@@ -100,15 +100,15 @@
   }
 
   h1 {
-    @apply text-5xl md:text-[56px] font-bold tracking-tight text-brand-deeper-teal;
+    @apply text-5xl md:text-5xl lg:text-6xl font-bold tracking-tight text-brand-deeper-teal;
   }
 
   h2 {
-    @apply text-4xl md:text-[36px] font-bold tracking-tight text-brand-deeper-teal;
+    @apply text-4xl md:text-4xl font-bold tracking-tight text-brand-deeper-teal;
   }
 
   h3 {
-    @apply text-2xl md:text-[24px] font-semibold tracking-tight text-brand-deeper-teal;
+    @apply text-2xl md:text-2xl font-semibold tracking-tight text-brand-deeper-teal;
   }
 
   p {

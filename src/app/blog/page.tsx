@@ -28,7 +28,7 @@ export default function BlogPage() {
             {/* HERO */}
             <section className="bg-brand-light pt-24 pb-12 md:pb-16 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
-                    <h1 className="text-3xl md:text-5xl lg:text-[56px] font-bold text-brand-deeper-teal mb-6">Healthcare & Education Blog — Meezan Institute</h1>
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-brand-deeper-teal mb-6">Healthcare & Education Blog — Meezan Institute</h1>
                     <p className="text-base md:text-lg text-foreground/70 max-w-2xl mb-10">
                         Stay informed with the latest thought leadership, course news, and career advice from Meezan Educational Institute.
                     </p>

@@ -10,7 +10,7 @@ export default function AboutPage() {
     const team = [
         { name: "Dr. Ayesha K.", role: "Principal Director", bio: "Leading Meezan Institute with 20+ years of educational excellence.", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80" },
         { name: "Mr. Mohammed S.", role: "Head of Paramedical Studies", bio: "Former chief nurse turned dedicated healthcare educator.", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80" },
-        { name: "Ms. Priya R.", role: "Director of IT Programs", bio: "Driving tech innovation and TurnkeyBS curriculum design.", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80" }
+        { name: "Ms. Sarah J.", role: "Head of Teacher's Training", bio: "Expert in early childhood education and pedagogical innovation.", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80" }
     ];
 
     return (
@@ -29,7 +29,7 @@ export default function AboutPage() {
                         transition={{ duration: 0.6 }}
                         className="max-w-xl"
                     >
-                        <h1 className="text-4xl md:text-5xl lg:text-[56px] font-bold text-white leading-tight mb-6">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
                             About Meezan Educational Institute Hyderabad
                         </h1>
                         <p className="text-lg text-white/80 leading-relaxed border-l-4 border-brand-teal pl-4">
@@ -73,11 +73,9 @@ export default function AboutPage() {
                                 Meezan Educational Institute was founded with a singular mission — to empower individuals through quality education, professional training, and compassionate healthcare.
                             </p>
                             <p>
-                                From paramedical sciences to personality development and cutting-edge IT skills, we bridge the gap between learning and real-world success. We believe that true education goes beyond textbooks to develop the whole person — equipping them with practical competencies and robust character.
+                                From paramedical sciences to personality development and teacher training, we bridge the gap between learning and real-world success. We believe that true education goes beyond textbooks to develop the whole person — equipping them with practical competencies and robust character.
                             </p>
-                            <p>
-                                Associated with TurnkeyBS, we continue to expand our course offerings to meet the demands of a fast-changing world, ensuring our students are not just employable, but ready to lead.
-                            </p>
+
                         </div>
                     </motion.div>
                     <motion.div
@@ -128,7 +126,7 @@ export default function AboutPage() {
                         <Eye size={48} className="text-brand-accent mb-8" />
                         <h3 className="text-3xl text-white mb-6">Our Vision</h3>
                         <p className="text-lg text-white/80 leading-relaxed">
-                            To be Hyderabad's most trusted institution for paramedical, professional, and technology education, continuously setting new benchmarks for academic excellence.
+                            To be Hyderabad's most trusted institution for paramedical, professional, and teacher education, continuously setting new benchmarks for academic excellence.
                         </p>
                     </motion.div>
                 </div>
@@ -232,25 +230,7 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* PARTNERS */}
-            <section className="py-20 bg-brand-light text-center px-4">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                >
-                    <h2 className="mb-10 text-xl font-medium text-foreground/60 uppercase tracking-widest">Proudly Associated With</h2>
-                    <div className="inline-flex items-center gap-4 bg-white px-8 py-6 rounded-2xl shadow-sm border border-border hover:shadow-md transition-shadow">
-                        <div className="w-12 h-12 bg-brand-deeper-teal rounded-xl flex items-center justify-center text-brand-accent font-bold text-xl">
-                            T
-                        </div>
-                        <div className="text-left">
-                            <h4 className="text-2xl font-bold text-brand-deeper-teal">TurnkeyBS</h4>
-                            <p className="text-brand-teal text-sm font-medium">IT Excellence Partner</p>
-                        </div>
-                    </div>
-                </motion.div>
-            </section>
+
 
             {/* CTA */}
             <section className="py-24 bg-brand-deeper-teal text-center px-4">

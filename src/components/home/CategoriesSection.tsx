@@ -12,7 +12,7 @@ const categories = [
         badge: "Health",
         icon: Activity,
         bullets: ["Midwifery Nursing", "Operation Theater Technician", "Radiology Technician", "Dialysis Assistant"],
-        link: "/courses#health"
+        link: "/courses#paramedic"
     },
     {
         title: "Home Healthcare",
@@ -20,7 +20,7 @@ const categories = [
         badge: "Care",
         icon: HeartHandshake,
         bullets: ["Nursing Assistance at Your Doorstep", "Medication Administration", "Wound Care & Dressing", "Palliative Care"],
-        link: "/courses#home-health"
+        link: "/courses#home-healthcare"
     },
     {
         title: "Psychology",

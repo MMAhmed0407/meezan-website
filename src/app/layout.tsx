@@ -5,7 +5,8 @@ import "./globals.css";
 import AnnouncementBar from "@/components/global/AnnouncementBar";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
-import FloatingElements from "@/components/global/FloatingElements";
+import FloatingButtons from "@/components/global/FloatingButtons";
+import FloatingContact from "@/components/global/FloatingContact";
 import { Analytics } from "@vercel/analytics/react";
 import { LocalBusinessSchema } from "@/components/global/SchemaOrg";
 
@@ -17,10 +18,10 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Meezan Educational Institute | Encourage to Educate to Empower",
-  description: "Meezan Educational Institute: Encourage to Educate to Empower. Hyderabad's leading institution for Paramedical Sciences, IT Courses, and Professional Development.",
+  description: "Meezan Educational Institute: Encourage to Educate to Empower. Hyderabad's leading institution for Paramedical Sciences, Teacher Training, and Professional Development.",
   openGraph: {
     title: "Meezan Educational Institute | Encourage to Educate to Empower",
-    description: "Empowering careers through Paramedical, IT, and Professional education in Hyderabad. Encourage to Educate to Empower.",
+    description: "Empowering careers through Paramedical, Teacher Training, and Professional education in Hyderabad. Encourage to Educate to Empower.",
     url: "https://www.meezanedu.com",
     siteName: "Meezan Educational Institute",
     locale: "en_IN",
@@ -45,7 +46,8 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <FloatingElements />
+        <FloatingButtons />
+        <FloatingContact />
         <Analytics />
       </body>
     </html>

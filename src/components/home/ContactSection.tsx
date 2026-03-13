@@ -232,7 +232,7 @@ function ContactSectionInner() {
                     <iframe
                         src="https://www.google.com/maps?q=Dorato+Avenue,+Hyderabad,+Telangana,+India&output=embed"
                         width="100%"
-                        height="300"
+                        height="100%"
                         style={{ border: 0 }}
                         allowFullScreen
                         loading="lazy"
