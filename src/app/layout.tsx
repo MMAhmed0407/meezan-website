@@ -6,6 +6,7 @@ import AnnouncementBar from "@/components/global/AnnouncementBar";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
 import FloatingElements from "@/components/global/FloatingElements";
+import { Analytics } from "@vercel/analytics/react";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -63,6 +64,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <FloatingElements />
+        <Analytics />
       </body>
     </html>
   );
