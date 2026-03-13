@@ -233,19 +233,19 @@ export default function AboutPage() {
 
 
             {/* CTA */}
-            <section className="py-8 md:py-10 bg-brand-deeper-teal text-center px-4">
+            <section className="py-6 md:py-8 bg-brand-deeper-teal px-4 flex items-center justify-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="max-w-2xl mx-auto"
+                    className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 max-w-7xl mx-auto w-full"
                 >
-                    <h2 className="text-4xl md:text-5xl mb-6 text-white">Ready to start your journey with Meezan?</h2>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="/courses" className="bg-brand-teal text-white px-8 py-4 rounded-full font-semibold hover:bg-brand-dark-teal transition-colors shadow-lg shadow-brand-teal/20 hover:-translate-y-1">
+                    <h2 className="text-2xl md:text-3xl m-0 text-white text-center md:text-left">Ready to start your journey with Meezan?</h2>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center shrink-0">
+                        <Link href="/courses" className="bg-brand-teal text-white px-6 py-3 rounded-full font-semibold hover:bg-brand-dark-teal transition-colors shadow-sm hover:-translate-y-1">
                             Explore Courses
                         </Link>
-                        <Link href="/#contact" className="px-8 py-4 rounded-full font-semibold border-2 border-white/30 text-white hover:bg-white hover:text-brand-deeper-teal transition-colors">
+                        <Link href="/#contact" className="px-6 py-3 rounded-full font-semibold border-2 border-white/30 text-white hover:bg-white hover:text-brand-deeper-teal transition-colors">
                             Contact Us
                         </Link>
                     </div>

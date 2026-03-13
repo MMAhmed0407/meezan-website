@@ -128,15 +128,17 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
             </div>
 
             {/* CTA STRIP */}
-            <section className="bg-brand-deeper-teal border-t border-[#1a1a2e] py-12 text-center text-white px-4">
-                <div className="max-w-2xl mx-auto">
-                    <h3 className="text-3xl font-bold mb-6">Enjoyed this article?</h3>
-                    <p className="text-lg text-white/70 mb-6">Take the next step in your career journey. Explore our comprehensive, job-focused courses today.</p>
+            <section className="bg-brand-deeper-teal border-t border-[#1a1a2e] py-6 md:py-8 px-4 flex items-center justify-center">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 max-w-5xl mx-auto w-full">
+                    <div className="text-center md:text-left">
+                        <h3 className="text-xl md:text-2xl font-bold mb-1">Enjoyed this article?</h3>
+                        <p className="text-base text-white/70 m-0">Take the next step in your career journey. Explore our comprehensive courses.</p>
+                    </div>
                     <Link
                         href="/courses"
-                        className="inline-block bg-brand-teal text-white px-8 py-4 rounded-full font-bold hover:bg-brand-dark-teal transition-all shadow-lg hover:-translate-y-1"
+                        className="inline-block shrink-0 bg-brand-teal text-white px-6 py-3 rounded-full font-bold hover:bg-brand-dark-teal transition-all shadow-sm hover:-translate-y-0.5"
                     >
-                        Explore Our Courses
+                        Explore Courses
                     </Link>
                 </div>
             </section>

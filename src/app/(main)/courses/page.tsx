@@ -197,7 +197,7 @@ export default function CoursesPage() {
             ))}
 
             {/* Teacher's Training Linked Card */}
-            <section className="py-8 md:py-12 lg:py-16 bg-white scroll-mt-20">
+            <section className="py-4 md:py-6 lg:py-8 bg-white scroll-mt-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -207,11 +207,11 @@ export default function CoursesPage() {
                     >
                         <Link
                             href="/teachers-training"
-                            className="block bg-brand-light border border-border rounded-2xl p-8 md:p-12 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                            className="block bg-brand-light border border-border rounded-xl p-4 md:p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
                         >
                             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                                 <div>
-                                    <h2 className="text-2xl md:text-3xl mb-3 group-hover:text-brand-teal transition-colors">
+                                    <h2 className="text-xl md:text-2xl mb-1 group-hover:text-brand-teal transition-colors">
                                         Teacher&apos;s Training Programmes
                                     </h2>
                                     <p className="text-foreground/70 text-base md:text-lg max-w-2xl">
@@ -228,18 +228,19 @@ export default function CoursesPage() {
             </section>
 
             {/* CTA Strip */}
-            <section className="bg-brand-teal py-12 text-center text-white px-4">
+            <section className="bg-brand-teal py-6 md:py-8 px-4 flex items-center justify-center">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
+                    className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 max-w-7xl mx-auto"
                 >
-                    <h2 className="text-white text-3xl md:text-4xl mb-6">Not sure which course is right for you?</h2>
+                    <h2 className="text-white text-xl md:text-2xl lg:text-3xl m-0 text-center md:text-left">Not sure which course is right for you?</h2>
                     <button
                         type="button"
                         onClick={() => window.dispatchEvent(new CustomEvent('open-contact-widget'))}
-                        className="inline-block bg-white text-brand-teal px-8 py-4 rounded-full font-bold hover:bg-brand-deeper-teal hover:text-white transition-all shadow-lg hover:-translate-y-1 cursor-pointer"
+                        className="inline-block shrink-0 bg-white text-brand-teal px-6 py-3 rounded-full font-bold hover:bg-brand-deeper-teal hover:text-white transition-all shadow-md hover:-translate-y-1 cursor-pointer"
                     >
                         Talk to Our Counsellor
                     </button>

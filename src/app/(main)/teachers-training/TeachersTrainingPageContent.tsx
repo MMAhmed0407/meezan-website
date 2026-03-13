@@ -141,33 +141,35 @@ export default function TeachersTrainingPageContent() {
             </section>
 
             {/* Speak to a Counsellor CTA */}
-            <section className="bg-brand-deeper-teal py-12 md:py-16 px-4">
+            <section className="bg-brand-deeper-teal py-6 md:py-8 px-4 flex items-center justify-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="max-w-2xl mx-auto text-center"
+                    className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-10 max-w-7xl mx-auto w-full"
                 >
-                    <h2 className="text-3xl md:text-4xl text-white mb-4">Speak to a Counsellor</h2>
-                    <p className="text-lg text-white/80 mb-8">
-                        Not sure which programme is right for you? Our team is here to help.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <div className="text-center lg:text-left">
+                        <h2 className="text-2xl md:text-3xl text-white mb-1">Speak to a Counsellor</h2>
+                        <p className="text-base text-white/80 m-0">
+                            Not sure which programme is right for you? Our team is here to help.
+                        </p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center shrink-0">
                         <a
                             href="https://wa.me/917730019572"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-base hover:brightness-110 transition-all shadow-lg hover:-translate-y-1"
+                            className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-full font-bold text-sm hover:brightness-110 transition-all shadow-md hover:-translate-y-1"
                         >
-                            <MessageCircle size={20} />
-                            Chat with us on WhatsApp
+                            <MessageCircle size={18} />
+                            Chat on WhatsApp
                         </a>
                         <a
                             href="tel:+919010186447"
-                            className="inline-flex items-center justify-center gap-3 bg-white text-brand-deeper-teal px-8 py-4 rounded-full font-bold text-base hover:bg-brand-light transition-all shadow-lg hover:-translate-y-1"
+                            className="inline-flex items-center justify-center gap-2 bg-white text-brand-deeper-teal px-6 py-3 rounded-full font-bold text-sm hover:bg-brand-light transition-all shadow-md hover:-translate-y-1"
                         >
-                            <PhoneCall size={20} />
+                            <PhoneCall size={18} />
                             Call Us Now
                         </a>
                     </div>
