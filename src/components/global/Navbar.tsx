@@ -85,17 +85,14 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-8">
                 <div className="flex justify-start">
                     <Link href="/" className="flex items-center z-50">
-                        <div className="bg-white rounded-lg px-2 shadow-sm flex items-center justify-center">
-                            <div className="relative h-[40px] w-[140px] flex items-center">
-                                {/* Next/Image needs width/height or fill. We use fill with object-contain to let it scale down to max-height */}
-                                <Image
-                                    src="/images/meezan-logo.png"
-                                    alt="Meezan Educational Institute"
-                                    fill
-                                    className="object-contain object-left max-h-[40px] w-auto"
-                                    priority
-                                />
-                            </div>
+                        <div className="relative h-[40px] w-[140px] flex items-center">
+                            <Image
+                                src="/images/meezan-logo.png"
+                                alt="Meezan Educational Institute"
+                                fill
+                                className="object-contain object-left max-h-[40px] w-auto"
+                                priority
+                            />
                         </div>
                     </Link>
                 </div>
