@@ -1,24 +1,100 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Mail, X, CheckCircle2, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 type WidgetState = "collapsed" | "expanded" | "submitted";
 
 export default function FloatingContact() {
     const [state, setState] = useState<WidgetState>("collapsed");
     const [selectedCourse, setSelectedCourse] = useState("");
+    const contactRef = useRef<HTMLDivElement>(null);
 
-    const openWidget = useCallback(() => {
+    useOutsideClick(contactRef, () => {
+        if (state === "expanded") setState("collapsed");
+    }, state === "expanded");
+
+    useEffect(() => {
+        function onKey(e: KeyboardEvent) {
+            if (e.key === 'Escape') {
+                setState("collapsed");
+                setSelectedCourse("");
+            }
+        }
+        if (state === "expanded") {
+            document.addEventListener('keydown', onKey);
+        }
+        return () => document.removeEventListener('keydown', onKey);
+    }, [state]);
+
+    const openWidget = useCallback((courseName?: string) => {
         setState("expanded");
+        if (courseName) {
+            const courseLower = courseName.toLowerCase().trim();
+            if (
+                courseLower.includes("health") ||
+                courseLower.includes("paramedic") ||
+                courseLower.includes("nurse") ||
+                courseLower.includes("tech") ||
+                courseLower.includes("midwifery") ||
+                courseLower.includes("hospital") ||
+                courseLower.includes("dialysis") ||
+                courseLower.includes("dental") ||
+                courseLower.includes("respiratory")
+            ) {
+                setSelectedCourse("paramedic");
+            } else if (courseLower.includes("psychology")) {
+                setSelectedCourse("psychology");
+            } else if (
+                courseLower.includes("management") ||
+                courseLower.includes("brand") ||
+                courseLower.includes("incubation") ||
+                courseLower.includes("operations") ||
+                courseLower.includes("startup") ||
+                courseLower.includes("strategic") ||
+                courseLower.includes("financial")
+            ) {
+                setSelectedCourse("management");
+            } else if (
+                courseLower.includes("coaching") ||
+                courseLower.includes("counsel") ||
+                courseLower.includes("leadership") ||
+                courseLower.includes("goal") ||
+                courseLower.includes("public speaking") ||
+                courseLower.includes("time management") ||
+                courseLower.includes("creativity")
+            ) {
+                setSelectedCourse("coaching");
+            } else if (
+                courseLower.includes("teacher") ||
+                courseLower.includes("ecce") ||
+                courseLower.includes("pre-primary") ||
+                courseLower.includes("asd") ||
+                courseLower.includes("autism") ||
+                courseLower.includes("life skills") ||
+                courseLower.includes("adhd") ||
+                courseLower.includes("fdp") ||
+                courseLower.includes("ldp") ||
+                courseLower.includes("faculty") ||
+                courseLower.includes("educator")
+            ) {
+                setSelectedCourse("teachers-training");
+            } else {
+                setSelectedCourse("other");
+            }
+        }
     }, []);
 
     // Listen for custom DOM event from other components (e.g. courses page CTAs)
     useEffect(() => {
-        const handler = () => openWidget();
-        window.addEventListener("open-contact-widget", handler);
-        return () => window.removeEventListener("open-contact-widget", handler);
+        const handler = (e: Event) => {
+            const customEvent = e as CustomEvent;
+            openWidget(customEvent.detail?.course);
+        };
+        window.addEventListener("open-contact-widget", handler as EventListener);
+        return () => window.removeEventListener("open-contact-widget", handler as EventListener);
     }, [openWidget]);
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -52,6 +128,7 @@ export default function FloatingContact() {
                         />
 
                         <motion.div
+                            ref={contactRef}
                             initial={{ opacity: 0, y: 20, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 20, scale: 0.95 }}

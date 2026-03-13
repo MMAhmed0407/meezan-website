@@ -73,12 +73,12 @@ export default function TeachersTrainingSection() {
                                     </AccordionTrigger>
                                     <AccordionContent className="text-foreground/70 text-base leading-relaxed pb-6">
                                         <p className="mb-6">{prog.desc}</p>
-                                        <Link
-                                            href={`/#enquiry-form?course=${encodeURIComponent(prog.title)}`}
+                                        <button
+                                            onClick={() => window.dispatchEvent(new CustomEvent("open-contact-widget", { detail: { course: prog.title } }))}
                                             className="inline-block bg-brand-deeper-teal text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-brand-teal transition-all shadow-sm hover:-translate-y-0.5"
                                         >
                                             Enroll Now
-                                        </Link>
+                                        </button>
                                     </AccordionContent>
                                 </AccordionItem>
                             ))}

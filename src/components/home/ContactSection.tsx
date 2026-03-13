@@ -197,7 +197,6 @@ function ContactSectionInner() {
                                                 <option value="psychology">Psychology</option>
                                                 <option value="management">Management Training</option>
                                                 <option value="coaching">Coaching Services</option>
-                                                <option value="it">IT & Data Science</option>
                                                 <option value="other">Other / General Inquiry</option>
                                             </select>
                                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-brand-deeper-teal">

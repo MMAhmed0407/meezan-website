@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -31,7 +32,23 @@ export default function Navbar() {
     const [coursesDropdownOpen, setCoursesDropdownOpen] = useState(false);
     const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
     const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const navRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
+
+    useOutsideClick(navRef, () => {
+        if (coursesDropdownOpen) setCoursesDropdownOpen(false);
+    }, coursesDropdownOpen);
+
+    useEffect(() => {
+        function onKey(e: KeyboardEvent) {
+            if (e.key === 'Escape') {
+                setCoursesDropdownOpen(false);
+                setMobileMenuOpen(false);
+            }
+        }
+        document.addEventListener('keydown', onKey);
+        return () => document.removeEventListener('keydown', onKey);
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -59,28 +76,31 @@ export default function Navbar() {
 
     return (
         <header
+            ref={navRef}
             className={clsx(
                 "sticky top-0 w-full z-40 transition-all duration-300",
                 isScrolled ? "bg-white shadow-md py-3" : "bg-white/95 backdrop-blur-sm py-5"
             )}
         >
-            <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-                <Link href="/" className="flex items-center gap-1 z-50">
-                    <div className="bg-white rounded-lg px-2 py-1 shadow-sm">
-                        <div className="relative w-[100px] h-8 sm:h-10 lg:w-[120px] lg:h-[45px] xl:w-[160px] xl:h-[60px]">
-                            <Image
-                                src="/images/meezan-logo.png"
-                                alt="Meezan Educational Institute"
-                                fill
-                                className="object-contain max-h-8 sm:max-h-12"
-                                priority
-                            />
+            <div className="max-w-7xl mx-auto px-4 flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-8">
+                <div className="flex justify-start">
+                    <Link href="/" className="flex items-center gap-1 z-50">
+                        <div className="bg-white rounded-lg px-2 py-1 shadow-sm">
+                            <div className="relative w-[100px] h-8 sm:h-10 lg:w-[120px] lg:h-[45px] xl:w-[160px] xl:h-[60px]">
+                                <Image
+                                    src="/images/meezan-logo.png"
+                                    alt="Meezan Educational Institute"
+                                    fill
+                                    className="object-contain max-h-8 sm:max-h-12"
+                                    priority
+                                />
+                            </div>
                         </div>
-                    </div>
-                </Link>
+                    </Link>
+                </div>
 
                 {/* Desktop/Tablet Nav */}
-                <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-4 xl:gap-8">
+                <nav aria-label="Main navigation" className="hidden lg:flex items-center justify-center gap-6 xl:gap-10">
                     {navLinks.map((link) => {
                         if (link.name === "Courses") {
                             return (
@@ -112,33 +132,6 @@ export default function Navbar() {
                                             )}
                                         />
                                     </Link>
-
-                                    {/* Desktop Dropdown */}
-                                    <AnimatePresence>
-                                        {coursesDropdownOpen && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: 8 }}
-                                                transition={{ duration: 0.2, ease: "easeOut" }}
-                                                className="absolute top-full left-1/2 -translate-x-1/2 pt-3"
-                                            >
-                                                <div className="bg-white rounded-xl shadow-xl border border-black/5 p-4 min-w-[520px] border-t-[3px] border-t-brand-teal">
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {courseDropdownLinks.map((item) => (
-                                                            <Link
-                                                                key={item.label}
-                                                                href={item.href}
-                                                                className="flex-shrink-0 px-4 py-2.5 rounded-lg border border-border text-sm font-medium text-brand-deeper-teal hover:border-brand-teal hover:text-brand-teal hover:bg-brand-light transition-all duration-200 whitespace-nowrap"
-                                                            >
-                                                                {item.label}
-                                                            </Link>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
                                 </div>
                             );
                         }
@@ -164,19 +157,48 @@ export default function Navbar() {
                     })}
                 </nav>
 
-                {/* Action Buttons removed as per client request */}
-
-                {/* Mobile Menu Toggle */}
-                <button
-                    className="lg:hidden text-brand-deeper-teal p-3 min-w-[44px] min-h-[44px] flex items-center justify-center z-50 hover:text-brand-teal transition-colors"
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    aria-label="Open navigation menu"
-                    aria-expanded={mobileMenuOpen}
-                    aria-controls="mobile-menu"
-                >
-                    {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                <div className="flex justify-end">
+                    {/* Mobile Menu Toggle */}
+                    <button
+                        className="lg:hidden text-brand-deeper-teal p-3 min-w-[44px] min-h-[44px] flex items-center justify-center z-50 hover:text-brand-teal transition-colors"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label="Open navigation menu"
+                        aria-expanded={mobileMenuOpen}
+                        aria-controls="mobile-menu"
+                    >
+                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                    {/* Spacer for desktop to balance logo column */}
+                    <div className="hidden lg:block min-w-[100px] lg:min-w-[120px] xl:min-w-[160px]" />
+                </div>
             </div>
+
+            {/* Desktop Full-Width Mega Menu */}
+            <AnimatePresence>
+                {coursesDropdownOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full left-0 right-0 w-full bg-white border-t-2 border-brand-teal border-b border-border shadow-lg z-40 hidden lg:block"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        <div className="max-w-7xl mx-auto px-10 py-6 flex flex-wrap justify-center gap-3">
+                            {courseDropdownLinks.map((item) => (
+                                <Link
+                                    key={item.label}
+                                    href={item.href}
+                                    className="px-5 py-2.5 rounded-full border-[1.5px] border-brand-teal text-sm font-medium text-brand-deeper-teal hover:bg-brand-teal hover:text-white transition-all duration-150 whitespace-nowrap bg-white"
+                                >
+                                    {item.label}
+                                </Link>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Mobile Drawer */}
             <AnimatePresence>

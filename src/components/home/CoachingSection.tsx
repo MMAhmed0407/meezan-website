@@ -65,13 +65,13 @@ export default function CoachingSection() {
                             <p className="text-foreground/70 text-sm leading-relaxed mb-6 flex-1">
                                 {service.desc}
                             </p>
-                            <Link
-                                href={`/#enquiry-form?course=${encodeURIComponent(service.title)}`}
+                            <button
+                                onClick={() => window.dispatchEvent(new CustomEvent("open-contact-widget", { detail: { course: service.title } }))}
                                 className="inline-flex items-center gap-2 text-brand-deeper-teal font-semibold hover:text-brand-teal transition-colors w-fit border-b-2 border-transparent hover:border-brand-teal pb-0.5"
                             >
                                 Enquire Now
                                 <ArrowRight size={16} />
-                            </Link>
+                            </button>
                         </motion.div>
                     ))}
                 </motion.div>
