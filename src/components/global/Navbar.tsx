@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import clsx from "clsx";
@@ -13,6 +13,7 @@ const navLinks = [
     { name: "Home", href: "/" },
     { name: "Courses", href: "/courses" },
     { name: "About", href: "/about" },
+    { name: "Our Journey", href: "/our-journey" },
     { name: "Blog", href: "/blog" },
 ];
 
@@ -58,8 +59,11 @@ export default function Navbar() {
 
     useEffect(() => {
         // Close mobile menu on route change
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMobileMenuOpen(false);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMobileCoursesOpen(false);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCoursesDropdownOpen(false);
     }, [pathname]);
 

@@ -5,12 +5,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { GraduationCap, ClipboardList, Target, Eye, HeartHandshake, BadgeCheck } from "lucide-react";
 import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
+import CommunityCarousel from "@/components/about/CommunityCarousel";
 
 export default function AboutPage() {
     const team = [
-        { name: "Dr. Ayesha K.", role: "Principal Director", bio: "Leading Meezan Institute with 20+ years of educational excellence.", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80" },
-        { name: "Mr. Mohammed S.", role: "Head of Paramedical Studies", bio: "Former chief nurse turned dedicated healthcare educator.", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80" },
-        { name: "Ms. Sarah J.", role: "Head of Teacher's Training", bio: "Expert in early childhood education and pedagogical innovation.", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80" }
+        { name: "Dr. Ayesha K.", role: "Principal Director", bio: "Leading Meezan Institute with 20+ years of educational excellence.", initials: "AK" },
+        { name: "Mr. Mohammed S.", role: "Head of Paramedical Studies", bio: "Former chief nurse turned dedicated healthcare educator.", initials: "MS" },
+        { name: "Ms. Sarah J.", role: "Head of Teacher's Training", bio: "Expert in early childhood education and pedagogical innovation.", initials: "SJ" }
     ];
 
     return (
@@ -58,9 +59,27 @@ export default function AboutPage() {
                 </div>
             </section>
 
+            {/* STATS STRIP */}
+            <section className="w-full py-6" style={{ backgroundColor: "#0D7A82" }}>
+                <div className="max-w-7xl mx-auto px-4 flex flex-row justify-between divide-x divide-white/20">
+                    <div className="flex-1 text-center px-2">
+                        <div className="text-2xl sm:text-3xl font-bold text-white">500+</div>
+                        <div className="text-xs sm:text-sm text-white/75 mt-1">Students Trained</div>
+                    </div>
+                    <div className="flex-1 text-center px-2">
+                        <div className="text-2xl sm:text-3xl font-bold text-white">10+</div>
+                        <div className="text-xs sm:text-sm text-white/75 mt-1">Courses Offered</div>
+                    </div>
+                    <div className="flex-1 text-center px-2">
+                        <div className="text-2xl sm:text-3xl font-bold text-white">20+</div>
+                        <div className="text-xs sm:text-sm text-white/75 mt-1">Years of Service</div>
+                    </div>
+                </div>
+            </section>
+
             {/* OUR STORY */}
-            <section className="py-20 lg:py-32 bg-white" aria-labelledby="about-story-heading">
-                <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
+            <section className="py-20 px-4 sm:px-8 lg:px-16" style={{ backgroundColor: "#F0FAFA" }} aria-labelledby="about-story-heading">
+                <div className="max-w-4xl mx-auto flex flex-col items-center">
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -68,35 +87,19 @@ export default function AboutPage() {
                         className="w-full lg:w-1/2"
                     >
                         <h2 id="about-story-heading" className="mb-6 text-3xl lg:text-4xl">Our Story</h2>
-                        <div className="space-y-6 text-foreground/80 leading-relaxed text-lg">
+                        <div className="space-y-6 text-foreground/80 leading-relaxed text-lg" style={{ borderLeft: "4px solid #29B8C1", paddingLeft: "24px" }}>
                             <p>
                                 Meezan Educational Institute was founded with a singular mission — to empower individuals through quality education, professional training, and compassionate healthcare.
                             </p>
                             <p>
                                 From paramedical sciences to personality development and teacher training, we bridge the gap between learning and real-world success. We believe that true education goes beyond textbooks to develop the whole person — equipping them with practical competencies and robust character.
                             </p>
-
-                        </div>
-                    </motion.div>
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                        className="w-full lg:w-1/2"
-                    >
-                        <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl">
-                            <Image
-                                src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80"
-                                alt="Mentor with students at Meezan Educational Institute Hyderabad"
-                                fill
-                                loading="lazy"
-                                priority={false}
-                                className="object-cover"
-                            />
                         </div>
                     </motion.div>
                 </div>
             </section>
+
+            {/* JOURNEY TIMELINE SECTION — TO BE ADDED */}
 
             {/* MISSION & VISION */}
             <section className="py-20 bg-brand-light" aria-label="Mission and Vision">
@@ -138,10 +141,26 @@ export default function AboutPage() {
                     <h2 id="about-pillars-heading" className="text-center mb-16 text-3xl">Our Core Pillars</h2>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
-                            { icon: GraduationCap, title: "Expert Faculty" },
-                            { icon: ClipboardList, title: "Practical Training" },
-                            { icon: HeartHandshake, title: "Holistic Growth" },
-                            { icon: BadgeCheck, title: "Affordable Fees" }
+                            { 
+                                icon: GraduationCap, 
+                                title: "Expert Faculty",
+                                desc: "Taught by experienced professionals with real-world backgrounds in healthcare, education and training."
+                            },
+                            { 
+                                icon: ClipboardList, 
+                                title: "Practical Training",
+                                desc: "Hands-on learning that goes beyond theory — every course is designed around real workplace readiness."
+                            },
+                            { 
+                                icon: HeartHandshake, 
+                                title: "Holistic Growth",
+                                desc: "We develop the whole person — skills, character, confidence and purpose — not just qualifications."
+                            },
+                            { 
+                                icon: BadgeCheck, 
+                                title: "Affordable Fees",
+                                desc: "Quality education should be accessible to all. Many of our programmes are free or heavily subsidised."
+                            }
                         ].map((item, i) => (
                             <motion.div
                                 key={i}
@@ -155,6 +174,9 @@ export default function AboutPage() {
                                     <item.icon size={40} strokeWidth={1.5} />
                                 </div>
                                 <h4 className="text-xl font-semibold text-brand-deeper-teal">{item.title}</h4>
+                                <p style={{ fontSize: "14px", color: "#5A5A72", marginTop: "8px", textAlign: "center", maxWidth: "200px", lineHeight: 1.5 }}>
+                                    {item.desc}
+                                </p>
                             </motion.div>
                         ))}
                     </div>
@@ -162,7 +184,7 @@ export default function AboutPage() {
             </section>
 
             {/* CLINIC SECTION */}
-            <section className="py-8 md:py-10 bg-gradient-to-b from-brand-light to-white" aria-labelledby="about-clinic-heading">
+            <section className="py-8 md:py-10 bg-white" aria-labelledby="about-clinic-heading">
                 <div className="max-w-5xl mx-auto px-4 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -173,15 +195,11 @@ export default function AboutPage() {
                         <p className="text-brand-accent text-sm font-semibold tracking-widest uppercase mb-10">
                             Our Commitment to the Community
                         </p>
-                        <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl mb-12">
-                            <Image
-                                src="https://images.unsplash.com/photo-1542884748-2b87b00f3652?auto=format&fit=crop&q=80"
-                                alt="Shoukath Ali Charitable Clinic by Meezan Educational Institute Hyderabad"
-                                fill
-                                loading="lazy"
-                                priority={false}
-                                className="object-cover"
-                            />
+                        <div className="relative w-full rounded-xl flex flex-col items-center justify-center mb-12" style={{ backgroundColor: "#0D7A82", height: "320px", borderRadius: "12px" }}>
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2">
+                                <path d="M12 2v20M2 12h20"/>
+                            </svg>
+                            <span style={{ color: "white", fontSize: "14px", opacity: 0.7 }}>Clinic photos coming soon</span>
                         </div>
                         <p className="text-xl leading-relaxed text-foreground/80 italic mb-8 border-l-4 border-r-4 border-brand-teal/20 px-6 max-w-4xl mx-auto">
                             "Empowering the underserved — striving to deliver compassionate healthcare, fostering healthy and happy communities, and contributing to a healthier India."
@@ -195,42 +213,43 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* TEAM SECTION */}
-            <section className="py-8 md:py-10 bg-white border-t border-border" aria-labelledby="about-team-heading">
-                <div className="max-w-7xl mx-auto px-4">
-                    <h2 id="about-team-heading" className="text-center mb-16 text-3xl md:text-4xl">Our Leadership</h2>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {team.map((member, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: i * 0.1 }}
-                                className="bg-brand-light rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-xl transition-all group"
-                            >
-                                <div className="aspect-[4/5] relative overflow-hidden">
-                                    <Image
-                                        src={member.img}
-                                        alt={`${member.name} - ${member.role} at Meezan Educational Institute Hyderabad`}
-                                        fill
-                                        loading="lazy"
-                                        priority={false}
-                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                    />
-                                </div>
-                                <div className="p-8 text-center bg-white relative z-10 -mt-6 mx-4 rounded-xl border border-border shadow-md">
-                                    <h3 className="text-xl text-brand-deeper-teal mb-1">{member.name}</h3>
-                                    <p className="text-brand-teal font-medium text-sm mb-4">{member.role}</p>
-                                    <p className="text-foreground/70 text-sm">{member.bio}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
+            {/* JOURNEY TEASER SECTION */}
+            <section className="bg-[#F4F6F9] py-12 px-4 sm:px-8 lg:px-16" aria-labelledby="journey-teaser-heading">
+                <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-6 overflow-hidden">
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        className="max-w-2xl"
+                    >
+                        <p className="text-[#29B8C1] text-[13px] font-semibold tracking-widest uppercase mb-2">
+                            WANT TO KNOW MORE?
+                        </p>
+                        <h2 id="journey-teaser-heading" className="text-[22px] font-bold text-[#1A1A2E] mb-3">
+                            Our Journey & Leadership Team
+                        </h2>
+                        <p className="text-[14px] text-[#5A5A72] leading-relaxed">
+                            Explore the story of how Meezan grew, meet our leadership team, and see the recognition we have received over the years.
+                        </p>
+                    </motion.div>
+                    
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                    >
+                        <Link 
+                            href="/our-journey" 
+                            className="inline-flex items-center justify-center bg-[#29B8C1] text-white px-6 py-3 rounded-lg font-semibold text-[15px] hover:bg-[#0D7A82] transition-colors whitespace-nowrap"
+                        >
+                            View Our Journey →
+                        </Link>
+                    </motion.div>
                 </div>
             </section>
 
-
+            {/* COMMUNITY CAROUSEL */}
+            <CommunityCarousel />
 
             {/* CTA */}
             <section className="py-6 md:py-8 bg-brand-deeper-teal px-4 flex items-center justify-center">
