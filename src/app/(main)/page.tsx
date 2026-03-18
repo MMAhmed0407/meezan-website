@@ -6,7 +6,6 @@ import TeachersTrainingSection from "@/components/home/TeachersTrainingSection";
 import ClinicSection from "@/components/home/ClinicSection";
 import CoachingSection from "@/components/home/CoachingSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
-import LeadCaptureSection from "@/components/home/LeadCaptureSection";
 import ContactSection from "@/components/home/ContactSection";
 import { FAQSchema } from "@/components/global/SchemaOrg";
 
@@ -22,7 +21,6 @@ export default function Home() {
       <ClinicSection />
       <CoachingSection />
       <TestimonialsSection />
-      <LeadCaptureSection />
       <ContactSection />
     </>
   );

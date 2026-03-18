@@ -12,6 +12,8 @@ export default function FloatingContact() {
     const [state, setState] = useState<WidgetState>("collapsed");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState("");
+    const [submitError, setSubmitError] = useState("");
+    const [submitSuccess, setSubmitSuccess] = useState(false);
     const contactRef = useRef<HTMLDivElement>(null);
 
     useOutsideClick(contactRef, () => {
@@ -23,6 +25,8 @@ export default function FloatingContact() {
             if (e.key === 'Escape') {
                 setState("collapsed");
                 setSelectedCourse("");
+                setSubmitError("");
+                setSubmitSuccess(false);
             }
         }
         if (state === "expanded") {
@@ -108,21 +112,26 @@ export default function FloatingContact() {
 
         setIsSubmitting(false);
         if (!result.success) {
-            console.error('Error submitting form:', result.error);
-            alert('Failed to send message. Please check your connection or try again.');
+            setSubmitError(result.error || 'Something went wrong. Please try again.');
+            setIsSubmitting(false);
             return;
         }
 
+        setSubmitSuccess(true);
         setState("submitted");
         setTimeout(() => {
             setState("collapsed");
             setSelectedCourse("");
+            setSubmitSuccess(false);
+            setSubmitError("");
         }, 3000);
     };
 
     const handleClose = () => {
         setState("collapsed");
         setSelectedCourse("");
+        setSubmitError("");
+        setSubmitSuccess(false);
     };
 
     return (
@@ -192,6 +201,7 @@ export default function FloatingContact() {
                                                 required
                                                 className="w-full bg-brand-light border-0 px-3.5 py-2.5 rounded-lg focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 text-sm"
                                                 placeholder="John Doe"
+                                                onChange={() => { if (submitError) setSubmitError('') }}
                                             />
                                         </div>
 
@@ -204,6 +214,7 @@ export default function FloatingContact() {
                                                     required
                                                     className="w-full bg-brand-light border-0 px-3.5 py-2.5 rounded-lg focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 text-sm"
                                                     placeholder="john@example.com"
+                                                    onChange={() => { if (submitError) setSubmitError('') }}
                                                 />
                                             </div>
                                             <div>
@@ -214,6 +225,7 @@ export default function FloatingContact() {
                                                     required
                                                     className="w-full bg-brand-light border-0 px-3.5 py-2.5 rounded-lg focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 text-sm"
                                                     placeholder="+91 00000 00000"
+                                                    onChange={() => { if (submitError) setSubmitError('') }}
                                                 />
                                             </div>
                                         </div>
@@ -224,7 +236,10 @@ export default function FloatingContact() {
                                                 <select
                                                     name="course"
                                                     value={selectedCourse}
-                                                    onChange={(e) => setSelectedCourse(e.target.value)}
+                                                    onChange={(e) => {
+                                                        setSelectedCourse(e.target.value);
+                                                        if (submitError) setSubmitError('');
+                                                    }}
                                                     className="w-full bg-brand-light border-0 px-3.5 py-2.5 rounded-lg focus:ring-2 focus:ring-brand-teal outline-none transition-all appearance-none text-foreground/80 text-sm"
                                                 >
                                                     <option value="">Select a category</option>
@@ -249,17 +264,36 @@ export default function FloatingContact() {
                                                 rows={3}
                                                 className="w-full bg-brand-light border-0 px-3.5 py-2.5 rounded-lg focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 resize-none text-sm"
                                                 placeholder="How can we help you?"
+                                                onChange={() => { if (submitError) setSubmitError('') }}
                                             />
                                         </div>
 
-                                        <button
-                                            type="submit"
-                                            disabled={isSubmitting}
-                                            className="w-full bg-brand-teal text-white py-3 rounded-lg font-semibold text-sm hover:bg-brand-dark-teal hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-75"
-                                        >
-                                            {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
-                                            {isSubmitting ? 'Sending...' : 'Send Message'}
-                                        </button>
+                                        {submitError && (
+                                            <div className="w-full rounded-lg bg-red-50 border border-red-200 px-4 py-3 mt-3 mb-3 animate-fade-in">
+                                                <p className="text-sm text-red-600 text-center font-medium leading-relaxed">
+                                                    {submitError}
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {submitSuccess && (
+                                            <div className="w-full rounded-lg bg-green-50 border border-green-200 px-4 py-3 mt-3 mb-3 animate-fade-in">
+                                                <p className="text-sm text-green-600 text-center font-medium leading-relaxed">
+                                                    Message sent successfully! We will get back to you soon.
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {!submitSuccess && (
+                                            <button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                                className="w-full h-12 bg-brand-teal text-white rounded-lg font-semibold text-sm hover:bg-brand-dark-teal hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-75"
+                                            >
+                                                {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+                                                {isSubmitting ? 'Sending...' : 'Send Message'}
+                                            </button>
+                                        )}
                                     </form>
                                 )}
                             </div>

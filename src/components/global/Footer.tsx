@@ -82,24 +82,6 @@ export default function Footer() {
                     </div>
 
                     {/* Col 4 */}
-                    <div>
-                        <h3 className="text-lg font-semibold mb-6 text-white border-b border-white/20 pb-2 inline-block">Newsletter</h3>
-                        <p className="text-white/80 mb-4 text-sm leading-relaxed">Get 10% off your first course by subscribing to our newsletter.</p>
-                        <form className="flex flex-col gap-3">
-                            <input
-                                type="email"
-                                placeholder="Your email address"
-                                className="bg-white/10 border border-white/20 text-white placeholder:text-white/50 px-4 py-3 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-teal transition-all"
-                                required
-                            />
-                            <button
-                                type="submit"
-                                className="bg-brand-teal text-white px-4 py-3 rounded-md text-sm font-semibold hover:bg-brand-dark-teal transition-colors shadow-sm"
-                            >
-                                Subscribe Now
-                            </button>
-                        </form>
-                    </div>
                 </div>
 
                 {/* Bottom Bar */}

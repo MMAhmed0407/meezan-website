@@ -7,9 +7,10 @@ import { MapPin, Phone, Clock, MessageSquare, CheckCircle2, Loader2 } from "luci
 import { useSearchParams } from "next/navigation";
 
 function ContactSectionInner() {
-    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState("");
+    const [submitError, setSubmitError] = useState("");
     const searchParams = useSearchParams();
 
     useEffect(() => {
@@ -88,13 +89,13 @@ function ContactSectionInner() {
 
         setIsSubmitting(false);
         if (!result.success) {
-            console.error('Error submitting form:', result.error);
-            alert('Failed to send message. Please check your connection or try again.');
+            setSubmitError(result.error || 'Something went wrong. Please try again.');
+            setIsSubmitting(false);
             return;
         }
 
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 5000);
+        setSubmitSuccess(true);
+        setTimeout(() => setSubmitSuccess(false), 5000);
     };
 
     return (
@@ -167,7 +168,7 @@ function ContactSectionInner() {
                         <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-black/5 relative overflow-hidden">
                             <h3 className="text-xl md:text-2xl mb-4 text-brand-deeper-teal">Send Us a Message</h3>
 
-                            {isSubmitted ? (
+                            {submitSuccess ? (
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
@@ -183,17 +184,17 @@ function ContactSectionInner() {
                                 <form onSubmit={handleSubmit} className="space-y-5">
                                     <div>
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Full Name</label>
-                                        <input type="text" name="full_name" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="John Doe" />
+                                        <input type="text" name="full_name" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="John Doe" onChange={() => { if (submitError) setSubmitError('') }} />
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                         <div>
                                             <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Email Address</label>
-                                            <input type="email" name="email" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="john@example.com" />
+                                            <input type="email" name="email" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="john@example.com" onChange={() => { if (submitError) setSubmitError('') }} />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Phone Number</label>
-                                            <input type="tel" name="phone" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="+91 0000 00000" />
+                                            <input type="tel" name="phone" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="+91 0000 00000" onChange={() => { if (submitError) setSubmitError('') }} />
                                         </div>
                                     </div>
 
@@ -204,7 +205,10 @@ function ContactSectionInner() {
                                                 name="course"
                                                 required
                                                 value={selectedCourse}
-                                                onChange={(e) => setSelectedCourse(e.target.value)}
+                                                onChange={(e) => {
+                                                    setSelectedCourse(e.target.value);
+                                                    if (submitError) setSubmitError('');
+                                                }}
                                                 className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all appearance-none text-foreground/80"
                                             >
                                                 <option value="" disabled>Select a category</option>
@@ -222,12 +226,22 @@ function ContactSectionInner() {
 
                                     <div>
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Your Message</label>
-                                        <textarea required name="message" rows={4} className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 resize-none" placeholder="How can we help you?"></textarea>
+                                        <textarea required name="message" rows={4} className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 resize-none" placeholder="How can we help you?" onChange={() => { if (submitError) setSubmitError('') }}></textarea>
                                     </div>
 
-                                    <button type="submit" disabled={isSubmitting} className="w-full bg-brand-teal text-white py-4 rounded-xl font-semibold text-lg hover:bg-brand-dark-teal hover:shadow-lg transition-all hover:-translate-y-0.5 mt-2 disabled:opacity-75 disabled:hover:translate-y-0 flex items-center justify-center gap-2">
-                                        {isSubmitting ? <><Loader2 className="animate-spin" size={24} /> Sending...</> : 'Send Message'}
-                                    </button>
+                                        {submitError && (
+                                            <div className="w-full rounded-lg bg-red-50 border border-red-200 px-4 py-3 sm:px-5 sm:py-4 mt-3 mb-3 animate-fade-in">
+                                                <p className="text-sm text-red-600 text-center font-medium leading-relaxed">
+                                                    {submitError}
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {!submitSuccess && (
+                                            <button type="submit" disabled={isSubmitting} className="w-full h-12 bg-brand-teal text-white rounded-xl font-semibold text-lg hover:bg-brand-dark-teal hover:shadow-lg transition-all hover:-translate-y-0.5 mt-2 disabled:opacity-75 disabled:hover:translate-y-0 flex items-center justify-center gap-2">
+                                                {isSubmitting ? <><Loader2 className="animate-spin" size={24} /> Sending...</> : 'Send Message'}
+                                            </button>
+                                        )}
                                 </form>
                             )}
                         </div>
