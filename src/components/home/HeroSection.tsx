@@ -4,8 +4,35 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+import { useState, useEffect } from "react";
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+const HERO_IMAGES = [
+    {
+        src: `${SUPABASE_URL}/storage/v1/object/public/web-images/hero_carousel/hero_carosel_1.jpg`,
+        alt: "Meezan Educational Institute healthcare training class 1",
+    },
+    {
+        src: `${SUPABASE_URL}/storage/v1/object/public/web-images/hero_carousel/hero_carosel_2.jpeg`,
+        alt: "Meezan Educational Institute healthcare training class 2",
+    },
+    {
+        src: `${SUPABASE_URL}/storage/v1/object/public/web-images/hero_carousel/hero_carosel_3.jpeg`,
+        alt: "Meezan Educational Institute healthcare training class 3",
+    },
+];
 
 export default function HeroSection() {
+    const [current, setCurrent] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrent(prev => (prev + 1) % HERO_IMAGES.length);
+        }, 4000);
+        return () => clearInterval(timer);
+    }, []);
+
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -23,7 +50,7 @@ export default function HeroSection() {
         <section className="relative min-h-[70vh] flex flex-col lg:flex-row w-full overflow-hidden bg-brand-deeper-teal">
             {/* Left Content */}
             <div className="w-full lg:w-[55%] relative flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-6 lg:py-0 z-10">
-                {/* Subtle diagonal pattern overlay - using CSS gradient */}
+                {/* Subtle diagonal pattern overlay */}
                 <div className="absolute inset-0 opacity-10 pointer-events-none"
                     style={{ backgroundImage: 'repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%)', backgroundSize: '10px 10px' }}
                 />
@@ -42,7 +69,7 @@ export default function HeroSection() {
                     </motion.div>
 
                     <motion.h1 variants={itemVariants} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.15] mb-6">
-                        Healthcare & Coaching Training Institute in Hyderabad
+                        Healthcare &amp; Coaching Training Institute in Hyderabad
                     </motion.h1>
 
                     <motion.p variants={itemVariants} className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed mb-6 max-w-xl">
@@ -81,27 +108,29 @@ export default function HeroSection() {
                 </motion.div>
             </div>
 
-            {/* Right Image */}
+            {/* Right Carousel — no controls, auto-crossfade every 4s */}
             <div className="w-full lg:w-[45%] relative min-h-[50vh] lg:min-h-full">
-                <motion.div
-                    initial={{ scale: 1.05, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 1.2, ease: "easeOut" }}
-                    className="absolute inset-0"
-                >
-                    <Image
-                        src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80"
-                        alt="Confident mentor conducting a healthcare training class at Meezan Educational Institute Hyderabad"
-                        fill
-                        className="object-cover object-center"
-                        priority={true}
-                        sizes="(max-width: 768px) 100vw, 45vw"
-                    />
-                    {/* Gradient transition for mobile */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-deeper-teal via-transparent to-transparent lg:hidden" />
-                    {/* Gradient transition for desktop */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-brand-deeper-teal via-transparent to-transparent hidden lg:block w-32 left-0" />
-                </motion.div>
+                {HERO_IMAGES.map((img, i) => (
+                    <div
+                        key={i}
+                        className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                        style={{ opacity: i === current ? 1 : 0 }}
+                    >
+                        <Image
+                            src={img.src}
+                            alt={img.alt}
+                            fill
+                            unoptimized
+                            className="object-cover object-center"
+                            priority={i === 0}
+                            sizes="(max-width: 768px) 100vw, 45vw"
+                        />
+                    </div>
+                ))}
+                {/* Gradient — mobile */}
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-deeper-teal via-transparent to-transparent lg:hidden z-10" />
+                {/* Gradient — desktop left edge blend */}
+                <div className="absolute inset-0 bg-gradient-to-r from-brand-deeper-teal via-transparent to-transparent hidden lg:block w-32 left-0 z-10" />
             </div>
         </section>
     );

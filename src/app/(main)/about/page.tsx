@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { GraduationCap, ClipboardList, Target, Eye, HeartHandshake, BadgeCheck } from "lucide-react";
 import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
 import CommunityCarousel from "@/components/about/CommunityCarousel";
+import AboutHeroCarousel from "@/components/about/AboutHeroCarousel";
 
 export default function AboutPage() {
     const team = [
@@ -39,23 +40,11 @@ export default function AboutPage() {
                     </motion.div>
                 </div>
                 <div className="w-full lg:w-1/2 relative min-h-[40vh] lg:min-h-full">
-                    <motion.div
-                        initial={{ scale: 1.05, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 1.2 }}
-                        className="absolute inset-0"
-                    >
-                        <Image
-                            src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80"
-                            alt="Group of educators and students collaborating at Meezan Educational Institute Hyderabad"
-                            fill
-                            className="object-cover"
-                            priority={true}
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-brand-deeper-teal via-transparent to-transparent lg:hidden" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-brand-deeper-teal via-transparent to-transparent hidden lg:block w-32 left-0" />
-                    </motion.div>
+                    {/* Dynamic carousel — images fetched from Supabase Storage (web-images/about_carousel).
+                        Add any image to that folder in Supabase and it auto-appears here. */}
+                    <AboutHeroCarousel />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-deeper-teal via-transparent to-transparent lg:hidden z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-brand-deeper-teal via-transparent to-transparent hidden lg:block w-32 left-0 z-10" />
                 </div>
             </section>
 

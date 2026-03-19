@@ -89,6 +89,12 @@ export default function Footer() {
                     <p className="text-white/60 text-sm">
                         © {new Date().getFullYear()} Meezan Education Society. All Rights Reserved.
                     </p>
+                    <Link
+                        href="/admin"
+                        className="text-xs text-white/20 hover:text-white/50 transition-colors"
+                    >
+                        Admin
+                    </Link>
                     <a
                         href="https://a2slabs.com"
                         target="_blank"
@@ -96,7 +102,7 @@ export default function Footer() {
                         className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white/70 transition-colors group"
                     >
                         <Zap size={12} className="group-hover:text-[#F5A623] transition-colors" />
-                        Designed & Developed by A2S Labs
+                        Designed &amp; Developed by A2S Labs
                     </a>
                 </div>
             </div>
