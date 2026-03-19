@@ -67,7 +67,7 @@ export default function HeroSection() {
                     {/* Trust Row */}
                     <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/90">
                         {[
-                            "500+ Students Enrolled",
+                            "12500+ Lives Changed",
                             "20+ Courses",
                             "Expert Faculty",
                             "Job-Focused Training"

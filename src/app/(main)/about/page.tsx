@@ -63,7 +63,7 @@ export default function AboutPage() {
             <section className="w-full py-6" style={{ backgroundColor: "#0D7A82" }}>
                 <div className="max-w-7xl mx-auto px-4 flex flex-row justify-between divide-x divide-white/20">
                     <div className="flex-1 text-center px-2">
-                        <div className="text-2xl sm:text-3xl font-bold text-white">10000+</div>
+                        <div className="text-2xl sm:text-3xl font-bold text-white">12500+</div>
                         <div className="text-xs sm:text-sm text-white/75 mt-1">Students Certified</div>
                     </div>
                     <div className="flex-1 text-center px-2">

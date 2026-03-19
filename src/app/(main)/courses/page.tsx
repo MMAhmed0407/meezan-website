@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Clock, GraduationCap, MapPin, ArrowRight } from "lucide-react";
+import { Clock, GraduationCap, MapPin, ArrowRight, Key } from "lucide-react";
 import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
 
 // Mock Data
@@ -11,15 +11,15 @@ const courseCategories = [
     {
         id: "paramedic",
         title: "Paramedic & Health Services",
-        description: "Launch your healthcare career with intensive, practical training programs.",
+        description: "Launch your healthcare career with intensive, practical training programs. ISO Certified, Govt Certified, Globally Recognized.",
         bg: "bg-white",
         courses: [
-            { title: "Midwifery Nursing", duration: "2 Years", mode: "Offline", image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80" },
+            { title: "Midwifery Nursing", duration: "1 Year", mode: "Offline", image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80" },
             { title: "Operation Theater Technician", duration: "1 Year", mode: "Offline", image: "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?auto=format&fit=crop&q=80" },
             { title: "Radiology Technician", duration: "2 Years", mode: "Offline", image: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&q=80" },
             { title: "Medical Lab Technician", duration: "2 Years", mode: "Offline", image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&q=80" },
-            { title: "Hospital Management", duration: "1 Year", mode: "Hybrid", image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&q=80" },
-            { title: "Respiratory Therapy", duration: "2 Years", mode: "Offline", image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80" },
+            { title: "Hospital Management", duration: "1 Year", mode: "Offline", image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&q=80" },
+            { title: "Respiratory Therapy", duration: "1 Year", mode: "Offline", image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80" },
             { title: "Dialysis Assistant", duration: "1 Year", mode: "Offline", image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&q=80" },
             { title: "Dental Assistant", duration: "1 Year", mode: "Offline", image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80" }
         ]
@@ -42,11 +42,10 @@ const courseCategories = [
         description: "Explore the human mind and behavior with our psychology programmes.",
         bg: "bg-white",
         courses: [
-            { title: "Child & Social Psychology", duration: "1 Year", mode: "Online", image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80" },
-            { title: "Cognitive Psychology", duration: "1 Year", mode: "Online", image: "https://images.unsplash.com/photo-1554526229-68875883ef3c?auto=format&fit=crop&q=80" },
-            { title: "Psychopathology", duration: "6 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80" },
-            { title: "Personality Assessment", duration: "3 Months", mode: "Online", image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80" },
-            { title: "Clinical Psychology Basics", duration: "1 Year", mode: "Hybrid", image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80" }
+            { title: "Child Psychology", duration: "6 Months", mode: "Online & Offline", image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80" },
+            { title: "Social Psychology", duration: "6 Months", mode: "Online & Offline", image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80" },
+            { title: "Cognitive Psychology", duration: "6 Months", mode: "Online & Offline", image: "https://images.unsplash.com/photo-1554526229-68875883ef3c?auto=format&fit=crop&q=80" },
+            { title: "Psychopathology", duration: "3 Months", mode: "Online & Offline", image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80" }
         ]
     },
     {
@@ -151,11 +150,11 @@ export default function CoursesPage() {
                                 >
                                     <div className="relative h-48 w-full overflow-hidden bg-brand-light">
                                         <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 items-end">
-                                            <span className="bg-white/90 backdrop-blur-sm text-brand-deeper-teal font-semibold text-xs px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1.5">
+                                            <span className="bg-white/90 backdrop-blur-sm text-brand-deeper-teal font-semibold text-xs px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1.5 whitespace-nowrap">
                                                 <Clock size={12} className="text-brand-teal" /> {course.duration}
                                             </span>
-                                            <span className="bg-brand-deeper-teal/90 backdrop-blur-sm text-white font-semibold text-xs px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1.5">
-                                                <MapPin size={12} className="text-brand-accent" /> {course.mode}
+                                            <span className="bg-brand-deeper-teal/90 backdrop-blur-sm text-white font-semibold text-[11px] sm:text-xs px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1.5 whitespace-nowrap">
+                                                <MapPin size={12} className="text-brand-accent shrink-0" /> {course.mode}
                                             </span>
                                         </div>
                                         <Image
@@ -170,7 +169,12 @@ export default function CoursesPage() {
                                     </div>
 
                                     <div className="p-6 flex flex-col flex-1">
-                                        <h3 className="text-lg leading-tight mb-4 group-hover:text-brand-teal transition-colors">{course.title}</h3>
+                                        <h3 className="text-lg leading-tight mb-4 group-hover:text-brand-teal transition-colors flex items-start gap-2">
+                                            {category.id === "management" && (
+                                                <Key size={18} className="text-brand-teal shrink-0 mt-1" />
+                                            )}
+                                            <span>{course.title}</span>
+                                        </h3>
                                         <ul className="space-y-2 mb-6 flex-1">
                                             <li className="flex items-start gap-2 text-sm text-foreground/70">
                                                 <GraduationCap size={16} className="text-brand-teal shrink-0 mt-0.5" />
@@ -181,10 +185,17 @@ export default function CoursesPage() {
                                                 <span>{course.mode} Mode Available</span>
                                             </li>
                                         </ul>
+                                        
+                                        {category.id === "management" && (
+                                            <div className="mb-4 text-xs font-medium text-foreground/60 border-t border-border pt-3 mt-auto">
+                                                Powered by <span className="italic text-brand-deeper-teal font-semibold">TurnkeyBS</span>
+                                            </div>
+                                        )}
+                                        
                                         <button
                                             type="button"
                                             onClick={() => window.dispatchEvent(new CustomEvent('open-contact-widget'))}
-                                            className="w-full text-center bg-brand-light text-brand-deeper-teal px-4 py-2.5 rounded-lg border border-border/50 font-semibold hover:bg-brand-teal hover:text-white hover:border-brand-teal transition-colors mt-auto cursor-pointer"
+                                            className="w-full text-center bg-brand-light text-brand-deeper-teal px-4 py-2.5 rounded-lg border border-border/50 font-semibold hover:bg-brand-teal hover:text-white hover:border-brand-teal transition-colors cursor-pointer"
                                         >
                                             Enquire Now
                                         </button>
