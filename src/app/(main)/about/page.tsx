@@ -195,11 +195,14 @@ export default function AboutPage() {
                         <p className="text-brand-accent text-sm font-semibold tracking-widest uppercase mb-10">
                             Our Commitment to the Community
                         </p>
-                        <div className="relative w-full rounded-xl flex flex-col items-center justify-center mb-12" style={{ backgroundColor: "#0D7A82", height: "320px", borderRadius: "12px" }}>
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2">
-                                <path d="M12 2v20M2 12h20" />
-                            </svg>
-                            <span style={{ color: "white", fontSize: "14px", opacity: 0.7 }}>Clinic photos coming soon</span>
+                        <div className="relative w-full max-w-3xl mx-auto rounded-2xl flex flex-col items-center justify-center mb-12 overflow-hidden shadow-xl bg-gray-50 border border-gray-100 p-2">
+                            <Image
+                                src="/images/Shoukath_ali_clinic.jpg"
+                                alt="Shoukath Ali Charitable Clinic"
+                                width={1200}
+                                height={800}
+                                className="w-full h-auto object-contain rounded-xl"
+                            />
                         </div>
                         <p className="text-xl leading-relaxed text-foreground/80 italic mb-8 border-l-4 border-r-4 border-brand-teal/20 px-6 max-w-4xl mx-auto">
                             "Empowering the underserved — striving to deliver compassionate healthcare, fostering healthy and happy communities, and contributing to a healthier India."

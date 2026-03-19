@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram, Linkedin, Twitter, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
+import FooterSocialLinks from "./FooterSocialLinks";
 
 export default function Footer() {
     return (
@@ -26,20 +27,7 @@ export default function Footer() {
                         <p className="text-white/80 mb-6 max-w-sm">
                             Encourage to Educate to Empower. Transforming lives through quality education and professional training.
                         </p>
-                        <div className="flex gap-4">
-                            <a href="https://www.facebook.com/share/166FToduKR/" target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-full hover:bg-brand-teal transition-colors" aria-label="Facebook">
-                                <Facebook size={20} />
-                            </a>
-                            <a href="https://instagram.com/meezan_institute" target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-full hover:bg-brand-teal transition-colors" aria-label="Instagram">
-                                <Instagram size={20} />
-                            </a>
-                            <a href="https://linkedin.com/company/meezan-institute" target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-full hover:bg-brand-teal transition-colors" aria-label="LinkedIn">
-                                <Linkedin size={20} />
-                            </a>
-                            <a href="https://twitter.com/meezan_inst" target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-full hover:bg-brand-teal transition-colors" aria-label="Twitter">
-                                <Twitter size={20} />
-                            </a>
-                        </div>
+                        <FooterSocialLinks />
                     </div>
 
                     {/* Col 2 */}

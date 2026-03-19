@@ -66,18 +66,19 @@ export default function ClinicSection() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="w-full lg:w-2/5"
+                    className="w-full lg:w-2/5 flex justify-center items-center"
                 >
-                    <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10">
+                    <div className="relative w-full max-w-xl mx-auto rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10 bg-black/20 flex flex-col justify-center">
                         <Image
-                            src="https://images.unsplash.com/photo-1542884748-2b87b00f3652?auto=format&fit=crop&q=80"
-                            alt="Community healthcare clinic"
-                            fill
-                            className="object-cover"
+                            src="/images/Shoukath_ali_clinic.jpg"
+                            alt="Shoukath Ali Charitable Clinic"
+                            width={1000}
+                            height={750}
+                            className="w-full h-auto object-contain rounded-2xl"
                             loading="lazy"
                         />
                         {/* Subtle inner shadow overlay */}
-                        <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-3xl" />
+                        <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-3xl pointer-events-none" />
                     </div>
                 </motion.div>
 
