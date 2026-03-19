@@ -6,19 +6,17 @@ import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-
 const HERO_IMAGES = [
     {
-        src: `${SUPABASE_URL}/storage/v1/object/public/web-images/hero_carousel/hero_carosel_1.jpg`,
+        src: "/carousels/home-carousel/hero_carosel_1.jpg",
         alt: "Meezan Educational Institute healthcare training class 1",
     },
     {
-        src: `${SUPABASE_URL}/storage/v1/object/public/web-images/hero_carousel/hero_carosel_2.jpeg`,
+        src: "/carousels/home-carousel/hero_carosel_2.jpeg",
         alt: "Meezan Educational Institute healthcare training class 2",
     },
     {
-        src: `${SUPABASE_URL}/storage/v1/object/public/web-images/hero_carousel/hero_carosel_3.jpeg`,
+        src: "/carousels/home-carousel/hero_carosel_3.jpeg",
         alt: "Meezan Educational Institute healthcare training class 3",
     },
 ];
@@ -120,7 +118,6 @@ export default function HeroSection() {
                             src={img.src}
                             alt={img.alt}
                             fill
-                            unoptimized
                             className="object-cover object-center"
                             priority={i === 0}
                             sizes="(max-width: 768px) 100vw, 45vw"
