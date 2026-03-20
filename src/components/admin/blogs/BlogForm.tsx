@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import TipTapEditor from './TipTapEditor';
 import ImageUpload from './ImageUpload';
-import { Save, ExternalLink } from 'lucide-react';
+import { Save, ExternalLink, Sparkles, Copy, X, Check } from 'lucide-react';
 
 const blogSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -58,6 +58,51 @@ const Input = ({ label, id, error, registerFn, ...props }: any) => (
 export default function BlogForm({ initialData }: BlogFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [guideKeyword, setGuideKeyword] = useState('');
+  const [copied, setCopied] = useState<string | null>(null);
+  const [contentMode, setContentMode] = useState<'visual' | 'html'>('visual');
+
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
+    toast.success('Prompt copied to clipboard');
+  };
+
+  const prompts = [
+    {
+      id: 'keyword-search',
+      title: '1. Keyword Search (Website Knowledge)',
+      content: `Search for trending and relevant keywords for a business providing digital growth, social media management, and branding services like Meezan. Focus on high-intent keywords for the Pakistani and Middle Eastern markets that are currently performing well in terms of SEO.`,
+    },
+    {
+      id: 'field-gen',
+      title: '2. Field Generation (Based on Keyword)',
+      content: `Act as an expert SEO blog writer. Based on the keyword '${guideKeyword || '[KEYWORD]'}', generate the following fields for a blog post:
+- Title (Catchy, SEO-friendly, under 60 chars)
+- Slug (URL-friendly version of title)
+- Short Description (Compelling summary, max 160 chars)
+- Content (A detailed, high-quality blog post in HTML format. **IMPORTANT: Be smart and add proper vertical margins/spacing between paragraphs and sections (e.g., using <br/> or style='margin-bottom: 2rem'). The layout should feel open and professional.** Use proper headings (h2, h3), lists, and bold text. Focus on providing value and including the keyword naturally.)
+- Meta Title (SEO title, max 60 chars)
+- Meta Description (SEO description, max 160 chars)
+- Keywords (5-10 comma-separated keywords)
+- Category (Choose one: News, Education, Tips & Tricks, Events)
+- Tags (5-10 comma-separated tags)
+Output should be structured and easy to copy.`,
+    },
+    {
+      id: 'image-gen',
+      title: '3. Image Generation Prompt',
+      content: `Generate a high-quality, professional, and modern prompt for an AI image generator (like Midjourney, DALL-E 3, or Leonardo.ai) to create a featured image for a blog post about '${guideKeyword || '[KEYWORD]'}'.
+
+**Instructions for AI Image Generator:**
+"Create a professional, minimalistic, and high-end digital agency style visual representing ${guideKeyword || '[KEYWORD]'}. Use a sophisticated color palette of deep charcoal black, crisp white, and subtle accents of gold or electric blue. The composition should be clean, using geometric shapes or abstract 3D elements that suggest digital growth and innovation. Studio lighting, sharp focus, 8k resolution, photorealistic but artistic, mirroring a premium tech brand."
+
+**Note for User:**
+Paste the prompt above into ChatGPT Plus, Midjourney, or DALL-E to generate your image. Then download and upload it to the "Featured Image" section here.`,
+    },
+  ];
 
   const defaultValues: Partial<BlogFormValues> = initialData
     ? {
@@ -169,6 +214,13 @@ export default function BlogForm({ initialData }: BlogFormProps) {
             </a>
           )}
           <button
+            type="button"
+            onClick={() => setIsGuideOpen(true)}
+            className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded border border-purple-200 transition-colors"
+          >
+            <Sparkles className="w-4 h-4" /> AI Guide
+          </button>
+          <button
             type="submit"
             disabled={isSubmitting}
             className="flex items-center gap-1 px-4 py-1.5 text-sm font-medium text-white bg-black hover:bg-gray-800 rounded transition-colors disabled:opacity-50"
@@ -204,13 +256,45 @@ export default function BlogForm({ initialData }: BlogFormProps) {
               {errors.shortDescription && <span className="text-[10px] text-red-500">{errors.shortDescription.message}</span>}
             </div>
 
-            <div className="flex flex-col gap-0.5">
-              <label className="text-xs font-semibold text-gray-700">Content *</label>
+            <div className="flex flex-col gap-1">
+              <div className="flex justify-between items-end">
+                <label className="text-xs font-semibold text-gray-700">Content *</label>
+                <div className="flex bg-gray-100 p-0.5 rounded-md border border-gray-200">
+                  <button
+                    type="button"
+                    onClick={() => setContentMode('visual')}
+                    className={`px-2 py-0.5 text-[10px] font-bold rounded ${
+                      contentMode === 'visual' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    Visual
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setContentMode('html')}
+                    className={`px-2 py-0.5 text-[10px] font-bold rounded ${
+                      contentMode === 'html' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    HTML
+                  </button>
+                </div>
+              </div>
+              
               <Controller
                 name="content"
                 control={control}
                 render={({ field }) => (
-                  <TipTapEditor value={field.value} onChange={field.onChange} />
+                  contentMode === 'visual' ? (
+                    <TipTapEditor value={field.value} onChange={field.onChange} />
+                  ) : (
+                    <textarea
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      className="w-full min-h-[300px] p-3 text-sm font-mono border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black bg-gray-50"
+                      placeholder="Paste your HTML content here..."
+                    />
+                  )
                 )}
               />
               {errors.content && <span className="text-[10px] text-red-500">{errors.content.message}</span>}
@@ -234,22 +318,6 @@ export default function BlogForm({ initialData }: BlogFormProps) {
                 <textarea
                   {...register('metaDescription')}
                   className="p-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black h-16"
-                />
-              </div>
-            </div>
-
-            <h3 className="text-xs font-bold text-gray-600 mt-2">Open Graph (Facebook/Social)</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <Input label="OG Title" id="ogTitle" registerFn={register('ogTitle')} />
-              <Input label="OG Description" id="ogDescription" registerFn={register('ogDescription')} />
-              <div className="col-span-2 flex flex-col gap-1">
-                <span className="text-xs font-semibold text-gray-700">OG Image</span>
-                <Controller
-                  name="ogImage"
-                  control={control}
-                  render={({ field }) => (
-                    <ImageUpload value={field.value || ''} onChange={field.onChange} label="Upload OG Image" />
-                  )}
                 />
               </div>
             </div>
@@ -307,6 +375,85 @@ export default function BlogForm({ initialData }: BlogFormProps) {
           </section>
         </div>
       </div>
+
+      {/* AI Guide Modal */}
+      {isGuideOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-purple-600" />
+                <h2 className="text-lg font-bold">AI Creation Guide</h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsGuideOpen(false)}
+                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-4 overflow-y-auto flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-700">Target Keyword</label>
+                <input
+                  type="text"
+                  value={guideKeyword}
+                  onChange={(e) => setGuideKeyword(e.target.value)}
+                  placeholder="e.g. Social Media Management"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all font-medium"
+                />
+                <p className="text-[11px] text-gray-500">
+                  Enter your main keyword to personalize the prompts below.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {prompts.map((prompt) => (
+                  <div key={prompt.id} className="flex flex-col gap-2 bg-gray-50 rounded-lg border border-gray-200 p-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xs font-bold text-gray-800">{prompt.title}</h3>
+                      <button
+                        type="button"
+                        onClick={() => copyToClipboard(prompt.content, prompt.id)}
+                        className={`flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold transition-all ${
+                          copied === prompt.id
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-white text-gray-600 hover:text-black hover:border-black border border-gray-300 shadow-sm'
+                        }`}
+                      >
+                        {copied === prompt.id ? (
+                          <>
+                            <Check className="w-3 h-3" /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" /> Copy Prompt
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <div className="bg-white p-2.5 rounded border border-gray-200 text-[12px] font-mono text-gray-600 whitespace-pre-wrap leading-relaxed">
+                      {prompt.content}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-4 border-t bg-gray-50 rounded-b-xl">
+              <button
+                type="button"
+                onClick={() => setIsGuideOpen(false)}
+                className="w-full py-2 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors shadow-sm"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
   );
 }

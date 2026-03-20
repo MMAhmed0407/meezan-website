@@ -59,3 +59,10 @@ model Blog {
 
   @@map("blogs")
 }
+
+model AdminConfig {
+  id       String @id @default("singleton")
+  password String @default("Meezan@123")
+
+  @@map("admin_config")
+}

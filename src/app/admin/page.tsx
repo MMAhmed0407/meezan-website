@@ -2,6 +2,7 @@ import { checkAuth, logoutAdmin } from '@/app/actions/admin-auth';
 import { getSubmissions } from '@/app/actions/admin-data';
 import AdminLoginForm from '@/components/admin/AdminLoginForm';
 import AdminSubmissionsTable from '@/components/admin/AdminSubmissionsTable';
+import AdminChangePasswordForm from '@/components/admin/AdminChangePasswordForm';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -9,13 +10,7 @@ export default async function AdminPage() {
     const isAuth = await checkAuth();
 
     if (!isAuth) {
-        return (
-            <div className="min-h-screen bg-black text-white flex flex-col">
-                <main className="flex-1 flex items-center justify-center p-4">
-                    <AdminLoginForm />
-                </main>
-            </div>
-        );
+        return <AdminLoginForm />;
     }
 
     const submissions = await getSubmissions();
@@ -39,14 +34,17 @@ export default async function AdminPage() {
                             Admin Dashboard
                         </span>
                     </div>
-                    <form action={logoutAdmin}>
-                        <button
-                            type="submit"
-                            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100"
-                        >
-                            Sign out
-                        </button>
-                    </form>
+                    <div className="flex items-center gap-2">
+                        <AdminChangePasswordForm />
+                        <form action={logoutAdmin}>
+                            <button
+                                type="submit"
+                                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100"
+                            >
+                                Sign out
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </header>
 
@@ -61,6 +59,7 @@ export default async function AdminPage() {
                         Manage Blogs
                     </Link>
                 </div>
+
 
                 <div className="mb-2">
                     <h1 className="text-2xl font-bold tracking-tight text-gray-900">Contact Submissions</h1>
