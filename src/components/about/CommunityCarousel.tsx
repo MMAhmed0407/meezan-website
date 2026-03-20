@@ -28,7 +28,7 @@ const slides: Slide[] = [
   },
   {
     category: "3000+ Certified Teachers",
-    text: "Crossed 3000+ certified teaching professionals trained in ECCE and PPTTC with government and ISO Certifications recognised globally. Ready to shape the next generation of learners.",
+    text: "3000+ teaching professionals trained & certified in ECCE and PPTTC with government and ISO Certifications recognised globally. Ready to shape the next generation of learners.",
     source: "ECCE & PPTC Graduation Ceremony",
     tag: "Meezan Institute, 2024",
   },
