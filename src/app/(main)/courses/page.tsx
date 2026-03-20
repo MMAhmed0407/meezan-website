@@ -32,8 +32,8 @@ const courseCategories = [
         courses: [
             { title: "Nursing Assistance at Your Doorstep", duration: "6 Months", mode: "Offline", image: "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80" },
             { title: "Medication Administration", duration: "3 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&q=80" },
-            { title: "Wound Care & Palliative Care", duration: "6 Months", mode: "Offline", image: "https://images.unsplash.com/photo-1573883430060-14e9112521c7?auto=format&fit=crop&q=80" },
-            { title: "Elderly Care", duration: "6 Months", mode: "Offline", image: "https://images.unsplash.com/photo-1447452001602-7090c7ab2bf3?auto=format&fit=crop&q=80" }
+            { title: "Palliative Care", duration: "6 Months", mode: "Offline", image: "https://images.unsplash.com/photo-1573883430060-14e9112521c7?auto=format&fit=crop&q=80" },
+            { title: "Geriatric Care", duration: "6 Months", mode: "Offline", image: "https://images.unsplash.com/photo-1447452001602-7090c7ab2bf3?auto=format&fit=crop&q=80" }
         ]
     },
     {
@@ -57,7 +57,6 @@ const courseCategories = [
             { title: "Brand Building & SOPs/KPIs", duration: "6 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80" },
             { title: "Incubation for Entrepreneurs", duration: "6 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80" },
             { title: "Individual & Organizational Training", duration: "3 Months", mode: "Online", image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80" },
-            { title: "Operations Planning", duration: "3 Months", mode: "Online", image: "https://images.unsplash.com/photo-1664575602276-cd0735ee034e?auto=format&fit=crop&q=80" }
         ]
     },
     {
@@ -69,7 +68,6 @@ const courseCategories = [
             { title: "Business & Startup Planning", duration: "3 Months", mode: "Online", image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80" },
             { title: "Branding & Product Launch", duration: "3 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&q=80" },
             { title: "Strategic Consulting", duration: "6 Months", mode: "Hybrid", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32b7?auto=format&fit=crop&q=80" },
-            { title: "Financial Advisory", duration: "3 Months", mode: "Online", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80" }
         ]
     },
     {
@@ -185,13 +183,13 @@ export default function CoursesPage() {
                                                 <span>{course.mode} Mode Available</span>
                                             </li>
                                         </ul>
-                                        
+
                                         {category.id === "management" && (
                                             <div className="mb-4 text-xs font-medium text-foreground/60 border-t border-border pt-3 mt-auto">
                                                 Powered by <span className="italic text-brand-deeper-teal font-semibold">TurnkeyBS</span>
                                             </div>
                                         )}
-                                        
+
                                         <button
                                             type="button"
                                             onClick={() => window.dispatchEvent(new CustomEvent('open-contact-widget'))}
