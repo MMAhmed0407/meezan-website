@@ -35,7 +35,7 @@ export default function Footer() {
                         <h3 className="text-lg font-semibold mb-6 text-white border-b border-white/20 pb-2 inline-block">Quick Links</h3>
                         <nav aria-label="Footer quick links">
                             <ul className="space-y-4">
-                                {['Home', 'Courses', 'About', 'Blog', 'Contact'].map((link) => (
+                                {['Home', 'Courses', 'About', 'Blog'].map((link) => (
                                     <li key={link}>
                                         <Link href={link === 'Home' ? '/' : `/${link.toLowerCase()}`} className="text-white/80 hover:text-brand-teal transition-colors inline-block text-sm">
                                             {link}

@@ -11,7 +11,7 @@ import { FAQSchema } from "@/components/global/SchemaOrg";
 
 export default function Home() {
   return (
-    <>
+    <main className="w-full max-w-[100vw] overflow-x-hidden">
       <FAQSchema />
       <HeroSection />
       <StatsSection />
@@ -22,6 +22,6 @@ export default function Home() {
       <CoachingSection />
       <TestimonialsSection />
       <ContactSection />
-    </>
+    </main>
   );
 }

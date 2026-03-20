@@ -23,29 +23,23 @@ const team = [
 // TODO: Replace placeholder awards with real data from client form response
 const awards = [
     {
-        name: "Excellence in Community Education",
-        year: "2023",
-        awardedBy: "Telangana Education Board",
-        description: "Recognised for outstanding contribution to accessible education in underserved communities.",
-    },
-    {
-        name: "Healthcare Outreach Award",
-        year: "2022",
-        awardedBy: "Hyderabad Healthcare Foundation",
-        description: "Awarded for the Shoukath Ali Charitable Clinic's impact on community healthcare delivery.",
-    },
-    {
-        name: "Best Paramedical Training Institute",
-        year: "2021",
-        awardedBy: "South India Skills Council",
-        description: "Recognised as a leading institute for paramedical training and placement outcomes.",
+        name: "ISO: 9001:2015 Certified",
+        year: "2025",
+        awardedBy: "ISO",
+        description: "Meezan Educational Institute is proud to be ISO 9001:2015 certified, demonstrating our commitment to quality management systems and continuous improvement in education.",
     },
     {
         name: "Seed USA Community Partner",
-        year: "2020",
+        year: "2025",
         awardedBy: "Seed USA",
         description: "Formally recognised as a Seed USA community education partner for free student sponsorship programme.",
     },
+    {
+        name: "Corporate Social Responsibilities ",
+        year: "2022",
+        awardedBy: "Ministry of Corporate Affairs",
+        description: "Recognised as a CSR partner for our contributions to community development and social welfare initiatives.",
+    }
 ];
 
 
