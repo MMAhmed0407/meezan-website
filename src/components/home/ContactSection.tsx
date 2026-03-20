@@ -106,8 +106,8 @@ function ContactSectionInner() {
     };
 
     return (
-        <section className="py-8 md:py-10 bg-white" id="contact" aria-labelledby="contact-heading">
-            <div id="enquiry-form" className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
+        <section className="w-full max-w-[100vw] overflow-hidden py-8 md:py-10 bg-white" id="contact" aria-labelledby="contact-heading">
+            <div id="enquiry-form" className="w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
 
                 <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
 
@@ -171,8 +171,9 @@ function ContactSectionInner() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
+                        className="w-full max-w-2xl mx-auto overflow-hidden"
                     >
-                        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-black/5 relative overflow-hidden">
+                        <div className="w-full max-w-full bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-black/5 relative overflow-hidden">
                             <h3 className="text-xl md:text-2xl mb-4 text-brand-deeper-teal">Send Us a Message</h3>
 
                             {submitSuccess ? (
@@ -188,8 +189,8 @@ function ContactSectionInner() {
                                     <p className="text-foreground/70">Thank you for reaching out. We will get back to you shortly.</p>
                                 </motion.div>
                             ) : (
-                                <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
-                                    <div>
+                                <form ref={formRef} onSubmit={handleSubmit} className="w-full max-w-full space-y-5 overflow-hidden">
+                                    <div className="w-full max-w-full">
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Full Name</label>
                                         <input
                                             type="text"
@@ -201,26 +202,30 @@ function ContactSectionInner() {
                                         />
                                     </div>
 
-                                    <div>
-                                        <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Email Address</label>
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            required
-                                            className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40"
-                                            placeholder="john@example.com"
-                                            onChange={() => { if (submitError) setSubmitError('') }}
-                                        />
-                                    </div>
+                                    <div className="w-full max-w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div className="w-full max-w-full">
+                                            <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Email Address</label>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                required
+                                                className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40"
+                                                placeholder="john@example.com"
+                                                onChange={() => { if (submitError) setSubmitError('') }}
+                                            />
+                                        </div>
 
-                                    {/* Phone with country code + validation */}
-                                    <PhoneInput
-                                        size="md"
-                                        onChange={() => { if (submitError) setSubmitError(''); if (phoneError) setPhoneError(''); }}
-                                    />
-                                    {phoneError && (
-                                        <p className="text-xs text-red-600 font-medium -mt-3">{phoneError}</p>
-                                    )}
+                                        <div className="w-full max-w-full flex flex-col">
+                                            {/* Phone with country code + validation */}
+                                            <PhoneInput
+                                                size="md"
+                                                onChange={() => { if (submitError) setSubmitError(''); if (phoneError) setPhoneError(''); }}
+                                            />
+                                            {phoneError && (
+                                                <p className="text-xs text-red-600 font-medium mt-1">{phoneError}</p>
+                                            )}
+                                        </div>
+                                    </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Course of Interest</label>
