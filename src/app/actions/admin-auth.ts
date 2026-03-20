@@ -1,6 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 
 const ADMIN_EMAIL = 'info@meezanedu.com';
@@ -69,6 +70,7 @@ export async function changePassword(formData: FormData) {
 
 export async function logoutAdmin() {
     (await cookies()).delete(COOKIE_NAME);
+    redirect('/');
 }
 
 export async function checkAuth() {

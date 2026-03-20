@@ -74,6 +74,7 @@ export default function AdminLoginForm() {
                                 name="email"
                                 type="email"
                                 required
+                                autoFocus
                                 className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 text-sm outline-none focus:border-[#29B8C1] focus:ring-2 focus:ring-[#29B8C1]/20 transition-all placeholder-gray-300"
                                 placeholder="Enter your email"
                             />
@@ -90,7 +91,6 @@ export default function AdminLoginForm() {
                                     name="password"
                                     type={showPassword ? 'text' : 'password'}
                                     required
-                                    autoFocus
                                     className="w-full px-4 py-3 pr-11 rounded-xl bg-white border border-gray-200 text-gray-900 text-sm outline-none focus:border-[#29B8C1] focus:ring-2 focus:ring-[#29B8C1]/20 transition-all placeholder-gray-300"
                                     placeholder="Enter your password"
                                 />

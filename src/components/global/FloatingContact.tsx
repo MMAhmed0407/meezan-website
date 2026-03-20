@@ -5,6 +5,7 @@ import { Mail, X, CheckCircle2, Send, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { submitContactForm } from "@/app/actions/contact";
+import PhoneInput from "@/components/ui/PhoneInput";
 
 type WidgetState = "collapsed" | "expanded" | "submitted";
 
@@ -13,6 +14,7 @@ export default function FloatingContact() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState("");
     const [submitError, setSubmitError] = useState("");
+    const [phoneError, setPhoneError] = useState("");
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const contactRef = useRef<HTMLDivElement>(null);
 
@@ -106,8 +108,16 @@ export default function FloatingContact() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setIsSubmitting(true);
         const formData = new FormData(e.currentTarget);
+        const phone = (formData.get("phone") as string) ?? "";
+
+        // Client-side phone validation before hitting the server
+        if (!phone || phone === '') {
+            setPhoneError("Phone number is required.");
+            return;
+        }
+        setPhoneError("");
+        setIsSubmitting(true);
         const result = await submitContactForm(formData, 'floating_widget');
 
         setIsSubmitting(false);
@@ -124,6 +134,7 @@ export default function FloatingContact() {
             setSelectedCourse("");
             setSubmitSuccess(false);
             setSubmitError("");
+            setPhoneError("");
         }, 3000);
     };
 
@@ -205,30 +216,30 @@ export default function FloatingContact() {
                                             />
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <div>
-                                                <label className="block text-xs font-medium text-brand-deeper-teal mb-1">Email</label>
-                                                <input
-                                                    type="email"
-                                                    name="email"
-                                                    required
-                                                    className="w-full bg-brand-light border-0 px-3.5 py-2.5 rounded-lg focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 text-sm"
-                                                    placeholder="john@example.com"
-                                                    onChange={() => { if (submitError) setSubmitError('') }}
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-medium text-brand-deeper-teal mb-1">Phone</label>
-                                                <input
-                                                    type="tel"
-                                                    name="phone"
-                                                    required
-                                                    className="w-full bg-brand-light border-0 px-3.5 py-2.5 rounded-lg focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 text-sm"
-                                                    placeholder="+91 00000 00000"
-                                                    onChange={() => { if (submitError) setSubmitError('') }}
-                                                />
-                                            </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-brand-deeper-teal mb-1">Email</label>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                required
+                                                className="w-full bg-brand-light border-0 px-3.5 py-2.5 rounded-lg focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 text-sm"
+                                                placeholder="john@example.com"
+                                                onChange={() => { if (submitError) setSubmitError('') }}
+                                            />
                                         </div>
+
+                                        {/* Phone with country selector */}
+                                        <PhoneInput
+                                            size="sm"
+                                            labelClassName="text-xs"
+                                            onChange={() => {
+                                                if (submitError) setSubmitError('');
+                                                if (phoneError) setPhoneError('');
+                                            }}
+                                        />
+                                        {phoneError && (
+                                            <p className="text-xs text-red-600 font-medium -mt-2">{phoneError}</p>
+                                        )}
 
                                         <div>
                                             <label className="block text-xs font-medium text-brand-deeper-teal mb-1">Course of Interest</label>

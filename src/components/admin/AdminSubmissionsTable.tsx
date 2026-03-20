@@ -2,7 +2,11 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { updateSubmissionStatus, deleteSubmission } from '@/app/actions/admin-data';
-import { Trash2, ChevronDown, ChevronUp, AlertCircle, Mail, Loader2, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+    Trash2, ChevronDown, ChevronUp, AlertCircle, Mail, Loader2,
+    Search, Filter, ChevronLeft, ChevronRight, LayoutList, LayoutGrid,
+    Phone, BookOpen, CalendarDays
+} from 'lucide-react';
 
 type Submission = {
     id: string;
@@ -33,6 +37,7 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
     const [updatingId, setUpdatingId] = useState<string | null>(null);
     const [replyingId, setReplyingId] = useState<string | null>(null);
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+    const [viewMode, setViewMode] = useState<'table' | 'card'>('table');
 
     // Modal states
     const [deleteModalId, setDeleteModalId] = useState<string | null>(null);
@@ -101,11 +106,9 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
     }
 
     const toggleRow = (id: string, e: React.MouseEvent) => {
-        // Prevent toggling when clicking on select or button inside the row
         if ((e.target as HTMLElement).tagName === 'SELECT' || (e.target as HTMLElement).tagName === 'BUTTON' || (e.target as HTMLElement).closest('button')) {
             return;
         }
-
         const newExpanded = new Set(expandedRows);
         if (newExpanded.has(id)) {
             newExpanded.delete(id);
@@ -114,6 +117,214 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
         }
         setExpandedRows(newExpanded);
     };
+
+    /* ─────────────── Reply helper ─────────────── */
+    const replyHref = (sub: Submission) =>
+        `mailto:${sub.email}?subject=${encodeURIComponent('Re: Your Inquiry at Meezan Educational Institute')}&body=${encodeURIComponent(`Hi ${sub.fullName},\n\nThank you for reaching out to Meezan Educational Institute regarding ${sub.course || 'our programs'}.\n\n[Your message here]\n\nBest regards,\nMeezan Educational Institute`)}`;
+
+    /* ─────────────── Card View ─────────────── */
+    const CardView = () => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
+            {paginatedSubmissions.length === 0 ? (
+                <div className="col-span-full py-12 text-center text-gray-500">
+                    <div className="flex justify-center mb-3 text-gray-400"><Search size={32} /></div>
+                    <p className="text-base font-medium text-gray-900 mb-1">No submissions found</p>
+                    <p className="text-sm">We couldn't find anything matching your current filters.</p>
+                </div>
+            ) : (
+                paginatedSubmissions.map((sub) => {
+                    const isExpanded = expandedRows.has(sub.id);
+                    return (
+                        <div
+                            key={sub.id}
+                            className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200 flex flex-col gap-3 p-4"
+                        >
+                            {/* Header */}
+                            <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0">
+                                    <p className="font-bold text-gray-900 text-sm truncate">{sub.fullName}</p>
+                                    <p className="text-xs text-gray-500 truncate">{sub.email}</p>
+                                </div>
+                                <select
+                                    value={sub.status}
+                                    onChange={(e) => handleStatusChange(sub.id, e.target.value)}
+                                    disabled={updatingId === sub.id}
+                                    className={`shrink-0 px-2 py-1 border rounded-lg text-[10px] font-semibold uppercase tracking-wider transition-all outline-none cursor-pointer disabled:opacity-50 appearance-none text-center ${getStatusStyles(sub.status)}`}
+                                >
+                                    {STATUS_OPTIONS.map(s => (
+                                        <option key={s} value={s} className="bg-white text-gray-900 normal-case">{s}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Meta */}
+                            <div className="flex flex-col gap-1 text-xs text-gray-500">
+                                {sub.phone && (
+                                    <div className="flex items-center gap-1.5">
+                                        <Phone className="w-3 h-3 shrink-0" />
+                                        <span>{sub.phone}</span>
+                                    </div>
+                                )}
+                                {sub.course && (
+                                    <div className="flex items-center gap-1.5">
+                                        <BookOpen className="w-3 h-3 shrink-0" />
+                                        <span className="truncate">{sub.course}</span>
+                                    </div>
+                                )}
+                                <div className="flex items-center gap-1.5">
+                                    <CalendarDays className="w-3 h-3 shrink-0" />
+                                    <span suppressHydrationWarning>{new Date(sub.createdAt).toLocaleDateString('en-GB')}</span>
+                                </div>
+                            </div>
+
+                            {/* Message toggle */}
+                            <button
+                                onClick={() => {
+                                    const newExpanded = new Set(expandedRows);
+                                    if (newExpanded.has(sub.id)) newExpanded.delete(sub.id);
+                                    else newExpanded.add(sub.id);
+                                    setExpandedRows(newExpanded);
+                                }}
+                                className="text-left text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1 transition-colors"
+                            >
+                                {isExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                                {isExpanded ? 'Hide message' : 'Show message'}
+                            </button>
+                            {isExpanded && (
+                                <div className="bg-gray-50 rounded-lg p-3 text-xs text-gray-700 whitespace-pre-wrap border border-gray-200">
+                                    <p className="font-semibold text-gray-400 uppercase text-[10px] mb-1">Message</p>
+                                    {sub.message}
+                                    <p className="mt-2 text-[10px] text-gray-400">Source: {sub.source.replace('_', ' ')}</p>
+                                </div>
+                            )}
+
+                            {/* Actions */}
+                            <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                                <a
+                                    href={replyHref(sub)}
+                                    className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-100 ${replyingId === sub.id ? 'opacity-75 pointer-events-none' : ''}`}
+                                    onClick={() => { setReplyingId(sub.id); setTimeout(() => setReplyingId(null), 1000); }}
+                                >
+                                    {replyingId === sub.id ? <Loader2 size={13} className="animate-spin" /> : <Mail size={13} />}
+                                    Reply
+                                </a>
+                                <button
+                                    onClick={() => setDeleteModalId(sub.id)}
+                                    className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent"
+                                    title="Delete"
+                                >
+                                    <Trash2 size={15} />
+                                </button>
+                            </div>
+                        </div>
+                    );
+                })
+            )}
+        </div>
+    );
+
+    /* ─────────────── Table View ─────────────── */
+    const TableView = () => (
+        <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+                <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+                    <tr>
+                        <th scope="col" className="px-6 py-4 w-10"></th>
+                        <th scope="col" className="px-6 py-4">Date</th>
+                        <th scope="col" className="px-6 py-4">Name</th>
+                        <th scope="col" className="px-6 py-4">Contact</th>
+                        <th scope="col" className="px-6 py-4">Course</th>
+                        <th scope="col" className="px-6 py-4">Status</th>
+                        <th scope="col" className="px-6 py-4 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {paginatedSubmissions.length === 0 ? (
+                        <tr>
+                            <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
+                                <div className="flex justify-center mb-3 text-gray-400"><Search size={32} /></div>
+                                <p className="text-base font-medium text-gray-900 mb-1">No submissions found</p>
+                                <p className="text-sm">We couldn't find anything matching your current filters.</p>
+                            </td>
+                        </tr>
+                    ) : (
+                        paginatedSubmissions.map((sub) => (
+                            <React.Fragment key={sub.id}>
+                                <tr
+                                    className={`border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer ${expandedRows.has(sub.id) ? 'bg-gray-50' : 'bg-white'}`}
+                                    onClick={(e) => toggleRow(sub.id, e)}
+                                >
+                                    <td className="px-6 py-4 text-gray-400">
+                                        {expandedRows.has(sub.id) ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-gray-600" suppressHydrationWarning>
+                                        {new Date(sub.createdAt).toLocaleDateString('en-GB')}
+                                    </td>
+                                    <td className="px-6 py-4 font-medium text-gray-900">{sub.fullName}</td>
+                                    <td className="px-6 py-4">
+                                        <div className="text-gray-700">{sub.email}</div>
+                                        <div className="text-xs text-gray-500">{sub.phone || 'N/A'}</div>
+                                    </td>
+                                    <td className="px-6 py-4 text-gray-600">
+                                        {sub.course || <span className="text-gray-400">None</span>}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <select
+                                            value={sub.status}
+                                            onChange={(e) => handleStatusChange(sub.id, e.target.value)}
+                                            disabled={updatingId === sub.id}
+                                            className={`px-3 py-1.5 border rounded-lg text-xs font-semibold uppercase tracking-wider transition-all outline-none cursor-pointer disabled:opacity-50 appearance-none text-center ${getStatusStyles(sub.status)}`}
+                                        >
+                                            {STATUS_OPTIONS.map(status => (
+                                                <option key={status} value={status} className="bg-white text-gray-900 normal-case">{status}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td className="px-6 py-4 text-center">
+                                        <div className="flex justify-center items-center gap-3">
+                                            <a
+                                                href={replyHref(sub)}
+                                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-full transition-colors border border-blue-100 ${replyingId === sub.id ? 'opacity-75 pointer-events-none' : ''}`}
+                                                title="Reply to Submission"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setReplyingId(sub.id);
+                                                    setTimeout(() => setReplyingId(null), 1000);
+                                                }}
+                                            >
+                                                {replyingId === sub.id ? <Loader2 size={14} className="animate-spin" /> : <Mail size={14} />}
+                                                {replyingId === sub.id ? 'Loading...' : 'Reply'}
+                                            </a>
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); setDeleteModalId(sub.id); }}
+                                                className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent"
+                                                title="Delete Submission"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {expandedRows.has(sub.id) && (
+                                    <tr className="bg-gray-50 border-b border-gray-200">
+                                        <td colSpan={7} className="px-6 py-6">
+                                            <div className="bg-white p-4 rounded-xl border border-gray-200 text-gray-700 shadow-sm relative">
+                                                <h4 className="text-xs font-semibold text-gray-400 uppercase mb-2">Message</h4>
+                                                <p className="whitespace-pre-wrap">{sub.message}</p>
+                                                <div className="absolute top-4 right-4 text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">
+                                                    Source: {sub.source.replace('_', ' ')}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )}
+                            </React.Fragment>
+                        ))
+                    )}
+                </tbody>
+            </table>
+        </div>
+    );
 
     return (
         <div className="w-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden text-gray-900 relative">
@@ -144,113 +355,33 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
                             <option key={status} value={status}>{status.charAt(0).toUpperCase() + status.slice(1)}</option>
                         ))}
                     </select>
+
+                    {/* View toggle — desktop only */}
+                    <div className="hidden md:flex items-center gap-1 ml-2">
+                        <button
+                            onClick={() => setViewMode('table')}
+                            title="Table view"
+                            className={`p-1.5 rounded-md transition-all ${viewMode === 'table' ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-700'}`}
+                        >
+                            <LayoutList size={16} />
+                        </button>
+                        <button
+                            onClick={() => setViewMode('card')}
+                            title="Card view"
+                            className={`p-1.5 rounded-md transition-all ${viewMode === 'card' ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-700'}`}
+                        >
+                            <LayoutGrid size={16} />
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                    <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
-                        <tr>
-                            <th scope="col" className="px-6 py-4 w-10"></th>
-                            <th scope="col" className="px-6 py-4">Date</th>
-                            <th scope="col" className="px-6 py-4">Name</th>
-                            <th scope="col" className="px-6 py-4">Contact</th>
-                            <th scope="col" className="px-6 py-4">Course</th>
-                            <th scope="col" className="px-6 py-4">Status</th>
-                            <th scope="col" className="px-6 py-4 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {paginatedSubmissions.length === 0 ? (
-                            <tr>
-                                <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
-                                    <div className="flex justify-center mb-3 text-gray-400">
-                                        <Search size={32} />
-                                    </div>
-                                    <p className="text-base font-medium text-gray-900 mb-1">No submissions found</p>
-                                    <p className="text-sm">We couldn't find anything matching your current filters.</p>
-                                </td>
-                            </tr>
-                        ) : (
-                            paginatedSubmissions.map((sub) => (
-                                <React.Fragment key={sub.id}>
-                                    <tr
-                                        className={`border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer ${expandedRows.has(sub.id) ? 'bg-gray-50' : 'bg-white'}`}
-                                        onClick={(e) => toggleRow(sub.id, e)}
-                                    >
-                                        <td className="px-6 py-4 text-gray-400">
-                                            {expandedRows.has(sub.id) ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-600" suppressHydrationWarning>
-                                            {new Date(sub.createdAt).toLocaleDateString('en-GB')}
-                                        </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900">
-                                            {sub.fullName}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-gray-700">{sub.email}</div>
-                                            <div className="text-xs text-gray-500">{sub.phone || 'N/A'}</div>
-                                        </td>
-                                        <td className="px-6 py-4 text-gray-600">
-                                            {sub.course || <span className="text-gray-400">None</span>}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <select
-                                                value={sub.status}
-                                                onChange={(e) => handleStatusChange(sub.id, e.target.value)}
-                                                disabled={updatingId === sub.id}
-                                                className={`px-3 py-1.5 border rounded-lg text-xs font-semibold uppercase tracking-wider transition-all outline-none cursor-pointer disabled:opacity-50 appearance-none text-center ${getStatusStyles(sub.status)}`}
-                                            >
-                                                {STATUS_OPTIONS.map(status => (
-                                                    <option key={status} value={status} className="bg-white text-gray-900 normal-case">
-                                                        {status}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </td>
-                                        <td className="px-6 py-4 text-center">
-                                            <div className="flex justify-center items-center gap-3">
-                                                <a
-                                                    href={`mailto:${sub.email}?subject=${encodeURIComponent('Re: Your Inquiry at Meezan Educational Institute')}&body=${encodeURIComponent(`Hi ${sub.fullName},\n\nThank you for reaching out to Meezan Educational Institute regarding ${sub.course || 'our programs'}.\n\n[Your message here]\n\nBest regards,\nMeezan Educational Institute`)}`}
-                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-full transition-colors border border-blue-100 ${replyingId === sub.id ? 'opacity-75 pointer-events-none' : ''}`}
-                                                    title="Reply to Submission"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setReplyingId(sub.id);
-                                                        setTimeout(() => setReplyingId(null), 1000);
-                                                    }}
-                                                >
-                                                    {replyingId === sub.id ? <Loader2 size={14} className="animate-spin" /> : <Mail size={14} />}
-                                                    {replyingId === sub.id ? 'Loading...' : 'Reply'}
-                                                </a>
-                                                <button
-                                                    onClick={(e) => { e.stopPropagation(); setDeleteModalId(sub.id); }}
-                                                    className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent"
-                                                    title="Delete Submission"
-                                                >
-                                                    <Trash2 size={16} />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {expandedRows.has(sub.id) && (
-                                        <tr className="bg-gray-50 border-b border-gray-200">
-                                            <td colSpan={7} className="px-6 py-6">
-                                                <div className="bg-white p-4 rounded-xl border border-gray-200 text-gray-700 shadow-sm relative">
-                                                    <h4 className="text-xs font-semibold text-gray-400 uppercase mb-2">Message</h4>
-                                                    <p className="whitespace-pre-wrap">{sub.message}</p>
-                                                    <div className="absolute top-4 right-4 text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">
-                                                        Source: {sub.source.replace('_', ' ')}
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )}
-                                </React.Fragment>
-                            ))
-                        )}
-                    </tbody>
-                </table>
+            {/* Mobile: always cards; Desktop: respect viewMode */}
+            <div className="md:hidden">
+                <CardView />
+            </div>
+            <div className="hidden md:block">
+                {viewMode === 'table' ? <TableView /> : <CardView />}
             </div>
 
             {/* Pagination Footer */}
@@ -327,9 +458,7 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
                                 <AlertCircle size={32} />
                             </div>
                             <h3 className="text-lg font-bold text-gray-900 mb-2">Error Occurred</h3>
-                            <p className="text-sm text-gray-500">
-                                {errorModal}
-                            </p>
+                            <p className="text-sm text-gray-500">{errorModal}</p>
                         </div>
                         <button
                             onClick={() => setErrorModal(null)}

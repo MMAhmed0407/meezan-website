@@ -1,22 +1,22 @@
 "use client";
 
 import { submitContactForm } from "@/app/actions/contact";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Clock, MessageSquare, CheckCircle2, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import PhoneInput from "@/components/ui/PhoneInput";
 
 function ContactSectionInner() {
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState("");
     const [submitError, setSubmitError] = useState("");
+    const [phoneError, setPhoneError] = useState("");
+    const formRef = useRef<HTMLFormElement>(null);
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        // useSearchParams only works for ?params before the hash.
-        // nothing
-        // For /#enquiry-form?course=... we need to parse the hash.
         const hash = window.location.hash;
         let course = searchParams.get("course");
 
@@ -28,7 +28,6 @@ function ContactSectionInner() {
 
         if (course) {
             const courseLower = course.toLowerCase().trim();
-            // Expanded mapping for specific course names to categories
             if (
                 courseLower.includes("health") ||
                 courseLower.includes("paramedic") ||
@@ -83,14 +82,22 @@ function ContactSectionInner() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setIsSubmitting(true);
         const formData = new FormData(e.currentTarget);
+        const phone = (formData.get("phone") as string) ?? "";
+
+        // Validate phone before submitting
+        if (!phone || phone === '') {
+            setPhoneError("Phone number is required.");
+            return;
+        }
+
+        setPhoneError("");
+        setIsSubmitting(true);
         const result = await submitContactForm(formData, 'contact_section');
 
         setIsSubmitting(false);
         if (!result.success) {
             setSubmitError(result.error || 'Something went wrong. Please try again.');
-            setIsSubmitting(false);
             return;
         }
 
@@ -181,22 +188,39 @@ function ContactSectionInner() {
                                     <p className="text-foreground/70">Thank you for reaching out. We will get back to you shortly.</p>
                                 </motion.div>
                             ) : (
-                                <form onSubmit={handleSubmit} className="space-y-5">
+                                <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
                                     <div>
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Full Name</label>
-                                        <input type="text" name="full_name" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="John Doe" onChange={() => { if (submitError) setSubmitError('') }} />
+                                        <input
+                                            type="text"
+                                            name="full_name"
+                                            required
+                                            className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40"
+                                            placeholder="John Doe"
+                                            onChange={() => { if (submitError) setSubmitError('') }}
+                                        />
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                        <div>
-                                            <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Email Address</label>
-                                            <input type="email" name="email" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="john@example.com" onChange={() => { if (submitError) setSubmitError('') }} />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Phone Number</label>
-                                            <input type="tel" name="phone" required className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40" placeholder="+91 0000 00000" onChange={() => { if (submitError) setSubmitError('') }} />
-                                        </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Email Address</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            required
+                                            className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40"
+                                            placeholder="john@example.com"
+                                            onChange={() => { if (submitError) setSubmitError('') }}
+                                        />
                                     </div>
+
+                                    {/* Phone with country code + validation */}
+                                    <PhoneInput
+                                        size="md"
+                                        onChange={() => { if (submitError) setSubmitError(''); if (phoneError) setPhoneError(''); }}
+                                    />
+                                    {phoneError && (
+                                        <p className="text-xs text-red-600 font-medium -mt-3">{phoneError}</p>
+                                    )}
 
                                     <div>
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Course of Interest</label>
@@ -226,22 +250,29 @@ function ContactSectionInner() {
 
                                     <div>
                                         <label className="block text-sm font-medium text-brand-deeper-teal mb-1.5">Your Message</label>
-                                        <textarea required name="message" rows={4} className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 resize-none" placeholder="How can we help you?" onChange={() => { if (submitError) setSubmitError('') }}></textarea>
+                                        <textarea
+                                            required
+                                            name="message"
+                                            rows={4}
+                                            className="w-full bg-brand-light border-0 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-brand-teal outline-none transition-all placeholder:text-foreground/40 resize-none"
+                                            placeholder="How can we help you?"
+                                            onChange={() => { if (submitError) setSubmitError('') }}
+                                        />
                                     </div>
 
-                                        {submitError && (
-                                            <div className="w-full rounded-lg bg-red-50 border border-red-200 px-4 py-3 sm:px-5 sm:py-4 mt-3 mb-3 animate-fade-in">
-                                                <p className="text-sm text-red-600 text-center font-medium leading-relaxed">
-                                                    {submitError}
-                                                </p>
-                                            </div>
-                                        )}
+                                    {submitError && (
+                                        <div className="w-full rounded-lg bg-red-50 border border-red-200 px-4 py-3 sm:px-5 sm:py-4 animate-fade-in">
+                                            <p className="text-sm text-red-600 text-center font-medium leading-relaxed">
+                                                {submitError}
+                                            </p>
+                                        </div>
+                                    )}
 
-                                        {!submitSuccess && (
-                                            <button type="submit" disabled={isSubmitting} className="w-full h-12 bg-brand-teal text-white rounded-xl font-semibold text-lg hover:bg-brand-dark-teal hover:shadow-lg transition-all hover:-translate-y-0.5 mt-2 disabled:opacity-75 disabled:hover:translate-y-0 flex items-center justify-center gap-2">
-                                                {isSubmitting ? <><Loader2 className="animate-spin" size={24} /> Sending...</> : 'Send Message'}
-                                            </button>
-                                        )}
+                                    {!submitSuccess && (
+                                        <button type="submit" disabled={isSubmitting} className="w-full h-12 bg-brand-teal text-white rounded-xl font-semibold text-lg hover:bg-brand-dark-teal hover:shadow-lg transition-all hover:-translate-y-0.5 mt-2 disabled:opacity-75 disabled:hover:translate-y-0 flex items-center justify-center gap-2">
+                                            {isSubmitting ? <><Loader2 className="animate-spin" size={24} /> Sending...</> : 'Send Message'}
+                                        </button>
+                                    )}
                                 </form>
                             )}
                         </div>
@@ -249,7 +280,7 @@ function ContactSectionInner() {
 
                 </div>
 
-                {/* Map iframe - Placeholder Location Hyderabad Setup */}
+                {/* Map iframe */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
