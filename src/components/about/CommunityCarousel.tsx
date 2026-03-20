@@ -15,29 +15,36 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    category: "Healthcare Outreach",
+    category: "Annual Health Camp",
     text: "Over 200 residents received free medical consultations at our annual health camp organised by the Shoukath Ali Charitable Clinic.",
     source: "Shoukath Ali Charitable Clinic",
     tag: "Hyderabad, 2024",
   },
   {
-    category: "Teacher Training",
-    text: "48 teachers completed their Early Childhood Care and Education certification — ready to shape the next generation of learners.",
-    source: "ECCE Graduation Ceremony",
+    category: "Workshop on Paramedical Courses",
+    text: "Conducted a workshop on skill development and livelihood program partnering with North American Indian Muslim Association.",
+    source: "North American Indian Muslim Association",
+    tag: "2025",
+  },
+  {
+    category: "3000+ Certified Teachers",
+    text: "Crossed 3000+ certified teaching professionals trained in ECCE and PPTTC with government and ISO Certifications recognised globally. Ready to shape the next generation of learners.",
+    source: "ECCE & PPTC Graduation Ceremony",
     tag: "Meezan Institute, 2024",
   },
   {
-    category: "Community Event",
-    text: "Outstanding students across all programmes were celebrated at our Annual Achievement Awards.",
-    source: "Annual Student Achievement Awards",
+    category: "Faculty Development Programme",
+    text: "Conducted FDP for 500+ faculty members of Government Junior college lecturers of the state of Telangana at Commissioner’s Office, TSBIE.",
+    source: "TSBIE",
     tag: "Hyderabad, 2023",
   },
   {
-    category: "Recognition",
-    text: "Our commitment to free education for underprivileged students was acknowledged by our international partner Seed USA.",
+    category: "SEED USA Partnership",
+    text: "Partnered with SEED USA to support 105 underprivileged students through academic programmes in paramedics and teacher’s training",
     source: "Seed USA Partnership",
-    tag: "2023",
+    tag: "2025",
   },
+
 ];
 
 const AUTOPLAY_DURATION = 5000;
