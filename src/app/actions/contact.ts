@@ -134,7 +134,7 @@ export async function submitContactForm(formData: FormData, source: string) {
                 source,
                 status: 'new',
             })
-            .select()
+            // .select()
             .single();
 
         if (error) {
