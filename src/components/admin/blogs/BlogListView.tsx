@@ -12,12 +12,12 @@ type Blog = {
     title: string;
     slug: string;
     status: string;
-    publishDate: string | null | Date;
+    publish_date: string | null | Date;
 };
 
 type Props = {
     blogs: Blog[];
-    onDelete: (formData: FormData) => Promise<void>;
+    onDelete: (id: string) => Promise<void> | void;
 };
 
 export default function BlogListView({ blogs, onDelete }: Props) {
@@ -53,8 +53,8 @@ export default function BlogListView({ blogs, onDelete }: Props) {
                     <div className="flex items-center gap-1.5 text-xs text-gray-500">
                         <Calendar className="w-3 h-3 shrink-0" />
                         <span>
-                            {blog.publishDate
-                                ? format(new Date(blog.publishDate), 'MMM d, yyyy')
+                            {blog.publish_date
+                                ? format(new Date(blog.publish_date), 'MMM d, yyyy')
                                 : 'No date set'}
                         </span>
                     </div>
@@ -111,7 +111,7 @@ export default function BlogListView({ blogs, onDelete }: Props) {
                             </td>
                             <td className="py-3 px-4 align-middle text-center hidden md:table-cell">
                                 <span className="text-xs font-semibold text-gray-600 bg-gray-100 px-2 py-1 rounded-md min-w-[100px] inline-block">
-                                    {blog.publishDate ? format(new Date(blog.publishDate), 'MMM d, yyyy') : '-'}
+                                    {blog.publish_date ? format(new Date(blog.publish_date), 'MMM d, yyyy') : '-'}
                                 </span>
                             </td>
                             <td className="py-3 px-4 align-middle text-center">

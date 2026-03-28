@@ -60,7 +60,28 @@ export default function AdminChangePasswordForm() {
         setIsLoading(true);
         setStatus(null);
         const formData = new FormData(e.currentTarget);
-        const result = await changePassword(formData);
+        const newPassword = (formData.get('newPassword') as string)?.trim();
+        const confirmPassword = (formData.get('confirmPassword') as string)?.trim();
+
+        if (!newPassword || !confirmPassword) {
+            setStatus({ type: 'error', message: 'All fields are required.' });
+            setIsLoading(false);
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            setStatus({ type: 'error', message: 'New password must be at least 6 characters.' });
+            setIsLoading(false);
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            setStatus({ type: 'error', message: 'New passwords do not match.' });
+            setIsLoading(false);
+            return;
+        }
+
+        const result = await changePassword(newPassword);
         setIsLoading(false);
         if (result.success) {
             setStatus({ type: 'success', message: 'Password updated successfully!' });
@@ -73,7 +94,7 @@ export default function AdminChangePasswordForm() {
 
     return (
         <>
-            {/* Trigger button — compact, placed in the header */}
+            {/* Trigger button */}
             <button
                 id="change-password-btn"
                 onClick={() => setIsOpen(true)}
@@ -85,7 +106,7 @@ export default function AdminChangePasswordForm() {
                 Change Password
             </button>
 
-            {/* Modal backdrop — portaled to body to escape header's stacking context */}
+            {/* Modal */}
             {isOpen && createPortal(
                 <div
                     className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
@@ -102,7 +123,7 @@ export default function AdminChangePasswordForm() {
                                 </div>
                                 <div>
                                     <h2 className="text-sm font-bold text-gray-900">Change Password</h2>
-                                    <p className="text-xs text-gray-400">Email cannot be changed</p>
+                                    <p className="text-xs text-gray-400">Update your admin password</p>
                                 </div>
                             </div>
                             <button onClick={closeModal} className="text-gray-400 hover:text-gray-600 transition-colors p-1">
@@ -114,7 +135,6 @@ export default function AdminChangePasswordForm() {
 
                         {/* Modal body */}
                         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                            <PasswordInput name="oldPassword" label="Current Password" placeholder="Enter current password" />
                             <PasswordInput name="newPassword" label="New Password" hint="(min 6 characters)" placeholder="Enter new password" />
                             <PasswordInput name="confirmPassword" label="Confirm New Password" placeholder="Confirm new password" />
 

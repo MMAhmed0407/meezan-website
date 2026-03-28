@@ -10,8 +10,8 @@ import {
 
 type Submission = {
     id: string;
-    createdAt: Date;
-    fullName: string;
+    created_at: string;
+    full_name: string;
     email: string;
     phone: string | null;
     course: string | null;
@@ -54,7 +54,7 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
     const filteredSubmissions = useMemo(() => {
         return submissions.filter(sub => {
             const matchesSearch =
-                sub.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                sub.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 sub.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 (sub.phone && sub.phone.includes(searchQuery)) ||
                 (sub.course && sub.course.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -120,7 +120,7 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
 
     /* ─────────────── Reply helper ─────────────── */
     const replyHref = (sub: Submission) =>
-        `mailto:${sub.email}?subject=${encodeURIComponent('Re: Your Inquiry at Meezan Educational Institute')}&body=${encodeURIComponent(`Hi ${sub.fullName},\n\nThank you for reaching out to Meezan Educational Institute regarding ${sub.course || 'our programs'}.\n\n[Your message here]\n\nBest regards,\nMeezan Educational Institute`)}`;
+        `mailto:${sub.email}?subject=${encodeURIComponent('Re: Your Inquiry at Meezan Educational Institute')}&body=${encodeURIComponent(`Hi ${sub.full_name},\n\nThank you for reaching out to Meezan Educational Institute regarding ${sub.course || 'our programs'}.\n\n[Your message here]\n\nBest regards,\nMeezan Educational Institute`)}`;
 
     /* ─────────────── Card View ─────────────── */
     const CardView = () => (
@@ -142,7 +142,7 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
                             {/* Header */}
                             <div className="flex items-start justify-between gap-2">
                                 <div className="min-w-0">
-                                    <p className="font-bold text-gray-900 text-sm truncate">{sub.fullName}</p>
+                                    <p className="font-bold text-gray-900 text-sm truncate">{sub.full_name}</p>
                                     <p className="text-xs text-gray-500 truncate">{sub.email}</p>
                                 </div>
                                 <select
@@ -173,7 +173,7 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
                                 )}
                                 <div className="flex items-center gap-1.5">
                                     <CalendarDays className="w-3 h-3 shrink-0" />
-                                    <span suppressHydrationWarning>{new Date(sub.createdAt).toLocaleDateString('en-GB')}</span>
+                                    <span suppressHydrationWarning>{new Date(sub.created_at).toLocaleDateString('en-GB')}</span>
                                 </div>
                             </div>
 
@@ -258,9 +258,9 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
                                         {expandedRows.has(sub.id) ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-gray-600" suppressHydrationWarning>
-                                        {new Date(sub.createdAt).toLocaleDateString('en-GB')}
+                                        {new Date(sub.created_at).toLocaleDateString('en-GB')}
                                     </td>
-                                    <td className="px-6 py-4 font-medium text-gray-900">{sub.fullName}</td>
+                                    <td className="px-6 py-4 font-medium text-gray-900">{sub.full_name}</td>
                                     <td className="px-6 py-4">
                                         <div className="text-gray-700">{sub.email}</div>
                                         <div className="text-xs text-gray-500">{sub.phone || 'N/A'}</div>

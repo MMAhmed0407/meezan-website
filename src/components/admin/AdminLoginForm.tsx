@@ -1,27 +1,31 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { loginAdmin } from '@/app/actions/admin-auth';
 import Image from 'next/image';
 
-export default function AdminLoginForm() {
+interface AdminLoginFormProps {
+    onSuccess?: () => void;
+}
+
+export default function AdminLoginForm({ onSuccess }: AdminLoginFormProps) {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const router = useRouter();
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
         const formData = new FormData(e.currentTarget);
-        const result = await loginAdmin(formData);
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+        const result = await loginAdmin(email, password);
         if (result?.error) {
             setError(result.error);
             setIsLoading(false);
         } else {
-            router.refresh();
+            onSuccess?.();
         }
     }
 
@@ -64,7 +68,7 @@ export default function AdminLoginForm() {
                     <p className="text-sm text-gray-500 mb-8">Enter your credentials to access the dashboard</p>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* Email — read only */}
+                        {/* Email */}
                         <div>
                             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                                 Email Address

@@ -1,79 +1,43 @@
-'use server';
+import { supabase } from '@/lib/supabaseClient';
 
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import prisma from '@/lib/prisma';
+// ─── Admin Auth (Supabase Auth) ───
 
 const ADMIN_EMAIL = 'info@meezanedu.com';
-const COOKIE_NAME = 'admin_session';
 
-/** Gets the current admin password from DB. Creates the singleton row if missing. */
-async function getAdminPassword(): Promise<string> {
-    const config = await prisma.adminConfig.upsert({
-        where: { id: 'singleton' },
-        update: {},
-        create: { id: 'singleton', password: 'Meezan@123' },
-    });
-    return config.password;
-}
-
-export async function loginAdmin(formData: FormData) {
-    const email = formData.get('email');
-    const password = formData.get('password');
-
-    const currentPassword = await getAdminPassword();
-
-    if (email === ADMIN_EMAIL && password === currentPassword) {
-        (await cookies()).set(COOKIE_NAME, 'authenticated', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            path: '/',
-            maxAge: 60 * 60 * 24, // 1 day
-        });
-        return { success: true };
+export async function loginAdmin(email: string, password: string) {
+    if (email !== ADMIN_EMAIL) {
+        return { success: false, error: 'Invalid credentials' };
     }
 
-    return { success: false, error: 'Invalid credentials' };
-}
-
-export async function changePassword(formData: FormData) {
-    const oldPassword = (formData.get('oldPassword') as string)?.trim();
-    const newPassword = (formData.get('newPassword') as string)?.trim();
-    const confirmPassword = (formData.get('confirmPassword') as string)?.trim();
-
-    if (!oldPassword || !newPassword || !confirmPassword) {
-        return { success: false, error: 'All fields are required.' };
-    }
-
-    if (newPassword.length < 6) {
-        return { success: false, error: 'New password must be at least 6 characters.' };
-    }
-
-    if (newPassword !== confirmPassword) {
-        return { success: false, error: 'New passwords do not match.' };
-    }
-
-    const currentPassword = await getAdminPassword();
-
-    if (oldPassword !== currentPassword) {
-        return { success: false, error: 'Current password is incorrect.' };
-    }
-
-    await prisma.adminConfig.update({
-        where: { id: 'singleton' },
-        data: { password: newPassword },
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
     });
 
-    return { success: true };
+    if (error) {
+        return { success: false, error: error.message || 'Invalid credentials' };
+    }
+
+    return { success: true, session: data.session };
 }
 
 export async function logoutAdmin() {
-    (await cookies()).delete(COOKIE_NAME);
-    redirect('/');
+    await supabase.auth.signOut();
 }
 
-export async function checkAuth() {
-    const session = (await cookies()).get(COOKIE_NAME);
-    return session?.value === 'authenticated';
+export async function checkAuth(): Promise<boolean> {
+    const { data: { session } } = await supabase.auth.getSession();
+    return !!session;
+}
+
+export async function changePassword(newPassword: string) {
+    const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+    });
+
+    if (error) {
+        return { success: false, error: error.message || 'Failed to update password.' };
+    }
+
+    return { success: true };
 }

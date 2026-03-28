@@ -1,9 +1,6 @@
-'use server'
+import { supabase } from '@/lib/supabaseClient';
 
-import prisma from '@/lib/prisma';
-import { headers } from 'next/headers';
-
-// --- Rate Limiting (in-memory) ---
+// --- Rate Limiting (in-memory, client-side) ---
 const submissionMap = new Map<string, {
     count: number,
     firstSubmission: number,
@@ -14,7 +11,7 @@ const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;   // 1 hour
 const MAX_SUBMISSIONS_PER_HOUR = 3;
 const MIN_GAP_BETWEEN_MS = 60 * 1000;           // 1 minute
 
-// --- Profanity Filter (built-in) ---
+// --- Profanity Filter ---
 const BLOCKED_WORDS = [
     'spam', 'scam', 'fake', 'test123',
     'asdf', 'qwerty', 'aaaa', 'xxxx',
@@ -31,9 +28,6 @@ function isProfane(text: string): boolean {
 }
 
 // --- Input Sanitisation ---
-// SQL injection protection: Prisma uses parameterised queries —
-// no raw SQL interpolation. No additional sanitisation needed for DB safety.
-// This sanitise function only strips HTML/script injection attempts.
 function sanitise(input: string): string {
     return input
         .replace(/</g, '&lt;')
@@ -50,7 +44,7 @@ export async function submitContactForm(formData: FormData, source: string) {
     const course = formData.get('course') as string;
     const message = formData.get('message') as string;
 
-    // --- Server-side Validation ---
+    // --- Client-side Validation ---
     if (!fullName || fullName.length < 2 || fullName.length > 100) {
         return { success: false, error: 'Name must be between 2 and 100 characters.' };
     }
@@ -72,18 +66,12 @@ export async function submitContactForm(formData: FormData, source: string) {
         return { success: false, error: 'Message must be between 10 and 500 characters.' };
     }
 
-    // --- Rate Limiting ---
-    const headersList = await headers();
-    const ip =
-        headersList.get('x-forwarded-for')?.split(',')[0]
-        || headersList.get('x-real-ip')
-        || 'unknown';
-
+    // --- Rate Limiting (client-side, per-session) ---
+    const clientKey = 'client';
     const now = Date.now();
-    const record = submissionMap.get(ip);
+    const record = submissionMap.get(clientKey);
 
     if (record) {
-        // Check minimum gap between submissions
         if (now - record.lastSubmission < MIN_GAP_BETWEEN_MS) {
             return {
                 success: false,
@@ -91,7 +79,6 @@ export async function submitContactForm(formData: FormData, source: string) {
             };
         }
 
-        // Check hourly limit
         if (now - record.firstSubmission < RATE_LIMIT_WINDOW_MS) {
             if (record.count >= MAX_SUBMISSIONS_PER_HOUR) {
                 return {
@@ -99,34 +86,24 @@ export async function submitContactForm(formData: FormData, source: string) {
                     error: 'Too many submissions. Please try again later.'
                 };
             }
-            submissionMap.set(ip, {
+            submissionMap.set(clientKey, {
                 count: record.count + 1,
                 firstSubmission: record.firstSubmission,
                 lastSubmission: now,
             });
         } else {
-            // Window expired — reset
-            submissionMap.set(ip, {
+            submissionMap.set(clientKey, {
                 count: 1,
                 firstSubmission: now,
                 lastSubmission: now
             });
         }
     } else {
-        submissionMap.set(ip, {
+        submissionMap.set(clientKey, {
             count: 1,
             firstSubmission: now,
             lastSubmission: now
         });
-    }
-
-    // Clean up old entries every 100 requests
-    if (submissionMap.size > 100) {
-        for (const [key, value] of submissionMap) {
-            if (now - value.firstSubmission > RATE_LIMIT_WINDOW_MS) {
-                submissionMap.delete(key);
-            }
-        }
     }
 
     // --- Profanity Filter ---
@@ -144,21 +121,30 @@ export async function submitContactForm(formData: FormData, source: string) {
         };
     }
 
-    // --- Database Insert (with sanitised inputs) ---
+    // --- Database Insert via Supabase ---
     try {
-        const submission = await prisma.contactSubmission.create({
-            data: {
-                fullName: sanitise(fullName),
+        const { data, error } = await supabase
+            .from('contact_submissions')
+            .insert({
+                full_name: sanitise(fullName),
                 email: sanitise(email),
                 phone: sanitise(phone),
                 course: sanitise(course),
                 message: sanitise(message),
                 source,
-            },
-        });
-        return { success: true, submission };
+                status: 'new',
+            })
+            .select()
+            .single();
+
+        if (error) {
+            console.error('Supabase submission error:', error);
+            return { success: false, error: 'Failed to submit form' };
+        }
+
+        return { success: true, submission: data };
     } catch (error) {
-        console.error('Prisma submission error:', error);
+        console.error('Submission error:', error);
         return { success: false, error: 'Failed to submit form' };
     }
 }

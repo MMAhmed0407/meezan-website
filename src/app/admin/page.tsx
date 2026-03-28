@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { checkAuth, logoutAdmin } from '@/app/actions/admin-auth';
 import { getSubmissions } from '@/app/actions/admin-data';
 import AdminLoginForm from '@/components/admin/AdminLoginForm';
@@ -5,15 +8,47 @@ import AdminSubmissionsTable from '@/components/admin/AdminSubmissionsTable';
 import AdminChangePasswordForm from '@/components/admin/AdminChangePasswordForm';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Loader2 } from 'lucide-react';
 
-export default async function AdminPage() {
-    const isAuth = await checkAuth();
+type Submission = {
+    id: string;
+    created_at: string;
+    full_name: string;
+    email: string;
+    phone: string | null;
+    course: string | null;
+    message: string;
+    source: string;
+    status: string;
+};
 
-    if (!isAuth) {
-        return <AdminLoginForm />;
+export default function AdminPage() {
+    const [isAuth, setIsAuth] = useState<boolean | null>(null);
+    const [submissions, setSubmissions] = useState<Submission[]>([]);
+
+    useEffect(() => {
+        async function init() {
+            const authed = await checkAuth();
+            setIsAuth(authed);
+            if (authed) {
+                const subs = await getSubmissions();
+                setSubmissions(subs as Submission[]);
+            }
+        }
+        init();
+    }, []);
+
+    if (isAuth === null) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <Loader2 className="animate-spin w-8 h-8 text-gray-400" />
+            </div>
+        );
     }
 
-    const submissions = await getSubmissions();
+    if (!isAuth) {
+        return <AdminLoginForm onSuccess={() => setIsAuth(true)} />;
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -36,14 +71,12 @@ export default async function AdminPage() {
                     </div>
                     <div className="flex items-center gap-2">
                         <AdminChangePasswordForm />
-                        <form action={logoutAdmin}>
-                            <button
-                                type="submit"
-                                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100"
-                            >
-                                Sign out
-                            </button>
-                        </form>
+                        <button
+                            onClick={async () => { await logoutAdmin(); setIsAuth(false); }}
+                            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100"
+                        >
+                            Sign out
+                        </button>
                     </div>
                 </div>
             </header>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useState } from 'react';
 import { toggleBlogStatus } from '@/app/actions/blog-actions';
 import { toast } from 'sonner';
 
@@ -10,19 +10,21 @@ interface ToggleStatusButtonProps {
 }
 
 export default function ToggleStatusButton({ id, currentStatus }: ToggleStatusButtonProps) {
-  const [isPending, startTransition] = useTransition();
-  const isPublished = currentStatus === 'published';
+  const [status, setStatus] = useState(currentStatus);
+  const [isPending, setIsPending] = useState(false);
+  const isPublished = status === 'published';
 
-  const handleToggle = () => {
-    startTransition(async () => {
-      const newStatus = isPublished ? 'draft' : 'published';
-      const result = await toggleBlogStatus(id, newStatus);
-      if (result?.error) {
-        toast.error(result.error);
-      } else {
-        toast.success(`Blog marked as ${newStatus}`);
-      }
-    });
+  const handleToggle = async () => {
+    setIsPending(true);
+    const newStatus = isPublished ? 'draft' : 'published';
+    const result = await toggleBlogStatus(id, newStatus);
+    if (result?.error) {
+      toast.error(result.error);
+    } else {
+      setStatus(newStatus);
+      toast.success(`Blog marked as ${newStatus}`);
+    }
+    setIsPending(false);
   };
 
   return (

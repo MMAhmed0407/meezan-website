@@ -1,56 +1,83 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
+import { ArrowLeft, Calendar, Tag } from "lucide-react";
 import { getBlogBySlug } from "@/app/actions/blog-actions";
 import { format } from "date-fns";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-    const { slug } = await params;
-    const post = await getBlogBySlug(slug);
+type BlogPost = {
+    id: string;
+    title: string;
+    slug: string;
+    short_description: string | null;
+    content: string;
+    meta_title: string | null;
+    meta_description: string | null;
+    keywords: string[];
+    canonical_url: string | null;
+    og_title: string | null;
+    og_description: string | null;
+    og_image: string | null;
+    featured_image: string | null;
+    category: string | null;
+    tags: string[];
+    status: string;
+    publish_date: string | null;
+    author: string | null;
+    created_at: string;
+};
 
-    if (!post) {
-        return {
-            title: "Post Not Found",
-        };
+export default function BlogPostPage() {
+    const params = useParams();
+    const slug = params.slug as string;
+    const [post, setPost] = useState<BlogPost | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [notFound, setNotFound] = useState(false);
+
+    useEffect(() => {
+        async function load() {
+            if (!slug) return;
+            const data = await getBlogBySlug(slug);
+            if (!data) {
+                setNotFound(true);
+            } else {
+                setPost(data as BlogPost);
+                // Set document title
+                document.title = data.meta_title || data.title || 'Blog Post';
+            }
+            setIsLoading(false);
+        }
+        load();
+    }, [slug]);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="animate-spin w-8 h-8 border-4 border-brand-teal border-t-transparent rounded-full" />
+            </div>
+        );
     }
 
-    return {
-        title: post.metaTitle || post.title,
-        description: post.metaDescription || post.shortDescription || 'Meezan Educational Institute Blog Post',
-        keywords: post.keywords?.join(', '),
-        alternates: { canonical: post.canonicalUrl || `https://meezanedu.com/blog/${slug}` },
-        openGraph: {
-            title: post.ogTitle || post.title,
-            description: post.ogDescription || post.shortDescription || '',
-            url: `https://meezanedu.com/blog/${slug}`,
-            type: 'article',
-            publishedTime: post.publishDate ? new Date(post.publishDate).toISOString() : new Date(post.createdAt).toISOString(),
-            images: [{ url: post.ogImage || post.featuredImage || '/og-image.jpg', width: 1200, height: 630 }],
-        },
-    };
-}
-
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params;
-    const post = await getBlogBySlug(slug);
-
-    if (!post) {
-        notFound();
+    if (notFound || !post) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="text-center">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-4">Post Not Found</h1>
+                    <p className="text-gray-500 mb-6">The blog post you are looking for does not exist.</p>
+                    <Link href="/blog" className="text-brand-teal hover:underline font-semibold">Back to Blog</Link>
+                </div>
+            </div>
+        );
     }
 
     const title = post.title;
-    const publishDate = post.publishDate ? new Date(post.publishDate) : new Date(post.createdAt);
+    const publishDate = post.publish_date ? new Date(post.publish_date) : new Date(post.created_at);
 
     return (
         <article className="w-full bg-white pb-24" style={{ colorScheme: 'light' }}>
-            <BreadcrumbSchema crumbs={[
-                { name: 'Home', url: '/' },
-                { name: 'Blog', url: '/blog' },
-                { name: title, url: `/blog/${slug}` }
-            ]} />
 
             {/* HEADER SECTION */}
             <header className="bg-gray-50/50 pt-20 pb-12 lg:pt-28 lg:pb-20 border-b border-gray-100">
@@ -70,9 +97,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                         {title}
                     </h1>
 
-                    {post.shortDescription && (
+                    {post.short_description && (
                         <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-500 mb-8 leading-relaxed font-medium">
-                            {post.shortDescription}
+                            {post.short_description}
                         </p>
                     )}
 
@@ -90,11 +117,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </header>
 
             {/* FEATURED IMAGE */}
-            {post.featuredImage && (
+            {post.featured_image && (
                 <div className="max-w-3xl mx-auto px-4 -mt-8 lg:-mt-12 mb-12 lg:mb-16">
                     <div className="relative aspect-[16/9] w-full rounded-2xl lg:rounded-[24px] overflow-hidden shadow-xl ring-1 ring-black/5">
                         <Image
-                            src={post.featuredImage}
+                            src={post.featured_image}
                             alt={`Meezan Blog: ${title}`}
                             fill
                             priority={true}
