@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 
 // --- Rate Limiting (in-memory, client-side) ---
 const submissionMap = new Map<string, {
@@ -121,9 +121,28 @@ export async function submitContactForm(formData: FormData, source: string) {
         };
     }
 
-    // --- Database Insert via Supabase ---
+    // --- Edge Context Logging & Edge-Safe Client Initialization ---
+    console.log("Edge Context Check:", {
+        hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+        hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        payload: {
+            full_name: sanitise(fullname),
+            email: sanitise(email),
+            phone: sanitise(phone),
+            course: sanitise(course),
+            message: sanitise(message),
+            source,
+            status: 'new',
+        }
+    });
+
     try {
-        const { data, error } = await supabase
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        );
+
+        const { error } = await supabase
             .from('contact_submissions')
             .insert({
                 full_name: sanitise(fullname),
@@ -133,16 +152,14 @@ export async function submitContactForm(formData: FormData, source: string) {
                 message: sanitise(message),
                 source,
                 status: 'new',
-            })
-            .select()
-            .single();
+            });
 
         if (error) {
             console.error('Supabase submission error:', error);
             return { success: false, error: 'Failed to submit form' };
         }
 
-        return { success: true, submission: data };
+        return { success: true };
     } catch (error) {
         console.error('Submission error:', error);
         return { success: false, error: 'Failed to submit form' };
