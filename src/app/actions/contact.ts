@@ -38,14 +38,14 @@ function sanitise(input: string): string {
 }
 
 export async function submitContactForm(formData: FormData, source: string) {
-    const fullName = formData.get('full_name') as string;
+    const fullname = formData.get('full_name') as string;
     const email = formData.get('email') as string;
     const phone = formData.get('phone') as string;
     const course = formData.get('course') as string;
     const message = formData.get('message') as string;
 
     // --- Client-side Validation ---
-    if (!fullName || fullName.length < 2 || fullName.length > 100) {
+    if (!fullname || fullname.length < 2 || fullname.length > 100) {
         return { success: false, error: 'Name must be between 2 and 100 characters.' };
     }
 
@@ -107,7 +107,7 @@ export async function submitContactForm(formData: FormData, source: string) {
     }
 
     // --- Profanity Filter ---
-    if (isProfane(fullName)) {
+    if (isProfane(fullname)) {
         return {
             success: false,
             error: 'Please use appropriate language in the name field.'
@@ -126,7 +126,7 @@ export async function submitContactForm(formData: FormData, source: string) {
         const { data, error } = await supabase
             .from('contact_submissions')
             .insert({
-                full_name: sanitise(fullName),
+                full_name: sanitise(fullname),
                 email: sanitise(email),
                 phone: sanitise(phone),
                 course: sanitise(course),
