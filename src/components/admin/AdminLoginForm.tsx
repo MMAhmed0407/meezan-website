@@ -1,14 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { loginAdmin } from '@/app/actions/admin-auth';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
 
-interface AdminLoginFormProps {
-    onSuccess?: () => void;
-}
-
-export default function AdminLoginForm({ onSuccess }: AdminLoginFormProps) {
+export default function AdminLoginForm() {
+    const router = useRouter();
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -20,12 +18,18 @@ export default function AdminLoginForm({ onSuccess }: AdminLoginFormProps) {
         const formData = new FormData(e.currentTarget);
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
-        const result = await loginAdmin(email, password);
-        if (result?.error) {
-            setError(result.error);
+        
+        const supabase = createClient();
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        if (error) {
+            setError(error.message || 'Invalid credentials');
             setIsLoading(false);
         } else {
-            onSuccess?.();
+            router.refresh();
         }
     }
 

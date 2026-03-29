@@ -1,15 +1,14 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { checkAuth, logoutAdmin } from '@/app/actions/admin-auth';
-import { getSubmissions } from '@/app/actions/admin-data';
+import { createClient } from '@/utils/supabase/server';
 import AdminLoginForm from '@/components/admin/AdminLoginForm';
 import AdminSubmissionsTable from '@/components/admin/AdminSubmissionsTable';
 import AdminChangePasswordForm from '@/components/admin/AdminChangePasswordForm';
+import AdminLogoutButton from '@/components/admin/AdminLogoutButton';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Loader2 } from 'lucide-react';
 
+export const runtime = 'edge';
+
+// @ts-ignore - Supabase type casting for contact_submissions might be loose
 type Submission = {
     id: string;
     created_at: string;
@@ -22,33 +21,25 @@ type Submission = {
     status: string;
 };
 
-export default function AdminPage() {
-    const [isAuth, setIsAuth] = useState<boolean | null>(null);
-    const [submissions, setSubmissions] = useState<Submission[]>([]);
+export default async function AdminPage() {
+    const supabase = await createClient();
+    
+    // Validate authentication directly on Edge Server
+    const { data: { user } } = await supabase.auth.getUser();
 
-    useEffect(() => {
-        async function init() {
-            const authed = await checkAuth();
-            setIsAuth(authed);
-            if (authed) {
-                const subs = await getSubmissions();
-                setSubmissions(subs as Submission[]);
-            }
-        }
-        init();
-    }, []);
-
-    if (isAuth === null) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <Loader2 className="animate-spin w-8 h-8 text-gray-400" />
-            </div>
-        );
+    // If unauthenticated, preserve the original inline conditional layout
+    if (!user) {
+        return <AdminLoginForm />;
     }
 
-    if (!isAuth) {
-        return <AdminLoginForm onSuccess={() => setIsAuth(true)} />;
-    }
+    // Fetch the secured data directly in the Server render pass
+    const { data: rawSubmissions } = await supabase
+        .from('contact_submissions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    // Explicit cast for TS mapping to table
+    const submissions = (rawSubmissions || []) as Submission[];
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -71,12 +62,8 @@ export default function AdminPage() {
                     </div>
                     <div className="flex items-center gap-2">
                         <AdminChangePasswordForm />
-                        <button
-                            onClick={async () => { await logoutAdmin(); setIsAuth(false); }}
-                            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100"
-                        >
-                            Sign out
-                        </button>
+                        {/* Extracted client logout action */}
+                        <AdminLogoutButton />
                     </div>
                 </div>
             </header>
@@ -92,7 +79,6 @@ export default function AdminPage() {
                         Manage Blogs
                     </Link>
                 </div>
-
 
                 <div className="mb-2">
                     <h1 className="text-2xl font-bold tracking-tight text-gray-900">Contact Submissions</h1>

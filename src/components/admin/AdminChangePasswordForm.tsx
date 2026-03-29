@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { changePassword } from '@/app/actions/admin-auth';
+import { createClient } from '@/utils/supabase/client';
 
 function EyeIcon({ open }: { open: boolean }) {
     return open ? (
@@ -81,14 +81,17 @@ export default function AdminChangePasswordForm() {
             return;
         }
 
-        const result = await changePassword(newPassword);
+        const supabase = createClient();
+        const { error } = await supabase.auth.updateUser({
+            password: newPassword,
+        });
         setIsLoading(false);
-        if (result.success) {
+        if (!error) {
             setStatus({ type: 'success', message: 'Password updated successfully!' });
             (e.target as HTMLFormElement).reset();
             setTimeout(closeModal, 1200);
         } else {
-            setStatus({ type: 'error', message: result.error ?? 'Something went wrong.' });
+            setStatus({ type: 'error', message: error.message ?? 'Something went wrong.' });
         }
     }
 
