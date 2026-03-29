@@ -36,7 +36,6 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
     const [submissions, setSubmissions] = useState<Submission[]>(initialSubmissions);
     const [updatingId, setUpdatingId] = useState<string | null>(null);
     const [replyingId, setReplyingId] = useState<string | null>(null);
-    const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
     const [viewMode, setViewMode] = useState<'table' | 'card'>('table');
 
     // Modal states
@@ -105,19 +104,6 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
         setIsDeleting(false);
     }
 
-    const toggleRow = (id: string, e: React.MouseEvent) => {
-        if ((e.target as HTMLElement).tagName === 'SELECT' || (e.target as HTMLElement).tagName === 'BUTTON' || (e.target as HTMLElement).closest('button')) {
-            return;
-        }
-        const newExpanded = new Set(expandedRows);
-        if (newExpanded.has(id)) {
-            newExpanded.delete(id);
-        } else {
-            newExpanded.add(id);
-        }
-        setExpandedRows(newExpanded);
-    };
-
     /* ─────────────── Reply helper ─────────────── */
     const replyHref = (sub: Submission) =>
         `mailto:${sub.email}?subject=${encodeURIComponent('Re: Your Inquiry at Meezan Educational Institute')}&body=${encodeURIComponent(`Hi ${sub.full_name},\n\nThank you for reaching out to Meezan Educational Institute regarding ${sub.course || 'our programs'}.\n\n[Your message here]\n\nBest regards,\nMeezan Educational Institute`)}`;
@@ -133,7 +119,6 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
                 </div>
             ) : (
                 paginatedSubmissions.map((sub) => {
-                    const isExpanded = expandedRows.has(sub.id);
                     return (
                         <div
                             key={sub.id}
@@ -178,25 +163,11 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
                             </div>
 
                             {/* Message toggle */}
-                            <button
-                                onClick={() => {
-                                    const newExpanded = new Set(expandedRows);
-                                    if (newExpanded.has(sub.id)) newExpanded.delete(sub.id);
-                                    else newExpanded.add(sub.id);
-                                    setExpandedRows(newExpanded);
-                                }}
-                                className="text-left text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1 transition-colors"
-                            >
-                                {isExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-                                {isExpanded ? 'Hide message' : 'Show message'}
-                            </button>
-                            {isExpanded && (
-                                <div className="bg-gray-50 rounded-lg p-3 text-xs text-gray-700 whitespace-pre-wrap border border-gray-200">
-                                    <p className="font-semibold text-gray-400 uppercase text-[10px] mb-1">Message</p>
-                                    {sub.message}
-                                    <p className="mt-2 text-[10px] text-gray-400">Source: {sub.source.replace('_', ' ')}</p>
-                                </div>
-                            )}
+                            <div className="bg-gray-50 rounded-lg p-3 text-xs text-gray-700 whitespace-pre-wrap border border-gray-200">
+                                <p className="font-semibold text-gray-400 uppercase text-[10px] mb-1">Message</p>
+                                {sub.message}
+                                <p className="mt-2 text-[10px] text-gray-400">Source: {sub.source?.replace('_', ' ') || 'Website'}</p>
+                            </div>
 
                             {/* Actions */}
                             <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
@@ -229,11 +200,12 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
             <table className="w-full text-sm text-left">
                 <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
                     <tr>
-                        <th scope="col" className="px-6 py-4 w-10"></th>
                         <th scope="col" className="px-6 py-4">Date</th>
                         <th scope="col" className="px-6 py-4">Name</th>
-                        <th scope="col" className="px-6 py-4">Contact</th>
+                        <th scope="col" className="px-6 py-4">Email</th>
+                        <th scope="col" className="px-6 py-4">Phone</th>
                         <th scope="col" className="px-6 py-4">Course</th>
+                        <th scope="col" className="px-6 py-4">Message</th>
                         <th scope="col" className="px-6 py-4">Status</th>
                         <th scope="col" className="px-6 py-4 text-center">Actions</th>
                     </tr>
@@ -241,7 +213,7 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
                 <tbody>
                     {paginatedSubmissions.length === 0 ? (
                         <tr>
-                            <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
+                            <td colSpan={8} className="px-6 py-12 text-center text-gray-500">
                                 <div className="flex justify-center mb-3 text-gray-400"><Search size={32} /></div>
                                 <p className="text-base font-medium text-gray-900 mb-1">No submissions found</p>
                                 <p className="text-sm">We couldn't find anything matching your current filters.</p>
@@ -249,76 +221,54 @@ export default function AdminSubmissionsTable({ initialSubmissions }: { initialS
                         </tr>
                     ) : (
                         paginatedSubmissions.map((sub) => (
-                            <React.Fragment key={sub.id}>
-                                <tr
-                                    className={`border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer ${expandedRows.has(sub.id) ? 'bg-gray-50' : 'bg-white'}`}
-                                    onClick={(e) => toggleRow(sub.id, e)}
-                                >
-                                    <td className="px-6 py-4 text-gray-400">
-                                        {expandedRows.has(sub.id) ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-gray-600" suppressHydrationWarning>
-                                        {new Date(sub.created_at).toLocaleDateString('en-GB')}
-                                    </td>
-                                    <td className="px-6 py-4 font-medium text-gray-900">{sub.full_name}</td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-gray-700">{sub.email}</div>
-                                        <div className="text-xs text-gray-500">{sub.phone || 'N/A'}</div>
-                                    </td>
-                                    <td className="px-6 py-4 text-gray-600">
-                                        {sub.course || <span className="text-gray-400">None</span>}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <select
-                                            value={sub.status}
-                                            onChange={(e) => handleStatusChange(sub.id, e.target.value)}
-                                            disabled={updatingId === sub.id}
-                                            className={`px-3 py-1.5 border rounded-lg text-xs font-semibold uppercase tracking-wider transition-all outline-none cursor-pointer disabled:opacity-50 appearance-none text-center ${getStatusStyles(sub.status)}`}
+                            <tr
+                                key={sub.id}
+                                className="border-b border-gray-100 hover:bg-gray-50 transition-colors bg-white"
+                            >
+                                <td className="px-6 py-4 whitespace-nowrap text-gray-600" suppressHydrationWarning>
+                                    {new Date(sub.created_at).toLocaleDateString('en-GB')}
+                                </td>
+                                <td className="px-6 py-4 font-medium text-gray-900">{sub.full_name}</td>
+                                <td className="px-6 py-4 text-gray-700">{sub.email}</td>
+                                <td className="px-6 py-4 text-gray-700">{sub.phone || 'N/A'}</td>
+                                <td className="px-6 py-4 text-gray-600">
+                                    {sub.course || <span className="text-gray-400">None</span>}
+                                </td>
+                                <td className="px-6 py-4 text-gray-600 max-w-xs truncate" title={sub.message}>
+                                    {sub.message}
+                                </td>
+                                <td className="px-6 py-4">
+                                    <select
+                                        value={sub.status}
+                                        onChange={(e) => handleStatusChange(sub.id, e.target.value)}
+                                        disabled={updatingId === sub.id}
+                                        className={`px-3 py-1.5 border rounded-lg text-xs font-semibold uppercase tracking-wider transition-all outline-none cursor-pointer disabled:opacity-50 appearance-none text-center ${getStatusStyles(sub.status)}`}
+                                    >
+                                        {STATUS_OPTIONS.map(status => (
+                                            <option key={status} value={status} className="bg-white text-gray-900 normal-case">{status}</option>
+                                        ))}
+                                    </select>
+                                </td>
+                                <td className="px-6 py-4 text-center">
+                                    <div className="flex justify-center items-center gap-3">
+                                        <a
+                                            href={replyHref(sub)}
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-full transition-colors border border-blue-100"
+                                            title="Reply to Submission"
                                         >
-                                            {STATUS_OPTIONS.map(status => (
-                                                <option key={status} value={status} className="bg-white text-gray-900 normal-case">{status}</option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                    <td className="px-6 py-4 text-center">
-                                        <div className="flex justify-center items-center gap-3">
-                                            <a
-                                                href={replyHref(sub)}
-                                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-full transition-colors border border-blue-100 ${replyingId === sub.id ? 'opacity-75 pointer-events-none' : ''}`}
-                                                title="Reply to Submission"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setReplyingId(sub.id);
-                                                    setTimeout(() => setReplyingId(null), 1000);
-                                                }}
-                                            >
-                                                {replyingId === sub.id ? <Loader2 size={14} className="animate-spin" /> : <Mail size={14} />}
-                                                {replyingId === sub.id ? 'Loading...' : 'Reply'}
-                                            </a>
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); setDeleteModalId(sub.id); }}
-                                                className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent"
-                                                title="Delete Submission"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {expandedRows.has(sub.id) && (
-                                    <tr className="bg-gray-50 border-b border-gray-200">
-                                        <td colSpan={7} className="px-6 py-6">
-                                            <div className="bg-white p-4 rounded-xl border border-gray-200 text-gray-700 shadow-sm relative">
-                                                <h4 className="text-xs font-semibold text-gray-400 uppercase mb-2">Message</h4>
-                                                <p className="whitespace-pre-wrap">{sub.message}</p>
-                                                <div className="absolute top-4 right-4 text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">
-                                                    Source: {sub.source.replace('_', ' ')}
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )}
-                            </React.Fragment>
+                                            <Mail size={14} />
+                                            Reply
+                                        </a>
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); setDeleteModalId(sub.id); }}
+                                            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent"
+                                            title="Delete Submission"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                         ))
                     )}
                 </tbody>
