@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { createClient } from '@/utils/supabase/client';
 
 /**
  * Uploads an image to Supabase Storage 'blog-images' bucket
@@ -6,6 +6,7 @@ import { supabase } from './supabaseClient';
  */
 export async function uploadBlogImage(file: File): Promise<{ url?: string; error?: string }> {
   try {
+    const supabase = createClient();
     const fileExt = file.name.split('.').pop();
     const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
     const filePath = `uploads/${fileName}`;
@@ -36,6 +37,7 @@ export async function uploadBlogImage(file: File): Promise<{ url?: string; error
  */
 export async function deleteBlogImage(url: string): Promise<{ success?: boolean; error?: string }> {
   try {
+    const supabase = createClient();
     const pathParts = url.split('/blog-images/');
     if (pathParts.length < 2) return { success: true };
     

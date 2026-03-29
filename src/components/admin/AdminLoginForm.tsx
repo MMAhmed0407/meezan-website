@@ -5,7 +5,11 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
 
-export default function AdminLoginForm() {
+interface AdminLoginFormProps {
+    onSuccess?: () => void;
+}
+
+export default function AdminLoginForm({ onSuccess }: AdminLoginFormProps = {}) {
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +33,7 @@ export default function AdminLoginForm() {
             setError(error.message || 'Invalid credentials');
             setIsLoading(false);
         } else {
+            if (onSuccess) onSuccess();
             router.refresh();
         }
     }
