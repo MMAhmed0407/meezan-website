@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import Link from "next/link";
 import { Trophy } from "lucide-react";
 import JourneyTimeline from "@/components/about/JourneyTimeline";

@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import HeroSection from "@/components/home/HeroSection";
 import StatsSection from "@/components/home/StatsSection";
 import CategoriesSection from "@/components/home/CategoriesSection";

@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import type { Metadata } from "next";
 import TeachersTrainingPageContent from "./TeachersTrainingPageContent";
 import { BreadcrumbSchema } from "@/components/global/SchemaOrg";

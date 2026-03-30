@@ -1,12 +1,10 @@
-'use server';
-
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/client';
 
 // ─── Blog CRUD (Server-side Supabase Actions) ───
 
 export async function createBlog(data: any) {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data: blog, error } = await supabase
       .from('blogs')
       .insert({
@@ -48,7 +46,7 @@ export async function createBlog(data: any) {
 
 export async function updateBlog(id: string, data: any) {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data: blog, error } = await supabase
       .from('blogs')
       .update({
@@ -91,7 +89,7 @@ export async function updateBlog(id: string, data: any) {
 
 export async function deleteBlog(id: string) {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { error } = await supabase
       .from('blogs')
       .delete()
@@ -111,7 +109,7 @@ export async function deleteBlog(id: string) {
 
 export async function getBlogs() {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data: blogs, error } = await supabase
       .from('blogs')
       .select('*')
@@ -131,7 +129,7 @@ export async function getBlogs() {
 
 export async function getBlogById(id: string) {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data: blog, error } = await supabase
       .from('blogs')
       .select('*')
@@ -154,7 +152,7 @@ export async function getBlogById(id: string) {
 
 export async function getPublishedBlogs() {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data: blogs, error } = await supabase
       .from('blogs')
       .select('*')
@@ -175,7 +173,7 @@ export async function getPublishedBlogs() {
 
 export async function toggleBlogStatus(id: string, newStatus: string) {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { error } = await supabase
       .from('blogs')
       .update({ status: newStatus })
@@ -195,7 +193,7 @@ export async function toggleBlogStatus(id: string, newStatus: string) {
 
 export async function getBlogBySlug(slug: string) {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data: blog, error } = await supabase
       .from('blogs')
       .select('*')

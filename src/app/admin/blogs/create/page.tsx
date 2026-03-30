@@ -1,5 +1,7 @@
 'use client';
 
+export const runtime = 'edge';
+
 import { useEffect, useState } from 'react';
 import { checkAuth, logoutAdmin } from '@/app/actions/admin-auth';
 import AdminLoginForm from '@/components/admin/AdminLoginForm';
