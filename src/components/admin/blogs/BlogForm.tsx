@@ -115,10 +115,11 @@ Paste the prompt above into ChatGPT Plus, Midjourney, or DALL-E to generate your
         ogDescription: initialData.ogDescription || '',
         ogImage: initialData.ogImage || '',
         featuredImage: initialData.featuredImage || '',
-        category: initialData.category || '',
+        category: initialData.Category || '',
         author: initialData.author || '',
         keywords: initialData.keywords?.join(', ') || '',
         tags: initialData.tags?.join(', ') || '',
+        status: initialData.published ? 'published' : 'draft',
         publishDate: initialData.publishDate ? new Date(initialData.publishDate).toISOString().split('T')[0] : '',
       }
     : {

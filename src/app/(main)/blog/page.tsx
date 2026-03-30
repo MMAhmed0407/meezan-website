@@ -1,7 +1,5 @@
 'use client';
 
-export const runtime = 'edge';
-
 import { useEffect, useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
@@ -13,11 +11,11 @@ type Blog = {
     id: string;
     title: string;
     slug: string;
-    short_description: string | null;
-    featured_image: string | null;
-    category: string | null;
-    publish_date: string | null;
-    created_at: string;
+    shortDescription: string | null;
+    featuredImage: string | null;
+    Category: string | null;
+    publishDate: string | null;
+    createdAt: string;
 };
 
 export default function BlogPage() {
@@ -81,9 +79,9 @@ export default function BlogPage() {
                 <Link href={`/blog/${featuredPost.slug}`} className="block group mb-8 md:mb-10">
                     <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-border group-hover:shadow-xl transition-all duration-300 flex flex-col lg:flex-row">
                         <div className="w-full lg:w-3/5 h-[250px] sm:h-[350px] lg:h-[450px] relative overflow-hidden bg-gray-100">
-                            {featuredPost.featured_image && (
+                            {featuredPost.featuredImage && (
                                 <Image
-                                    src={featuredPost.featured_image}
+                                    src={featuredPost.featuredImage}
                                     alt={`Featured post: ${featuredPost.title}`}
                                     fill
                                     className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -94,17 +92,17 @@ export default function BlogPage() {
                         </div>
                         <div className="w-full lg:w-2/5 p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
                             <span className="bg-brand-accent/20 text-brand-deeper-teal font-bold tracking-wider text-[10px] md:text-xs px-3 py-1.5 rounded-md uppercase w-fit mb-4 md:mb-6">
-                                Featured • {featuredPost.category || 'Article'}
+                                Featured • {featuredPost.Category || 'Article'}
                             </span>
                             <h2 className="text-xl md:text-2xl lg:text-4xl font-bold text-brand-deeper-teal mb-4 md:mb-6 group-hover:text-brand-teal transition-colors leading-tight">
                                 {featuredPost.title}
                             </h2>
                             <p className="text-foreground/70 text-base md:text-lg mb-4 md:mb-6 leading-relaxed line-clamp-3 md:line-clamp-none">
-                                {featuredPost.short_description || 'Read full article to learn more.'}
+                                {featuredPost.shortDescription || 'Read full article to learn more.'}
                             </p>
 
                             <div className="flex items-center gap-6 mt-auto">
-                                <span className="flex items-center gap-2 text-xs md:text-sm font-medium text-foreground/60"><Calendar size={16} /> {featuredPost.publish_date ? format(new Date(featuredPost.publish_date), 'MMMM d, yyyy') : format(new Date(featuredPost.created_at), 'MMMM d, yyyy')}</span>
+                                <span className="flex items-center gap-2 text-xs md:text-sm font-medium text-foreground/60"><Calendar size={16} /> {featuredPost.publishDate ? format(new Date(featuredPost.publishDate), 'MMMM d, yyyy') : format(new Date(featuredPost.createdAt), 'MMMM d, yyyy')}</span>
                                 <span className="flex items-center gap-2 text-xs md:text-sm font-medium text-foreground/60"><Clock size={16} /> 5 Min Read</span>
                             </div>
                         </div>
@@ -118,11 +116,11 @@ export default function BlogPage() {
                             <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-border group-hover:shadow-lg transition-all duration-300 flex flex-col flex-1">
                                 <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-gray-100">
                                     <span className="absolute top-4 left-4 z-10 bg-brand-accent text-brand-deeper-teal font-bold tracking-wide text-[10px] px-3 py-1 rounded-md shadow-sm uppercase">
-                                        {post.category || 'Article'}
+                                        {post.Category || 'Article'}
                                     </span>
-                                    {post.featured_image && (
+                                    {post.featuredImage && (
                                         <Image
-                                            src={post.featured_image}
+                                            src={post.featuredImage}
                                             alt={post.title}
                                             fill
                                             loading="lazy"
@@ -137,12 +135,12 @@ export default function BlogPage() {
                                         {post.title}
                                     </h3>
                                     <p className="text-foreground/70 text-sm leading-relaxed mb-6 line-clamp-3">
-                                        {post.short_description || 'Read more...'}
+                                        {post.shortDescription || 'Read more...'}
                                     </p>
 
                                     <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
                                         <div className="flex items-center gap-4">
-                                            <span className="text-xs font-medium text-foreground/50">{post.publish_date ? format(new Date(post.publish_date), 'MMM d, yyyy') : format(new Date(post.created_at), 'MMM d, yyyy')}</span>
+                                            <span className="text-xs font-medium text-foreground/50">{post.publishDate ? format(new Date(post.publishDate), 'MMM d, yyyy') : format(new Date(post.createdAt), 'MMM d, yyyy')}</span>
                                         </div>
                                         <span className="text-brand-teal font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
                                             Read More <ArrowRight size={14} />

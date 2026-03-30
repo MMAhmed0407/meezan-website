@@ -1,7 +1,5 @@
 'use client';
 
-export const runtime = 'edge';
-
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from "next/image";
@@ -14,22 +12,22 @@ type BlogPost = {
     id: string;
     title: string;
     slug: string;
-    short_description: string | null;
+    shortDescription: string | null;
     content: string;
-    meta_title: string | null;
-    meta_description: string | null;
+    metaTitle: string | null;
+    metaDescription: string | null;
     keywords: string[];
-    canonical_url: string | null;
-    og_title: string | null;
-    og_description: string | null;
-    og_image: string | null;
-    featured_image: string | null;
-    category: string | null;
+    canonicalUrl: string | null;
+    ogTitle: string | null;
+    ogDescription: string | null;
+    ogImage: string | null;
+    featuredImage: string | null;
+    Category: string | null;
     tags: string[];
-    status: string;
-    publish_date: string | null;
+    published: boolean;
+    publishDate: string | null;
     author: string | null;
-    created_at: string;
+    createdAt: string;
 };
 
 export default function BlogPostPage() {
@@ -48,7 +46,7 @@ export default function BlogPostPage() {
             } else {
                 setPost(data as BlogPost);
                 // Set document title
-                document.title = data.meta_title || data.title || 'Blog Post';
+                document.title = data.metaTitle || data.title || 'Blog Post';
             }
             setIsLoading(false);
         }
@@ -76,7 +74,7 @@ export default function BlogPostPage() {
     }
 
     const title = post.title;
-    const publishDate = post.publish_date ? new Date(post.publish_date) : new Date(post.created_at);
+    const publishDate = post.publishDate ? new Date(post.publishDate) : new Date(post.createdAt);
 
     return (
         <article className="w-full bg-white pb-24" style={{ colorScheme: 'light' }}>
@@ -91,7 +89,7 @@ export default function BlogPostPage() {
 
                     <div className="mb-6 flex justify-center">
                         <span className="inline-block bg-[#0B5E65]/10 text-[#0B5E65] font-bold text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full">
-                            {post.category || 'Article'}
+                            {post.Category || 'Article'}
                         </span>
                     </div>
 
@@ -99,9 +97,9 @@ export default function BlogPostPage() {
                         {title}
                     </h1>
 
-                    {post.short_description && (
+                    {post.shortDescription && (
                         <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-500 mb-8 leading-relaxed font-medium">
-                            {post.short_description}
+                            {post.shortDescription}
                         </p>
                     )}
 
@@ -119,11 +117,11 @@ export default function BlogPostPage() {
             </header>
 
             {/* FEATURED IMAGE */}
-            {post.featured_image && (
+            {post.featuredImage && (
                 <div className="max-w-3xl mx-auto px-4 -mt-8 lg:-mt-12 mb-12 lg:mb-16">
                     <div className="relative aspect-[16/9] w-full rounded-2xl lg:rounded-[24px] overflow-hidden shadow-xl ring-1 ring-black/5">
                         <Image
-                            src={post.featured_image}
+                            src={post.featuredImage}
                             alt={`Meezan Blog: ${title}`}
                             fill
                             priority={true}

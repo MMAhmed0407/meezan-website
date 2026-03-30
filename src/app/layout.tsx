@@ -4,6 +4,8 @@ import "./globals.css";
 
 import { LocalBusinessSchema } from "@/components/global/SchemaOrg";
 import { Toaster } from 'sonner';
+import { GoogleAnalytics } from '@next/third-parties/google';
+import { CSPostHogProvider } from './providers/PostHogProvider';
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -35,8 +37,13 @@ export default function RootLayout({
         <LocalBusinessSchema />
       </head>
       <body className={`${poppins.variable} font-sans antialiased text-foreground bg-background selection:bg-brand-teal/20 selection:text-brand-deeper-teal overflow-x-hidden flex flex-col min-h-screen`}>
-        {children}
-        <Toaster position="top-right" richColors />
+        <CSPostHogProvider>
+          {children}
+          <Toaster position="top-right" richColors />
+        </CSPostHogProvider>
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID as string} />
+        )}
       </body>
     </html>
   );

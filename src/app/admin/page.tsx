@@ -6,8 +6,6 @@ import AdminLogoutButton from '@/components/admin/AdminLogoutButton';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const runtime = 'edge';
-
 // @ts-ignore - Supabase type casting for contact_submissions might be loose
 type Submission = {
     id: string;

@@ -16,7 +16,7 @@ interface Slide {
 const slides: Slide[] = [
   {
     category: "Annual Health Camp",
-    text: "Over 200 residents received free medical consultations at our annual health camp organised by the Shoukath Ali Charitable Clinic.",
+    text: "Over 1000 residents received free medical consultations at our annual health camp organised by the Shoukath Ali Charitable Clinic.",
     source: "Shoukath Ali Charitable Clinic",
     tag: "Hyderabad, 2024",
   },
@@ -39,12 +39,17 @@ const slides: Slide[] = [
     tag: "Hyderabad, 2023",
   },
   {
+    category: "Partnered with Safa Baitul Maal",
+    text: "Partnered with Safa Baitul Maal to support education of underprivileged students",
+    source: "Safa Baitul Maal",
+    tag: "2014",
+  },
+  {
     category: "SEED USA Partnership",
     text: "Partnered with SEED USA to support 105 underprivileged students through academic programmes in paramedics and teacher’s training",
     source: "Seed USA Partnership",
     tag: "2025",
   },
-
 ];
 
 const AUTOPLAY_DURATION = 5000;

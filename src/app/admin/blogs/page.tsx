@@ -1,7 +1,5 @@
 'use client';
 
-export const runtime = 'edge';
-
 import { useEffect, useState } from 'react';
 import { checkAuth, logoutAdmin } from '@/app/actions/admin-auth';
 import { getBlogs, deleteBlog } from '@/app/actions/blog-actions';
@@ -15,7 +13,7 @@ type Blog = {
     title: string;
     slug: string;
     status: string;
-    publish_date: string | null;
+    publishDate: string | null;
 };
 
 export default function AdminBlogsPage() {

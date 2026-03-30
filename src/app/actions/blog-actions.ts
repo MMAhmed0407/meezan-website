@@ -1,29 +1,31 @@
-import { createClient } from '@/utils/supabase/client';
+'use server';
+
+import { createClient } from '@/utils/supabase/server';
 
 // ─── Blog CRUD (Server-side Supabase Actions) ───
 
 export async function createBlog(data: any) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: blog, error } = await supabase
       .from('blogs')
       .insert({
         title: data.title,
         slug: data.slug,
-        short_description: data.shortDescription || null,
+        shortDescription: data.shortDescription || null,
         content: data.content,
-        meta_title: data.metaTitle || null,
-        meta_description: data.metaDescription || null,
+        metaTitle: data.metaTitle || null,
+        metaDescription: data.metaDescription || null,
         keywords: data.keywords || [],
-        canonical_url: data.canonicalUrl || null,
-        og_title: data.ogTitle || null,
-        og_description: data.ogDescription || null,
-        og_image: data.ogImage || null,
-        featured_image: data.featuredImage || null,
+        canonicalUrl: data.canonicalUrl || null,
+        ogTitle: data.ogTitle || null,
+        ogDescription: data.ogDescription || null,
+        ogImage: data.ogImage || null,
+        featuredImage: data.featuredImage || null,
         category: data.category || null,
         tags: data.tags || [],
         status: data.status || 'draft',
-        publish_date: data.publishDate ? new Date(data.publishDate).toISOString() : null,
+        publishDate: data.publishDate ? new Date(data.publishDate).toISOString() : null,
         author: data.author || null,
       })
       .select()
@@ -46,26 +48,26 @@ export async function createBlog(data: any) {
 
 export async function updateBlog(id: string, data: any) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: blog, error } = await supabase
       .from('blogs')
       .update({
         title: data.title,
         slug: data.slug,
-        short_description: data.shortDescription || null,
+        shortDescription: data.shortDescription || null,
         content: data.content,
-        meta_title: data.metaTitle || null,
-        meta_description: data.metaDescription || null,
+        metaTitle: data.metaTitle || null,
+        metaDescription: data.metaDescription || null,
         keywords: data.keywords || [],
-        canonical_url: data.canonicalUrl || null,
-        og_title: data.ogTitle || null,
-        og_description: data.ogDescription || null,
-        og_image: data.ogImage || null,
-        featured_image: data.featuredImage || null,
+        canonicalUrl: data.canonicalUrl || null,
+        ogTitle: data.ogTitle || null,
+        ogDescription: data.ogDescription || null,
+        ogImage: data.ogImage || null,
+        featuredImage: data.featuredImage || null,
         category: data.category || null,
         tags: data.tags || [],
         status: data.status || 'draft',
-        publish_date: data.publishDate ? new Date(data.publishDate).toISOString() : null,
+        publishDate: data.publishDate ? new Date(data.publishDate).toISOString() : null,
         author: data.author || null,
       })
       .eq('id', id)
@@ -89,7 +91,7 @@ export async function updateBlog(id: string, data: any) {
 
 export async function deleteBlog(id: string) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase
       .from('blogs')
       .delete()
@@ -109,11 +111,11 @@ export async function deleteBlog(id: string) {
 
 export async function getBlogs() {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: blogs, error } = await supabase
       .from('blogs')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('createdAt', { ascending: false });
 
     if (error) {
       console.error('Error fetching blogs:', error);
@@ -129,7 +131,7 @@ export async function getBlogs() {
 
 export async function getBlogById(id: string) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: blog, error } = await supabase
       .from('blogs')
       .select('*')
@@ -152,12 +154,12 @@ export async function getBlogById(id: string) {
 
 export async function getPublishedBlogs() {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: blogs, error } = await supabase
       .from('blogs')
       .select('*')
       .eq('status', 'published')
-      .order('publish_date', { ascending: false });
+      .order('publishDate', { ascending: false });
 
     if (error) {
       console.error('Error fetching published blogs:', error);
@@ -173,7 +175,7 @@ export async function getPublishedBlogs() {
 
 export async function toggleBlogStatus(id: string, newStatus: string) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase
       .from('blogs')
       .update({ status: newStatus })
@@ -193,7 +195,7 @@ export async function toggleBlogStatus(id: string, newStatus: string) {
 
 export async function getBlogBySlug(slug: string) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: blog, error } = await supabase
       .from('blogs')
       .select('*')
