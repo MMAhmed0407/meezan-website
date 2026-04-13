@@ -2,19 +2,19 @@
   ENVIRONMENT VARIABLE REQUIRED:
   Add the following to your .env.local file:
     N8N_API_KEY=your_secure_random_secret_here
+    SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 
-  Also add the same key to your Cloudflare Pages dashboard:
-    Settings → Environment Variables → N8N_API_KEY
+  Also add both keys to your Netlify dashboard:
+    Site configuration → Environment Variables
 
-  Generate a strong secret with: openssl rand -hex 32
+  Generate a strong API secret with: openssl rand -hex 32
 */
-
 export const runtime = 'nodejs';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { mkdir, writeFile } from 'fs/promises';
 import path from 'path';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 
 interface BlogRequestBody {
   title: string;
@@ -57,11 +57,14 @@ interface BlogPostPayload {
   author?: string;
 }
 
+export async function GET(): Promise<NextResponse> {
+  return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
+}
+
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const apiKey = request.headers.get('x-api-key');
-  
   if (!apiKey || apiKey !== process.env.N8N_API_KEY) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -69,17 +72,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     let imagePath: string | undefined = body.featuredImage;
 
-    // Handle base64 image parsing and uploading
     if (body.featuredImageBase64) {
       const buffer = Buffer.from(body.featuredImageBase64, 'base64');
       const filename = `${body.slug}-${Date.now()}.jpg`;
       const publicBlogImagesDir = path.join(process.cwd(), 'public', 'images', 'blog');
-      
-      // Ensure the directory exists
       await mkdir(publicBlogImagesDir, { recursive: true });
-      // Write the binary data to the file
       await writeFile(path.join(publicBlogImagesDir, filename), buffer);
-      
       imagePath = `/images/blog/${filename}`;
     }
 
@@ -103,7 +101,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       author: body.author,
     };
 
-    const supabase = await createClient();
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
     const { error } = await supabase.from('blogs').insert(payload);
 
     if (error) {
@@ -117,7 +119,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }, { status: 201 });
 
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Unknown error occurred while processing the request.';
+    const message = error instanceof Error
+      ? error.message
+      : 'Unknown error occurred while processing the request.';
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
