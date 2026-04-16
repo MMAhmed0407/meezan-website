@@ -30,11 +30,28 @@ export default async function AdminPage() {
         return <AdminLoginForm />;
     }
 
+    // Helper to enforce strict bounds on fetching
+    const withTimeout = <T>(promise: Promise<T>, ms: number = 500): Promise<T> =>
+      Promise.race([
+        promise,
+        new Promise<T>((_, reject) =>
+          setTimeout(() => reject(new Error('Fetch timeout exceeded')), ms)
+        )
+      ]);
+
     // Fetch the secured data directly in the Server render pass
-    const { data: rawSubmissions } = await supabase
-        .from('contact_submissions')
-        .select('*')
-        .order('created_at', { ascending: false });
+    let rawSubmissions: any = [];
+    try {
+        const res = await withTimeout(
+            supabase
+                .from('contact_submissions')
+                .select('*')
+                .order('created_at', { ascending: false })
+        );
+        rawSubmissions = res.data || [];
+    } catch (e) {
+        console.error("Admin submissions fetch timed out or failed:", e);
+    }
 
     // Explicit cast for TS mapping to table
     const submissions = (rawSubmissions || []) as Submission[];
