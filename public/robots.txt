@@ -1,4 +1,11 @@
 User-agent: *
-Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /blog/
 
-Sitemap: https://www.meezanedu.com/sitemap.xml
+User-agent: Googlebot
+Disallow: /admin/
+Disallow: /api/
+Disallow: /blog/
+
+Sitemap: https://meezanedu.com/sitemap.xml

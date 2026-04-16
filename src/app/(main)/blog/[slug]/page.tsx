@@ -1,76 +1,42 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
-import { getBlogBySlug } from "@/app/actions/blog-actions";
+import { getBlogBySlug, getPublishedBlogs } from "@/app/actions/blog-actions";
 import { format } from "date-fns";
+import { notFound } from 'next/navigation';
 
-type BlogPost = {
-    id: string;
-    title: string;
-    slug: string;
-    shortDescription: string | null;
-    content: string;
-    metaTitle: string | null;
-    metaDescription: string | null;
-    keywords: string[];
-    canonicalUrl: string | null;
-    ogTitle: string | null;
-    ogDescription: string | null;
-    ogImage: string | null;
-    featuredImage: string | null;
-    Category: string | null;
-    tags: string[];
-    published: boolean;
-    publishDate: string | null;
-    author: string | null;
-    createdAt: string;
-};
+export const revalidate = 86400; // Strict ISR
+export const dynamicParams = true; // Allow new blogs to fall back to dynamic generation, but cache them immediately.
 
-export default function BlogPostPage() {
-    const params = useParams();
-    const slug = params.slug as string;
-    const [post, setPost] = useState<BlogPost | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [notFound, setNotFound] = useState(false);
+export async function generateStaticParams() {
+    const blogs = await getPublishedBlogs();
+    if (!blogs) return [];
+    
+    return blogs.map((post) => ({
+        slug: post.slug,
+    }));
+}
 
-    useEffect(() => {
-        async function load() {
-            if (!slug) return;
-            const data = await getBlogBySlug(slug);
-            if (!data) {
-                setNotFound(true);
-            } else {
-                setPost(data as BlogPost);
-                // Set document title
-                document.title = data.metaTitle || data.title || 'Blog Post';
-            }
-            setIsLoading(false);
-        }
-        load();
-    }, [slug]);
-
-    if (isLoading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="animate-spin w-8 h-8 border-4 border-brand-teal border-t-transparent rounded-full" />
-            </div>
-        );
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = await getBlogBySlug(slug);
+    
+    if (!post) {
+        return { title: 'Post Not Found' };
     }
+    
+    return {
+        title: post.metaTitle || post.title,
+        description: post.metaDescription || post.shortDescription,
+    };
+}
 
-    if (notFound || !post) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="text-center">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-4">Post Not Found</h1>
-                    <p className="text-gray-500 mb-6">The blog post you are looking for does not exist.</p>
-                    <Link href="/blog" className="text-brand-teal hover:underline font-semibold">Back to Blog</Link>
-                </div>
-            </div>
-        );
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = await getBlogBySlug(slug);
+
+    if (!post) {
+        notFound();
     }
 
     const title = post.title;
@@ -78,7 +44,6 @@ export default function BlogPostPage() {
 
     return (
         <article className="w-full bg-white pb-24" style={{ colorScheme: 'light' }}>
-
             {/* HEADER SECTION */}
             <header className="bg-gray-50/50 pt-20 pb-12 lg:pt-28 lg:pb-20 border-b border-gray-100">
                 <div className="max-w-4xl mx-auto px-4 text-center">

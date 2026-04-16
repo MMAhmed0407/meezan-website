@@ -152,14 +152,25 @@ export async function getBlogById(id: string) {
 
 // ─── Public Methods ───
 
+// Helper to enforce strict 500ms bounds on fetching to prevent Handler Duration spikes
+const withTimeout = <T>(promise: Promise<T>, ms: number = 500): Promise<T> =>
+  Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error('Fetch timeout exceeded')), ms)
+    )
+  ]);
+
 export async function getPublishedBlogs() {
   try {
     const supabase = await createClient();
-    const { data: blogs, error } = await supabase
-      .from('blogs')
-      .select('*')
-      .eq('status', 'published')
-      .order('publishDate', { ascending: false });
+    const { data: blogs, error } = await withTimeout(
+      supabase
+        .from('blogs')
+        .select('*')
+        .eq('status', 'published')
+        .order('publishDate', { ascending: false })
+    );
 
     if (error) {
       console.error('Error fetching published blogs:', error);
@@ -172,6 +183,7 @@ export async function getPublishedBlogs() {
     return [];
   }
 }
+
 
 export async function toggleBlogStatus(id: string, newStatus: string) {
   try {
@@ -196,12 +208,14 @@ export async function toggleBlogStatus(id: string, newStatus: string) {
 export async function getBlogBySlug(slug: string) {
   try {
     const supabase = await createClient();
-    const { data: blog, error } = await supabase
-      .from('blogs')
-      .select('*')
-      .eq('slug', slug)
-      .eq('status', 'published')
-      .single();
+    const { data: blog, error } = await withTimeout(
+      supabase
+        .from('blogs')
+        .select('*')
+        .eq('slug', slug)
+        .eq('status', 'published')
+        .single()
+    );
 
     if (error) {
       console.error('Error fetching blog by slug:', error);

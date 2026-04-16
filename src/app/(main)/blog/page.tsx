@@ -1,47 +1,17 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ArrowRight, Clock, Calendar } from "lucide-react";
 import { getPublishedBlogs } from "@/app/actions/blog-actions";
 import { format } from "date-fns";
 
-type Blog = {
-    id: string;
-    title: string;
-    slug: string;
-    shortDescription: string | null;
-    featuredImage: string | null;
-    Category: string | null;
-    publishDate: string | null;
-    createdAt: string;
-};
+export const revalidate = 86400;
 
-export default function BlogPage() {
-    const [publishedBlogs, setPublishedBlogs] = useState<Blog[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+export default async function BlogPage() {
+    const publishedBlogs = await getPublishedBlogs();
 
-    useEffect(() => {
-        async function load() {
-            const data = await getPublishedBlogs();
-            setPublishedBlogs(data as Blog[]);
-            setIsLoading(false);
-        }
-        load();
-    }, []);
-
-    if (isLoading) {
+    if (!publishedBlogs || publishedBlogs.length === 0) {
         return (
-            <div className="w-full bg-brand-light pb-24 min-h-screen flex items-center justify-center">
-                <div className="animate-spin w-8 h-8 border-4 border-brand-teal border-t-transparent rounded-full" />
-            </div>
-        );
-    }
-
-    if (publishedBlogs.length === 0) {
-        return (
-            <div className="w-full bg-brand-light pb-24 text-center">
+            <div className="w-full bg-brand-light pb-24 text-center min-h-screen">
                 <section className="bg-brand-light pt-8 pb-6 px-4">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-deeper-teal mb-3">Blog</h1>
                     <p className="mt-12 text-foreground/60 text-lg">No published articles yet. Please check back later!</p>
