@@ -5,7 +5,7 @@ const BAD_BOT_USER_AGENTS = [
   'python-requests', 'curl', 'wget', 'postman', 'insomnia', 'httpclient', 'headless', 'puppeteer'
 ];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const userAgent = request.headers.get('user-agent')?.toLowerCase() || '';
   const pathname = request.nextUrl.pathname;
 

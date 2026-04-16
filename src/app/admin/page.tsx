@@ -31,10 +31,10 @@ export default async function AdminPage() {
     }
 
     // Helper to enforce strict bounds on fetching
-    const withTimeout = <T>(promise: Promise<T>, ms: number = 500): Promise<T> =>
+    const withTimeout = (promise: Promise<any>, ms: number = 500): Promise<any> =>
       Promise.race([
         promise,
-        new Promise<T>((_, reject) =>
+        new Promise<any>((_, reject) =>
           setTimeout(() => reject(new Error('Fetch timeout exceeded')), ms)
         )
       ]);
@@ -42,11 +42,14 @@ export default async function AdminPage() {
     // Fetch the secured data directly in the Server render pass
     let rawSubmissions: any = [];
     try {
+        const query = supabase
+            .from('contact_submissions')
+            .select('*')
+            .order('created_at', { ascending: false });
+            
         const res = await withTimeout(
-            supabase
-                .from('contact_submissions')
-                .select('*')
-                .order('created_at', { ascending: false })
+            query as unknown as Promise<any>,
+            500
         );
         rawSubmissions = res.data || [];
     } catch (e) {

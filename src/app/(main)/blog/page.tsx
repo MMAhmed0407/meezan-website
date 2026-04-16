@@ -81,7 +81,7 @@ export default async function BlogPage() {
 
                 {/* GRID */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {gridPosts.map((post: any) => (
+                    {gridPosts.map((post: { slug: string; featuredImage: string | null; Category: string | null; title: string; shortDescription: string | null; publishDate: string | null; createdAt: string; }) => (
                         <Link href={`/blog/${post.slug}`} key={post.slug} className="group flex flex-col h-full">
                             <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-border group-hover:shadow-lg transition-all duration-300 flex flex-col flex-1">
                                 <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-gray-100">

@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
+import { createClient as createVanillaClient } from '@supabase/supabase-js';
 
 // ─── Blog CRUD (Server-side Supabase Actions) ───
 
@@ -153,23 +154,32 @@ export async function getBlogById(id: string) {
 // ─── Public Methods ───
 
 // Helper to enforce strict 500ms bounds on fetching to prevent Handler Duration spikes
-const withTimeout = <T>(promise: Promise<T>, ms: number = 500): Promise<T> =>
+const withTimeout = (promise: Promise<any>, ms: number = 500): Promise<any> =>
   Promise.race([
     promise,
-    new Promise<T>((_, reject) =>
+    new Promise<any>((_, reject) =>
       setTimeout(() => reject(new Error('Fetch timeout exceeded')), ms)
     )
   ]);
 
 export async function getPublishedBlogs() {
   try {
-    const supabase = await createClient();
+    const supabase = createVanillaClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    
+    // 1. Define the query but don't await it yet
+    const query = supabase
+      .from('blogs')
+      .select('*')
+      .eq('status', 'published')
+      .order('publishDate', { ascending: false });
+
+    // 2. Wrap it in withTimeout, explicitly casting to Promise
     const { data: blogs, error } = await withTimeout(
-      supabase
-        .from('blogs')
-        .select('*')
-        .eq('status', 'published')
-        .order('publishDate', { ascending: false })
+      query as unknown as Promise<any>,
+      500
     );
 
     if (error) {
@@ -207,14 +217,21 @@ export async function toggleBlogStatus(id: string, newStatus: string) {
 
 export async function getBlogBySlug(slug: string) {
   try {
-    const supabase = await createClient();
+    const supabase = createVanillaClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    
+    const query = supabase
+      .from('blogs')
+      .select('*')
+      .eq('slug', slug)
+      .eq('status', 'published')
+      .single();
+
     const { data: blog, error } = await withTimeout(
-      supabase
-        .from('blogs')
-        .select('*')
-        .eq('slug', slug)
-        .eq('status', 'published')
-        .single()
+      query as unknown as Promise<any>,
+      500
     );
 
     if (error) {

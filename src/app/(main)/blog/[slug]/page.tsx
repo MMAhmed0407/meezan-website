@@ -12,7 +12,7 @@ export async function generateStaticParams() {
     const blogs = await getPublishedBlogs();
     if (!blogs) return [];
     
-    return blogs.map((post) => ({
+    return blogs.map((post: { slug: string }) => ({
         slug: post.slug,
     }));
 }
