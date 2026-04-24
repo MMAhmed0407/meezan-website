@@ -1,8 +1,12 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { MotionDiv } from "@/components/global/Motion";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "About Us | Meezan Educational Institute",
+    description: "Learn about Meezan Educational Institute's journey, our leadership team, and our mission to empower through education.",
+};
 import { GraduationCap, ClipboardList, Target, Eye, HeartHandshake, BadgeCheck } from "lucide-react";
 import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
 import CommunityCarousel from "@/components/about/CommunityCarousel";
@@ -25,7 +29,7 @@ export default function AboutPage() {
             {/* HERO SECTION */}
             <section className="relative min-h-[70vh] flex flex-col lg:flex-row w-full bg-brand-deeper-teal">
                 <div className="w-full lg:w-1/2 relative flex flex-col justify-center px-6 lg:px-16 py-20 lg:py-0 z-10">
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
@@ -37,7 +41,7 @@ export default function AboutPage() {
                         <p className="text-lg text-white/80 leading-relaxed border-l-4 border-brand-teal pl-4">
                             Encourage to Educate to Empower — Building careers, transforming lives, and serving communities since our founding in Hyderabad.
                         </p>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
                 <div className="w-full lg:w-1/2 relative min-h-[40vh] lg:min-h-full">
                     {/* Dynamic carousel — images fetched from Supabase Storage (web-images/about_carousel).
@@ -69,7 +73,7 @@ export default function AboutPage() {
             {/* OUR STORY */}
             <section className="py-20 px-4 sm:px-8 lg:px-16" style={{ backgroundColor: "#F0FAFA" }} aria-labelledby="about-story-heading">
                 <div className="max-w-4xl mx-auto flex flex-col items-center">
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
@@ -84,7 +88,7 @@ export default function AboutPage() {
                                 From paramedical sciences to personality development and teacher training, we bridge the gap between learning and real-world success. We believe that true education goes beyond textbooks to develop the whole person — equipping them with practical competencies and robust character.
                             </p>
                         </div>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
             </section>
 
@@ -93,7 +97,7 @@ export default function AboutPage() {
             {/* MISSION & VISION */}
             <section className="py-20 bg-brand-light" aria-label="Mission and Vision">
                 <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-6">
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -105,9 +109,9 @@ export default function AboutPage() {
                         <p className="text-lg text-white/80 leading-relaxed">
                             To provide accessible, high-quality education and training that transforms individuals and communities. We strive to be the catalyst for positive change in careers and lives.
                         </p>
-                    </motion.div>
+                    </MotionDiv>
 
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -120,7 +124,7 @@ export default function AboutPage() {
                         <p className="text-lg text-white/80 leading-relaxed">
                             To be Hyderabad's most trusted institution for paramedical, professional, and teacher education, continuously setting new benchmarks for academic excellence.
                         </p>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
             </section>
 
@@ -151,7 +155,7 @@ export default function AboutPage() {
                                 desc: "Quality education should be accessible to all. Many of our programmes are free or heavily subsidised."
                             }
                         ].map((item, i) => (
-                            <motion.div
+                            <MotionDiv
                                 key={i}
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
@@ -166,7 +170,7 @@ export default function AboutPage() {
                                 <p style={{ fontSize: "14px", color: "#5A5A72", marginTop: "8px", textAlign: "center", maxWidth: "200px", lineHeight: 1.5 }}>
                                     {item.desc}
                                 </p>
-                            </motion.div>
+                            </MotionDiv>
                         ))}
                     </div>
                 </div>
@@ -175,7 +179,7 @@ export default function AboutPage() {
             {/* CLINIC SECTION */}
             <section className="py-8 md:py-10 bg-white" aria-labelledby="about-clinic-heading">
                 <div className="max-w-5xl mx-auto px-4 text-center">
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -201,14 +205,14 @@ export default function AboutPage() {
                             <span className="bg-brand-light px-5 py-2 rounded-full font-medium text-brand-deeper-teal border border-border">Compassionate Care</span>
                             <span className="bg-brand-light px-5 py-2 rounded-full font-medium text-brand-deeper-teal border border-border">Inspirational Results</span>
                         </div>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
             </section>
 
             {/* JOURNEY TEASER SECTION */}
             <section className="bg-[#F4F6F9] py-12 px-4 sm:px-8 lg:px-16" aria-labelledby="journey-teaser-heading">
                 <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-6 overflow-hidden">
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -223,9 +227,9 @@ export default function AboutPage() {
                         <p className="text-[14px] text-[#5A5A72] leading-relaxed">
                             Explore the story of how Meezan grew, meet our leadership team, and see the recognition we have received over the years.
                         </p>
-                    </motion.div>
+                    </MotionDiv>
 
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -236,7 +240,7 @@ export default function AboutPage() {
                         >
                             View Our Journey →
                         </Link>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
             </section>
 
@@ -245,7 +249,7 @@ export default function AboutPage() {
 
             {/* CTA */}
             <section className="py-6 md:py-8 bg-brand-deeper-teal px-4 flex items-center justify-center">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -260,7 +264,7 @@ export default function AboutPage() {
                             Contact Us
                         </Link>
                     </div>
-                </motion.div>
+                </MotionDiv>
             </section>
 
         </div>

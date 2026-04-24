@@ -1,8 +1,12 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { MotionDiv } from "@/components/global/Motion";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Courses | Meezan Educational Institute",
+    description: "Explore paramedical, management, and psychology courses at Meezan Educational Institute Hyderabad.",
+};
 import { Clock, GraduationCap, MapPin, ArrowRight, Key } from "lucide-react";
 import { BreadcrumbSchema } from "@/components/global/SchemaOrg";
 
@@ -102,7 +106,7 @@ export default function CoursesPage() {
                 <div className="absolute top-0 right-0 w-96 h-96 bg-brand-teal/10 rounded-full blur-[100px] pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-accent/10 rounded-full blur-[80px] pointer-events-none" />
 
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
@@ -122,14 +126,14 @@ export default function CoursesPage() {
                             </a>
                         ))}
                     </div>
-                </motion.div>
+                </MotionDiv>
             </section>
 
             {/* Courses Loop */}
             {courseCategories.map((category, index) => (
                 <section key={category.id} id={category.id} className={`py-8 md:py-12 lg:py-16 ${category.bg} scroll-mt-20`} aria-labelledby={`${category.id}-heading`}>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <motion.div
+                        <MotionDiv
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -138,7 +142,7 @@ export default function CoursesPage() {
                         >
                             <h2 id={`${category.id}-heading`} className="mb-4 text-3xl md:text-4xl">{category.title}</h2>
                             <p className="text-lg text-foreground/70">{category.description}</p>
-                        </motion.div>
+                        </MotionDiv>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {category.courses.map((course, i) => (
@@ -159,8 +163,7 @@ export default function CoursesPage() {
                                             src={course.image}
                                             alt={`${course.title} at Meezan Educational Institute Hyderabad`}
                                             fill
-                                            loading="lazy"
-                                            priority={false}
+                                            priority={index === 0 && i < 4}
                                             className="object-cover group-hover:scale-110 transition-transform duration-500"
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                                         />
@@ -208,7 +211,7 @@ export default function CoursesPage() {
             {/* Teacher's Training Linked Card */}
             <section className="py-4 md:py-6 lg:py-8 bg-white scroll-mt-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -232,13 +235,13 @@ export default function CoursesPage() {
                                 </div>
                             </div>
                         </Link>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
             </section>
 
             {/* CTA Strip */}
             <section className="bg-brand-teal py-6 md:py-8 px-4 flex items-center justify-center">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
@@ -253,7 +256,7 @@ export default function CoursesPage() {
                     >
                         Talk to Our Counsellor
                     </button>
-                </motion.div>
+                </MotionDiv>
             </section>
         </main>
     );
