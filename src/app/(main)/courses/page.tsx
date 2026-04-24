@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MotionDiv } from "@/components/global/Motion";
+import ContactWidgetButton from "@/components/global/ContactWidgetButton";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -193,13 +194,11 @@ export default function CoursesPage() {
                                             </div>
                                         )}
 
-                                        <button
-                                            type="button"
-                                            onClick={() => window.dispatchEvent(new CustomEvent('open-contact-widget'))}
+                                        <ContactWidgetButton
                                             className="w-full text-center bg-brand-light text-brand-deeper-teal px-4 py-2.5 rounded-lg border border-border/50 font-semibold hover:bg-brand-teal hover:text-white hover:border-brand-teal transition-colors cursor-pointer"
                                         >
                                             Enquire Now
-                                        </button>
+                                        </ContactWidgetButton>
                                     </div>
                                 </article>
                             ))}
@@ -249,13 +248,11 @@ export default function CoursesPage() {
                     className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 max-w-7xl mx-auto"
                 >
                     <h2 className="text-white text-xl md:text-2xl lg:text-3xl m-0 text-center md:text-left">Not sure which course is right for you?</h2>
-                    <button
-                        type="button"
-                        onClick={() => window.dispatchEvent(new CustomEvent('open-contact-widget'))}
+                    <ContactWidgetButton
                         className="inline-block shrink-0 bg-white text-brand-teal px-6 py-3 rounded-full font-bold hover:bg-brand-deeper-teal hover:text-white transition-all shadow-md hover:-translate-y-1 cursor-pointer"
                     >
                         Talk to Our Counsellor
-                    </button>
+                    </ContactWidgetButton>
                 </MotionDiv>
             </section>
         </main>
