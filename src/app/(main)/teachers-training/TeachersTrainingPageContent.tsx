@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { MessageCircle, PhoneCall } from "lucide-react";
 import {
@@ -10,6 +9,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import posthog from "posthog-js";
 
 const programmes = [
     {
@@ -126,7 +126,10 @@ export default function TeachersTrainingPageContent() {
                                                 </span>
                                             </div>
                                             <button
-                                                onClick={() => window.dispatchEvent(new CustomEvent("open-contact-widget", { detail: { course: prog.title } }))}
+                                                onClick={() => {
+                                                    posthog.capture('teachers_training_enroll_clicked', { programme: prog.title, duration: prog.duration, mode: prog.mode });
+                                                    window.dispatchEvent(new CustomEvent("open-contact-widget", { detail: { course: prog.title } }));
+                                                }}
                                                 className="inline-block bg-brand-deeper-teal text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-brand-teal transition-all shadow-sm hover:-translate-y-0.5"
                                             >
                                                 Enroll Now
@@ -161,6 +164,7 @@ export default function TeachersTrainingPageContent() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-full font-bold text-sm hover:brightness-110 transition-all shadow-md hover:-translate-y-1"
+                            onClick={() => posthog.capture('whatsapp_cta_clicked', { source: 'teachers_training' })}
                         >
                             <MessageCircle size={18} />
                             Chat on WhatsApp

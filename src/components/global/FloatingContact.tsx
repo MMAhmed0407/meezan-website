@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { submitContactForm } from "@/app/actions/contact";
 import PhoneInput from "@/components/ui/PhoneInput";
+import posthog from "posthog-js";
 
 type WidgetState = "collapsed" | "expanded" | "submitted";
 
@@ -39,6 +40,7 @@ export default function FloatingContact() {
 
     const openWidget = useCallback((courseName?: string) => {
         setState("expanded");
+        posthog.capture('contact_widget_opened', { course_hint: courseName ?? null });
         if (courseName) {
             const courseLower = courseName.toLowerCase().trim();
             if (
@@ -126,6 +128,14 @@ export default function FloatingContact() {
             setIsSubmitting(false);
             return;
         }
+
+        const email = formData.get('email') as string;
+        const course = formData.get('course') as string;
+        posthog.identify(email, { email });
+        posthog.capture('contact_widget_submitted', {
+            source: 'floating_widget',
+            course_interest: course,
+        });
 
         setSubmitSuccess(true);
         setState("submitted");

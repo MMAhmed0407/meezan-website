@@ -1,4 +1,7 @@
+"use server";
+
 import { createClient } from '@supabase/supabase-js';
+import { getPostHogClient } from '@/lib/posthog-server';
 
 // --- Rate Limiting (in-memory, client-side) ---
 const submissionMap = new Map<string, {
@@ -157,6 +160,45 @@ export async function submitContactForm(formData: FormData, source: string) {
         if (error) {
             console.error('Supabase submission error:', error);
             return { success: false, error: 'Failed to submit form' };
+        }
+
+        // --- Google Sheets Integration ---
+        const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+        if (GOOGLE_SHEETS_WEBHOOK_URL) {
+            try {
+                await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        full_name: sanitise(fullname),
+                        email: sanitise(email),
+                        phone: sanitise(phone),
+                        course: sanitise(course),
+                        message: sanitise(message),
+                        source,
+                    }),
+                });
+            } catch (err) {
+                console.error('Google Sheets webhook error:', err);
+                // Fail silently so user submission isn't blocked if Sheets fails
+            }
+        }
+
+        try {
+            const posthog = getPostHogClient();
+            posthog.capture({
+                distinctId: sanitise(email),
+                event: 'contact_form_submitted_server',
+                properties: {
+                    source,
+                    course_interest: sanitise(course),
+                },
+            });
+            await posthog.shutdown();
+        } catch (phErr) {
+            console.error('PostHog capture error:', phErr);
         }
 
         return { success: true };

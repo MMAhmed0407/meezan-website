@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { MapPin, Phone, Clock, MessageSquare, CheckCircle2, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import PhoneInput from "@/components/ui/PhoneInput";
+import posthog from "posthog-js";
 
 function ContactSectionInner() {
     const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -101,6 +102,14 @@ function ContactSectionInner() {
             return;
         }
 
+        const email = formData.get('email') as string;
+        const course = formData.get('course') as string;
+        posthog.identify(email, { email });
+        posthog.capture('contact_form_submitted', {
+            source: 'contact_section',
+            course_interest: course,
+        });
+
         setSubmitSuccess(true);
         setTimeout(() => setSubmitSuccess(false), 5000);
     };
@@ -159,7 +168,14 @@ function ContactSectionInner() {
                         </address>
 
                         <div className="flex gap-4">
-                            <a href="https://wa.me/917730019572" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#1ebe5d] transition-colors shadow-sm" aria-label="Chat with us on WhatsApp">
+                            <a
+                                href="https://wa.me/917730019572"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#1ebe5d] transition-colors shadow-sm"
+                                aria-label="Chat with us on WhatsApp"
+                                onClick={() => posthog.capture('whatsapp_cta_clicked', { source: 'contact_section' })}
+                            >
                                 <MessageSquare size={18} /> WhatsApp Us
                             </a>
                         </div>

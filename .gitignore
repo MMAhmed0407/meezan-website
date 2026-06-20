@@ -42,3 +42,5 @@ next-env.d.ts
 *.log
 /src/generated/prisma
 .open-next/
+.claude/
+.env.local

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
+import posthog from 'posthog-js';
 
 interface AdminLoginFormProps {
     onSuccess?: () => void;
@@ -32,7 +33,10 @@ export default function AdminLoginForm({ onSuccess }: AdminLoginFormProps = {}) 
         if (error) {
             setError(error.message || 'Invalid credentials');
             setIsLoading(false);
+            posthog.captureException(new Error(error.message), { email });
         } else {
+            posthog.identify(email, { email, role: 'admin' });
+            posthog.capture('admin_login_success', { email });
             if (onSuccess) onSuccess();
             router.refresh();
         }

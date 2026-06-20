@@ -4,6 +4,7 @@ import { ArrowLeft, Calendar, Tag } from "lucide-react";
 import { getBlogBySlug, getPublishedBlogs } from "@/app/actions/blog-actions";
 import { format } from "date-fns";
 import { notFound } from 'next/navigation';
+import { BlogPostTracker, BlogExploreCTAButton } from "@/components/blog/BlogAnalytics";
 
 export const revalidate = 86400; // Strict ISR
 export const dynamicParams = true; // Allow new blogs to fall back to dynamic generation, but cache them immediately.
@@ -44,6 +45,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
     return (
         <article className="w-full bg-white pb-24" style={{ colorScheme: 'light' }}>
+            <BlogPostTracker slug={slug} title={title} category={post.Category} author={post.author} />
             {/* HEADER SECTION */}
             <header className="bg-gray-50/50 pt-20 pb-12 lg:pt-28 lg:pb-20 border-b border-gray-100">
                 <div className="max-w-4xl mx-auto px-4 text-center">
@@ -135,12 +137,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                                 Join 12,500+ students who have transformed their lives through our professional training programs.
                             </p>
                         </div>
-                        <Link
-                            href="/courses"
-                            className="bg-[#29B8C1] text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white hover:text-[#0B5E65] transition-all shadow-lg hover:-translate-y-1 active:scale-95 whitespace-nowrap"
-                        >
-                            Explore Courses
-                        </Link>
+                        <BlogExploreCTAButton />
                     </div>
                 </div>
             </section>

@@ -29,6 +29,7 @@
     "next": "16.1.6",
     "next-seo": "^7.2.0",
     "posthog-js": "^1.364.1",
+    "posthog-node": "^5.38.2",
     "react": "19.2.3",
     "react-countup": "^6.5.3",
     "react-dom": "19.2.3",
