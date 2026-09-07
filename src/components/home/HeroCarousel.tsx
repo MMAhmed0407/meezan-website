@@ -12,7 +12,7 @@ interface HeroImage {
 
 const HERO_IMAGES: HeroImage[] = [
     {
-        src: "https://ihljjqopdutekhxrhyal.supabase.co/storage/v1/object/public/web-images/hero_carousel/Ftcci.jpg",
+        src: "/carousels/home-carousel/ftcci_membership.jpg",
         alt: "Meezan Educational Institute - Proud Member of FTCCI",
         subtext: "🏛️ Meezan is now a proud member of FTCCI (Federation of Telangana Chambers of Commerce & Industry)",
         badge: "Official Announcement",
