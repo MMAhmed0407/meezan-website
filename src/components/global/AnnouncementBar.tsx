@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const announcements = [
+    "🏛️ Meezan is now a proud member of FTCCI (Federation of Telangana Chambers of Commerce and Industry)",
     "🎓 Affiliation Under Progress for 2026: Medical Lab Technology, Diploma in Radiology, Dialysis Technology, Respiratory Technician",
     "📞 Free Consultation Available — Call 9010186447",
     "🏥 Shoukath Ali Charitable Clinic — Healthcare at Your Doorstep",
