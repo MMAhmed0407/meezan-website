@@ -1,5 +1,6 @@
 import HeroSection from "@/components/home/HeroSection";
 import StatsSection from "@/components/home/StatsSection";
+import FtcciSection from "@/components/home/FtcciSection";
 import CategoriesSection from "@/components/home/CategoriesSection";
 import WhyChooseSection from "@/components/home/WhyChooseSection";
 import TeachersTrainingSection from "@/components/home/TeachersTrainingSection";
@@ -15,6 +16,7 @@ export default function Home() {
       <FAQSchema />
       <HeroSection />
       <StatsSection />
+      <FtcciSection />
       <CategoriesSection />
       <WhyChooseSection />
       <TeachersTrainingSection />

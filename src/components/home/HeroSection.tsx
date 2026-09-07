@@ -4,7 +4,7 @@ import HeroCarousel from "./HeroCarousel";
 
 export default function HeroSection() {
     return (
-        <section className="relative min-h-[70vh] flex flex-col lg:flex-row w-full overflow-hidden bg-brand-deeper-teal">
+        <section className="relative min-h-[70vh] flex flex-col lg:flex-row w-full overflow-hidden" style={{ backgroundColor: "#0D7A82" }}>
             {/* Left Content */}
             <div className="w-full lg:w-[55%] relative flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-6 lg:py-0 z-10">
                 {/* Subtle diagonal pattern overlay */}

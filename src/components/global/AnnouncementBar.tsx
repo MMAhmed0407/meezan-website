@@ -26,7 +26,7 @@ export default function AnnouncementBar() {
     if (!isVisible) return null;
 
     return (
-        <div className="bg-brand-deeper-teal text-white text-[10px] sm:text-xs md:text-sm py-2 px-4 relative flex items-center justify-center min-h-[40px] z-50">
+        <div className="text-white text-[10px] sm:text-xs md:text-sm py-2 px-4 relative flex items-center justify-center min-h-[40px] z-50" style={{ backgroundColor: "#0D7A82" }}>
             <AnimatePresence mode="wait">
                 <motion.p
                     key={currentIndex}
